@@ -1,0 +1,34 @@
+---
+substitutions:
+  device: test
+  name: Test
+  reboot_timeout: 14d
+  update_interval: 10min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: nodemcuv2
+
+<<: !include common/common.yaml
+<<: !include common/switches.yaml
+<<: !include common/sensors.yaml
+logger:
+  level: DEBUG
+
+status_led:
+  pin:
+    number: LED
+    inverted: true
+
+remote_receiver:
+  <<: !include common/rf_receiver.yaml
+  pin: D6
+
+binary_sensor:
+  - platform: remote_receiver
+    <<: !include common/rf_receiver_sensor.yaml
+    name: RF Button Test
+    rc_switch_raw:
+      protocol: 1
+      code: !secret rf_code_test

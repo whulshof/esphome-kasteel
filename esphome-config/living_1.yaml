@@ -1,0 +1,97 @@
+---
+substitutions:
+  device: living_1
+  name: TV Meubel
+  location: Woonkamer
+  reboot_timeout: 14d
+  update_interval: 10min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: esp01_1m
+
+<<: !include common/common.yaml
+logger:
+  level: INFO
+  baud_rate: 0
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true
+
+i2c:
+  sda: GPIO2
+  scl: RX
+
+sensor:
+  - !include common/sensor/wifi-signal.yaml
+  - !include common/sensor/uptime.yaml
+  - !include common/sensor/bme280.yaml
+
+binary_sensor:
+  - !include common/binary_sensor/status.yaml
+  - platform: gpio
+    id: button_1
+    pin:
+      number: GPIO0
+      <<: &input_pullup
+        mode: INPUT_PULLUP
+        inverted: true
+    on_press:
+      then:
+        - switch.toggle: tv
+  - platform: gpio
+    id: button_2
+    pin:
+      number: GPIO9
+      <<: *input_pullup
+    on_press:
+      then:
+        - switch.toggle: receiver
+  - platform: gpio
+    id: button_3
+    pin:
+      number: GPIO10
+      <<: *input_pullup
+    on_press:
+      then:
+        - light.toggle: spruitje
+  - platform: gpio
+    id: button_4
+    pin:
+      number: GPIO14
+      <<: *input_pullup
+    on_press:
+      then:
+        - switch.toggle: mediaplayer
+
+output:
+  - platform: gpio
+    pin: GPIO4
+    id: relay_3
+
+light:
+  - platform: binary
+    name: ${name} Spruitje
+    output: relay_3
+    id: spruitje
+
+switch:
+  - !include common/switch/restart.yaml
+  - platform: gpio
+    pin: GPIO12
+    name: ${name} TV
+    id: tv
+    icon: mdi:television
+  - platform: gpio
+    pin: GPIO5
+    name: ${name} Receiver
+    id: receiver
+    icon: mdi:speaker
+  - platform: gpio
+    pin: GPIO15
+    name: ${name} Mediaplayer
+    id: mediaplayer
+    icon: mdi:kodi

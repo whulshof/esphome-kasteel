@@ -1,0 +1,55 @@
+---
+substitutions:
+  device: garage
+  name: Garage
+  reboot_timeout: 1h
+  update_interval: 10min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: d1_mini_pro
+  on_boot:
+    - priority: 90
+      then:
+        - output.turn_on: dht_supply
+
+<<: !include common/common.yaml
+<<: !include common/logger.yaml
+<<: !include common/binary_sensors.yaml
+<<: !include common/switches.yaml
+
+status_led:
+  pin:
+    number: LED
+    inverted: true
+
+dallas:
+  - pin: D7
+    update_interval: ${update_interval}
+
+output:
+  - platform: gpio
+    pin: D8
+    id: dallas_gnd
+  - platform: gpio
+    pin: D1
+    id: dht_gnd
+  - platform: gpio
+    pin: D2
+    id: dht_supply
+
+sensor:
+  - !include common/sensor/wifi-signal.yaml
+  - !include common/sensor/uptime.yaml
+  - platform: dallas
+    address: 0xDE011438B6F4AA28
+    name: Buiten Temperatuur
+  - platform: dht
+    model: DHT22
+    pin: D5
+    temperature:
+      name: ${name} Temperatuur
+    humidity:
+      name: ${name} Luchtvochtigheid
+    update_interval: ${update_interval}

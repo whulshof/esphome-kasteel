@@ -1,0 +1,25 @@
+---
+dist: focal
+language: python
+git:
+  depth: 3
+script:
+  - mv .travis-secrets.yaml secrets.yaml
+  - esphome compile $DEVICE1.yaml
+  - esphome compile $DEVICE2.yaml
+  - esphome compile $DEVICE3.yaml
+matrix:
+  include:
+    - python: 3.9
+      env: DEVICE1=minimal DEVICE2=attic_1 DEVICE3=ventilation DEVICE4=xmas_1
+      script:
+        - mv .travis-secrets.yaml secrets.yaml
+        - yamllint .
+        - esphome compile $DEVICE1.yaml
+        - esphome compile $DEVICE2.yaml
+        - esphome compile $DEVICE3.yaml
+        - esphome compile $DEVICE4.yaml
+    - python: 3.9
+      env: DEVICE1=living_1 DEVICE2=veranda_lights DEVICE3=garage
+    - python: 3.9
+      env: DEVICE1=bedroom_1 DEVICE2=bedroom_2 DEVICE3=xmas_2
