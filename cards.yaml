@@ -1,0 +1,28 @@
+  - type: picture-entity
+    camera: live
+    camera_image: camera.dahua_west
+    entity: camera.dahua_west
+  - type: picture-entity
+    camera: live
+    camera_image: camera.dahua_east
+    entity: camera.dahua_east
+  - type: picture-entity
+    camera: live
+    camera_image: camera.loods_2
+    entity: camera.loods_2
+  - type: picture-entity
+    camera: live
+    camera_image: camera.loods_3
+    entity: camera.loods_3
+  - type: picture-entity
+    camera: live
+    camera_image: camera.garage_01
+    entity: camera.garage_01
+  - type: picture-entity
+    camera: live
+    camera_image: camera.inrit_garage
+    entity: camera.inrit_garage
+  - type: picture-entity
+    camera: live
+    camera_image: camera.voordeur
+    entity: camera.voordeur
