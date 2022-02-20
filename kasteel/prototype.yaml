@@ -12,17 +12,23 @@ substitutions:
 
 <<: !include wifi/wifi.yaml
 #  use_address: 192.168.5.20
-  power_save_mode: light # none, light, high
-  <<: !include wifi/wifi_kasteel_dhcp.yaml
-  <<: !include wifi/wifi_kasteel_fixed.yaml
+  power_save_mode: none # none, light, high
+  <<: !include wifi/wifi_kasteel_dhcp.yaml # ssid-kasteel OR
+  <<: !include wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip OR
+  <<: !include wifi/wifi_outdooreap_dhcp.yaml # ssid-outdooreap OR
+  <<: !include wifi/wifi_outdooresp_fixed.yaml # manual-ip ourdoor using $static_ip OR
+  <<: !include wifi/wifi_outdoorwrt_dhcp.yaml # ssid-outdoorwrt OR
+  <<: !include wifi/wifi_outdoorwrt_fixed.yaml # manual-ip outdoor using $static_ip OR
+  <<: !include wifi/wifi_multi_dhcp.yaml # multiple dhco networks NEEDS use_address: for update OR
+  <<: !include wifi/wifi_multi_fixed.yaml # multiple fixed networks NEEDS use_address: for update
 
 captive_portal:
 
-<<: !include common/common.yaml
+<<: !include common/common.yaml # api, ota, web_server, text_sensors, logger, status_led
 
-<<: !include sensors.yaml
+<<: !include sensors.yaml # wifi_signal, uptime
 
-<<: !include binary_sensors.yaml
+<<: !include binary_sensors.yaml # connection status
 
 <<: !include switches.yaml
-  <<: !include switches/shutdown.yaml
+  - <<: !include switches/shutdown.yaml

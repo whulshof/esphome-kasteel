@@ -1,0 +1,5 @@
+---
+networks:
+  <<: !include wifi/wifi_kasteel_dhcp.yaml # ssid-kasteel
+  <<: !include wifi/wifi_outdooreap_dhcp.yaml # ssid-outdooreap
+  <<: !include wifi/wifi_outdoorwrt_dhcp.yaml # ssid-outdoorwrt

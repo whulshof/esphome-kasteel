@@ -1,0 +1,16 @@
+substitutions:
+  friendly_name: loods3_door
+  device_description: "relay door loods3"
+  new_ota_passwd: <new_ota_password>
+  reboot_timeout: 60s
+  static_ip: XX
+
+packages:
+  yunshan_relay: !include devices/yunshan_relay.yaml
+
+esphome:
+  name_add_mac_suffix: true
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+wifi:
+  <<: !include wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip

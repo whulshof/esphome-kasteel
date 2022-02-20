@@ -1,0 +1,5 @@
+---
+networks:
+  <<: !include wifi/wifi_kasteel_fixed.yaml # ssid-kasteel manual_ip
+  <<: !include wifi/wifi_outdooreap_fixed.yaml # ssid-outdooreap manual_ip
+  <<: !include wifi/wifi_outdoorwrt_fixed.yaml # ssid-outdoorwrt manual_ip
