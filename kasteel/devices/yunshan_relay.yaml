@@ -2,8 +2,7 @@
 
 <<: !include boards/esp12e.yaml
 
-wifi:
-  <<: !include wifi/wifi.yaml
+<<: !include wifi/wifi.yaml
   power_save_mode: light
 captive_portal:
 

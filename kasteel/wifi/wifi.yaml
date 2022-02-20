@@ -1,5 +1,6 @@
 ---
-reboot_timeout: ${reboot_timeout}
-ap:
-  ssid: ${device}
-  password: !secret ap_password
+wifi:
+  reboot_timeout: ${reboot_timeout}
+  ap:
+    ssid: ${device}
+    password: !secret ap_password

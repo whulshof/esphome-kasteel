@@ -1,5 +1,5 @@
 ---
-<<: !include wifi/wifi_kasteel_dhcp.yaml # ssid-kasteel
+<<: !include wifi_kasteel_dhcp.yaml # ssid-kasteel
 manual_ip:
   static_ip: 10.222.15.$static_ip
   gateway: 10.222.14.138

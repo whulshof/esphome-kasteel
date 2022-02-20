@@ -1,5 +1,5 @@
 ---
-<<: !include wifi/wifi_outdoorwrt_dhcp.yaml # ssid-outdooreap
+<<: !include wifi_outdoorwrt_dhcp.yaml # ssid-outdooreap
 manual_ip:
   static_ip: 192.168.5.$static_ip
   gateway: 192.168.5.1
