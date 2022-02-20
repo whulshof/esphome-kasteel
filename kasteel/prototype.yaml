@@ -1,0 +1,28 @@
+substitutions:
+  devicename: <devicename>
+  friendly_name: <friendly_name>
+  device_description: <device_description>
+  new_ota_passwd: <new_ota_password>
+  reboot_timeout: 60s
+  static_ip: XX
+
+<<: !include boards/esp12e.yaml
+#  <<: !include esphome/on_boot_ota_pw.yaml
+  name_add_mac_suffix: true
+
+<<: !include wifi/wifi.yaml
+#  use_address: 192.168.5.20
+  power_save_mode: light # none, light, high
+  <<: !include wifi/wifi_kasteel_dhcp.yaml
+  <<: !include wifi/wifi_kasteel_fixed.yaml
+
+captive_portal:
+
+<<: !include common/common.yaml
+
+<<: !include sensors.yaml
+
+<<: !include binary_sensors.yaml
+
+<<: !include switches.yaml
+  <<: !include switches/shutdown.yaml

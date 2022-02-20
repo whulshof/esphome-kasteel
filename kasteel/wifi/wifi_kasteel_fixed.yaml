@@ -1,0 +1,5 @@
+---
+manual_ip:
+  static_ip: 10.222.15.$static_ip
+  gateway: 10.222.14.138
+  subnet: 255.255.254.0

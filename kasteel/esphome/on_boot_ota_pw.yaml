@@ -1,0 +1,4 @@
+---
+on_boot:
+  - lambda: |-
+      id(my_ota).set_auth_password($new_ota_passwd);

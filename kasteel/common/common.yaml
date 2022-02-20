@@ -1,0 +1,8 @@
+---
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include web_server.yaml
+<<: !include text_sensors.yaml
+<<: !include logger.yaml
+<<: !include status_led.yaml
+

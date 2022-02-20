@@ -1,0 +1,3 @@
+---
+ssid: !secret wifi_ssid_outdooreap
+password: !secret wifi_password_outdooreap
