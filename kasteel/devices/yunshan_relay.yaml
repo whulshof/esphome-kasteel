@@ -3,24 +3,32 @@
 <<: !include boards/esp12e.yaml
 
 <<: !include wifi/wifi.yaml
-  power_save_mode: light
-captive_portal:
 
 <<: !include common/common.yaml # api, ota, web_server, text_sensors, logger, status_led
 
-<<: !include common/sensors.yaml # wifi_signal, uptime
-
 <<: !include common/binary_sensors.yaml # connection status
-  platform: gpio
-  pin:
-    number: GPIO5
-    mode: INPUT_PULLUP
-    inverted: True
-  name: "${friendly_name} Optocoupler"
 
-<<: !include common/switches.yaml
-  <<: !include switches/shutdown.yaml
-  platform: gpio
+wifi:
+  power_save_mode: light
+  
+captive_portal:
+
+sensor:
+  - !include sensors/wifi_signal.yaml
+  - !include sensors/uptime.yaml
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${friendly_name} Optocoupler"
+
+switch:
+  - !include switches/restart.yaml
+#  - !include switches/shutdown.yaml
+  - platform: gpio
     name: "${friendly_name} Relay"
     icon: "mdi:remote"
     pin: GPIO4

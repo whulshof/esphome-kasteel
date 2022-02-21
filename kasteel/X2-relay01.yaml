@@ -1,0 +1,19 @@
+substitutions:
+  devicename: "x2-relay-01-"
+  friendly_name: "x2-relay01"
+  device_description: "double relay 01"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  reboot_timeout: 60s
+  static_ip: "123"
+
+packages:
+  device_base: !include devices/esp12f_relay_x2_v1_2.yaml
+
+esphome:
+  name_add_mac_suffix: true
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+wifi:
+  # use_address: 10.222.15.33
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip

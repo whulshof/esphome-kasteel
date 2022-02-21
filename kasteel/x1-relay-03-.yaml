@@ -1,0 +1,19 @@
+substitutions:
+  devicename: "x1-relay-03-"
+  friendly_name: "x1-relay-03"
+  device_description: "x1-relay-03"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+  reboot_timeout: 60s
+  static_ip: "128"
+
+packages:
+  device_base: !include devices/esp12f_relay_x1_v2_1.yaml
+
+esphome:
+  name_add_mac_suffix: true
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+wifi:
+  # use_address: 10.222.15.129
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip

@@ -1,0 +1,36 @@
+---
+
+<<: !include boards/esp12e.yaml
+
+<<: !include wifi/wifi.yaml
+
+<<: !include common/common.yaml # api, ota, web_server, text_sensors, logger, status_led
+
+<<: !include common/sensors.yaml # wifi_signal, uptime
+
+<<: !include common/binary_sensors.yaml # connection status
+
+wifi:
+  power_save_mode: light
+
+captive_portal:
+
+switch:
+  - !include switches/restart.yaml
+#  - !include switches/shutdown.yaml
+  - platform: gpio
+    name: "${friendly_name} Relay1"
+    icon: "mdi:remote"
+    pin: GPIO4
+    id: relay1
+    on_turn_on:
+      - delay: 400ms
+      - switch.turn_off: relay1
+  - platform: gpio
+    name: "${friendly_name} Relay2"
+    icon: "mdi:remote"
+    pin: GPIO5
+    id: relay2
+    on_turn_on:
+      - delay: 400ms
+      - switch.turn_off: relay2

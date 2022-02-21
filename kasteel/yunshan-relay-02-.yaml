@@ -1,11 +1,11 @@
 substitutions:
-  devicename: "yunshan-relay-01-"
-  friendly_name: "loods3_door"
-  device_description: "overhead door loods3"
+  devicename: "yunshan-relay-02-"
+  friendly_name: "garage_door"
+  device_description: "overhead door garage"
   logger_level: DEBUG
   new_ota_passwd: "<new_ota_password>"
   reboot_timeout: 60s
-  static_ip: "124"
+  static_ip: "126"
 
 packages:
   device_base: !include devices/yunshan_relay.yaml
@@ -16,4 +16,4 @@ esphome:
 
 wifi:
   # use_address: 192.168.5.20
-  <<: !include devices/wifi/wifi_outdoorwrt_fixed.yaml # manual-ip outdoorwrt using $static_ip
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip outdoorwrt using $static_ip

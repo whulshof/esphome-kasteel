@@ -1,19 +1,19 @@
 substitutions:
-  devicename: "yunshan-relay-01-"
-  friendly_name: "loods3_door"
-  device_description: "overhead door loods3"
+  devicename: "zmai90-01-"
+  friendly_name: "WP_loods3"
+  device_description: "kWh meter warmtepomp Loods 3"
   logger_level: DEBUG
-  new_ota_passwd: "<new_ota_password>"
+  new_ota_passwd: "12345abcde"
   reboot_timeout: 60s
-  static_ip: "124"
+  static_ip: "131"
 
 packages:
-  device_base: !include devices/yunshan_relay.yaml
+  device_base: !include devices/esp12e_zmai90.yaml
 
 esphome:
   name_add_mac_suffix: true
 #  <<: !include esphome/on_boot_ota_pw.yaml
 
 wifi:
-  # use_address: 192.168.5.20
+  # use_address: 192.168.5.21
   <<: !include devices/wifi/wifi_outdoorwrt_fixed.yaml # manual-ip outdoorwrt using $static_ip

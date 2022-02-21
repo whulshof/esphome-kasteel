@@ -1,0 +1,5 @@
+---
+binary_sensor:
+  # connection status
+  - platform: status
+    name: "${friendly_name} Status"

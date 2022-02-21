@@ -1,0 +1,98 @@
+---
+
+<<: !include boards/esp12e.yaml
+
+<<: !include wifi/wifi.yaml
+
+<<: !include common/common.yaml # api, ota, web_server, text_sensors, logger, status_led
+
+<<: !include common/sensors.yaml # wifi_signal, uptime
+
+<<: !include common/binary_sensors.yaml # connection status
+
+wifi:
+  power_save_mode: light
+
+captive_portal:
+
+switch:
+  - !include switches/restart.yaml
+#  - !include switches/shutdown.yaml
+  - platform: "tuya"
+    name: "Power"
+    switch_datapoint: 16
+    icon: "mdi:power"
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+  #parity: EVEN
+
+external_components:
+  - source: github://dentra/esphome@tuya-raw-fix-standalone
+    components: ["tuya"]
+  - source: github://dentra/esphome-components
+
+# Example configuration entry
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+# Register the Tuya MCU connection
+tuya:
+  on_datapoint_update:
+    - sensor_datapoint: 6
+      datapoint_type: raw
+      then:
+        - lambda: |-
+            id(voltage).publish_state((x[0] << 8 | x[1]) * 0.1);
+            id(current).publish_state((x[3] << 8 | x[4]) * 0.001);
+            id(power).publish_state((x[6] << 8 | x[7]));
+
+sensor:
+  # total
+  - platform: "tuya"
+    id: total
+    name: "Energy Total"
+    sensor_datapoint: 1
+    accuracy_decimals: 3
+    filters:
+      - multiply: 0.01
+    unit_of_measurement: "kWh"
+    icon: "mdi:sigma"
+    device_class: "energy"
+  # voltage
+  - platform: template
+    id: voltage
+    name: "Voltage"
+    unit_of_measurement: "V"
+    icon: "mdi:sine-wave"
+    device_class: "voltage"
+  # current
+  - platform: template
+    id: current
+    name: "Current"
+    unit_of_measurement: "A"
+    icon: "mdi:current-ac"
+    device_class: "current"
+  # active power
+  - platform: template
+    id: power
+    name: "Active Power"
+    unit_of_measurement: "W"
+    accuracy_decimals: 0
+    icon: "mdi:flash"
+    device_class: "power"
+  # energy_monitoring
+  - platform: "energy_monitoring"
+    power: power
+    voltage: voltage
+    current: current
+    apparent_power:
+      name: "Apparent Power"
+    reactive_power:
+      name: "Reactive Power"
+    power_factor:
+      name: "Power Factor"
+

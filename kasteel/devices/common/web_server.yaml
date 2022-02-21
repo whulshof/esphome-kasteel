@@ -1,0 +1,6 @@
+---
+web_server:
+  port: 80
+  auth:
+    username: !secret web_username # disabled if absent or empty
+    password: !secret web_password # disabled if absent or empty
