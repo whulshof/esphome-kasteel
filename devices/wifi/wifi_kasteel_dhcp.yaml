@@ -1,0 +1,3 @@
+---
+ssid: !secret wifi_ssid_kasteel
+password: !secret wifi_password_kasteel

@@ -1,0 +1,164 @@
+---
+
+<<: !include boards/d1_mini.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+
+esphome:
+  name: "${devicename}"
+  name_add_mac_suffix: true
+  comment: "${device_description}--${ip}"
+
+wifi:
+  power_save_mode: light
+
+captive_portal:
+
+logger:
+  baud_rate: 0
+
+
+uart:
+  rx_pin: RX
+  tx_pin: TX
+  baud_rate: 9600
+  parity: EVEN
+#  debug:
+#    direction: RX
+#    after:
+#      delimiter: "\r\n"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
+
+tuya:
+
+#switch:
+##  - !include switches/restart.yaml
+##  - !include switches/shutdown.yaml
+## Uncomment next 5 lines to expose main switch to HA
+#  - platform: "tuya"
+#    id: sw_power
+#    name: "$friendly_name"
+#    switch_datapoint: "1"
+#    icon: "mdi:power"
+#    # Uncomment next 5 lines if you want a switch to query the device working status by forces update values from Tuya MCU
+#    # - platform: "uart"
+#    #   id: sw_tuya_query_status
+#    #   data: [0x55, 0xaa, 0x00, 0x08, 0x00, 0x00, 0x07]
+#  #   name: "$name Force update"
+#  #   icon: mdi:reload
+#
+#text_sensor:
+#  - platform: "template"
+#    id: current_tariff
+#    name: "$friendly_name Current Tariff"
+#    icon: "mdi:theme-light-dark"
+#    entity_category: diagnostic
+#
+## Create sensors
+#sensor:
+#  # total
+#  - platform: "tuya"
+#    id: total
+#    name: "$friendly_name Energy Total"
+#    sensor_datapoint: "17"
+#    accuracy_decimals: 3
+#    filters:
+#      - multiply: 0.001
+#    unit_of_measurement: "kWh"
+#    icon: "mdi:sigma"
+#    device_class: "energy"
+#    # i am not interesting in total but tariffs, so you can comment or set it to false if you want internal total sensor
+#    internal: false
+#    state_class: total_increasing
+#
+#  # active power
+#  - platform: "tuya"
+#    id: power
+#    name: "$friendly_name Active Power"
+#    sensor_datapoint: "19"
+#    accuracy_decimals: 1
+#    filters:
+#      - multiply: 0.1
+#    unit_of_measurement: "W"
+#    icon: "mdi:flash"
+#    device_class: "power"
+#    state_class: measurement
+#
+#  # current
+#  - platform: "tuya"
+#    id: current
+#    name: "$friendly_name Current"
+#    sensor_datapoint: "18"
+#    accuracy_decimals: 3
+#    filters:
+#      - multiply: 0.001
+#    unit_of_measurement: "A"
+#    icon: "mdi:current-ac"
+#    device_class: "current"
+#    state_class: measurement
+#
+#  # voltage
+#  - platform: "tuya"
+#    id: voltage
+#    name: "$friendly_name Voltage"
+#    sensor_datapoint: "20"
+#    accuracy_decimals: 1
+#    filters:
+#      - multiply: 0.1
+#    unit_of_measurement: "V"
+#    icon: "mdi:sine-wave"
+#    device_class: "voltage"
+#    state_class: measurement
+#
+#  - platform: "energy_monitoring"
+#    id: mon
+#    power: power
+#    voltage: voltage
+#    current: current
+#    apparent_power:
+#      name: "$friendly_name Apparent Power"
+#    reactive_power:
+#      name: "$friendly_name Reactive Power"
+#    power_factor:
+#      name: "$friendly_name Power Factor"
+#
+#  - platform: "energy_statistics"
+#    id: stat
+#    total: total
+#    #save_to_flash_interval: 600s
+#    energy_today:
+#      id: today
+#      name: "$friendly_name Energy Today"
+#
+#  - platform: "energy_tariffs"
+#    id: tariffs
+#    total: total
+#    #save_to_flash_interval: 600s
+#    time_offset:
+#      name: "$friendly_name Time Offset"
+#    tariffs:
+#      - name: "$friendly_name Peak Tariff"
+#        id: peak
+#        icon: "mdi:weather-sunny"
+#        service: peak_set
+#      - name: "$friendly_name Off-Peak Tariff"
+#        id: offpeak
+#        icon: "mdi:weather-night"
+#        time: "23:00-07:00"
+#        service: offpeak_set
+#    on_tariff:
+#      lambda: |-
+#        if (x == id(peak))
+#          id(current_tariff).publish_state("peak");
+#        else if (x == id(offpeak))
+#          id(current_tariff).publish_state("off-peak");
+#        else // should be never happen
+#          id(current_tariff).publish_state("unknown");
+#    on_before_tariff:
+#      - uart.write: [0x55, 0xaa, 0x00, 0x08, 0x00, 0x00, 0x07]

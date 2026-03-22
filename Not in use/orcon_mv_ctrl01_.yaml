@@ -1,0 +1,24 @@
+substitutions:
+  devicename: "orcon_mv_ctrl01_"
+  friendly_name: "orcon_controller01"
+  device_description: "Orcon MVS15 controller 01"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  reboot_timeout: 60s
+  pwm_pin: "D6"
+  static_ip: "155"
+
+
+packages:
+  device_base: !include devices/orcon_controller.yaml
+
+esphome:
+  name_add_mac_suffix: true
+
+wifi:
+  # use_address: 10.222.15.151
+#  power_save_mode: none # none, light, high
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip OR
+
+
+    

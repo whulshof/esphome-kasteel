@@ -1,0 +1,44 @@
+substitutions:
+  devicename: "bluetooth-gateway-2"
+  friendly_name: "blt_gway_02"
+  device_description: "Bluetooth Gateway 2"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  api_reboot_timeout: 0s
+  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "153"
+  prefix_switch: "heating_zone_"
+  blt_mac_address_1: "A4:C1:38:DD:AD:F5"
+  location1: "slaapkamer1_V1"
+  zone_loc1: 5
+  blt_mac_address_2: "A4:C1:38:4E:C2:72"
+  location2: "badkamer_V1"
+  zone_loc2: 6
+  blt_mac_address_3: "A4:C1:38:B4:1A:D3"
+  location3: "slaapkamer2_V1"
+  zone_loc3: 7
+  blt_mac_address_4: "A4:C1:38:8A:02:15"
+  location4: "slaapkamer3_V1"
+  zone_loc4: 8
+  zone_start: 5
+  zone_count: 4
+  ip: "10.222.15.${static_ip}"
+  mqtt_broker: 10.222.15.50
+  x8_ip: 10.222.15.138
+  topic: esp/vv/x8/${x8}/set
+  http_request_url: http://${x8_ip}/switch/${prefix_switch}
+  heat_deadband: 0.0
+  heat_overrun: 0.0
+  min_heating_run_time: 5s
+  min_heating_off_time: 5s
+  min_idle_time: 5s
+
+packages:
+  device_base: !include devices/bluetooth_gateway_4_kasteel_http_moduled.yaml
+
+
+
+
+
+    

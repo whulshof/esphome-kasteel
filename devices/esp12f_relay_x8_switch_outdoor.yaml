@@ -1,0 +1,63 @@
+---
+
+<<: !include boards/esp12e.yaml
+<<: !include wifi/wifi_outdoor.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+esphome:
+  name: "${devicename}"
+  name_add_mac_suffix: true
+  comment: "${device_description} ${ip}"
+
+wifi:
+  power_save_mode: light
+
+captive_portal:
+
+switch:
+  - !include switches/restart.yaml
+#  - !include switches/shutdown.yaml
+  - platform: gpio
+    name: "${friendly_name}1"
+    icon: "mdi:remote"
+    pin: GPIO16
+    id: ${friendly_name}1
+  - platform: gpio
+    name: "${friendly_name}2"
+    icon: "mdi:remote"
+    pin: GPIO14
+    id: ${friendly_name}2
+  - platform: gpio
+    name: "${friendly_name}3"
+    icon: "mdi:remote"
+    pin: GPIO12
+    id: ${friendly_name}3
+  - platform: gpio
+    name: "${friendly_name}4"
+    icon: "mdi:remote"
+    pin: GPIO13
+    id: ${friendly_name}4
+  - platform: gpio
+    name: "${friendly_name}5"
+    icon: "mdi:remote"
+    pin: GPIO15
+    id: ${friendly_name}5
+  - platform: gpio
+    name: "${friendly_name}6"
+    icon: "mdi:remote"
+    pin: GPIO0
+    id: ${friendly_name}6
+  - platform: gpio
+    name: "${friendly_name}7"
+    icon: "mdi:remote"
+    pin: GPIO4
+    id: ${friendly_name}7
+  - platform: gpio
+    name: "${friendly_name}8"
+    icon: "mdi:remote"
+    pin: GPIO5
+    id: ${friendly_name}8

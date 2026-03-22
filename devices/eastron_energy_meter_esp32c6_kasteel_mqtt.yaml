@@ -1,0 +1,185 @@
+---
+<<: !include boards/esp32c6.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+esphome:
+  name: "${devicename}-${static_ip}"
+  name_add_mac_suffix: true
+  comment: "${device_description} ${ip}"
+
+
+captive_portal:
+
+uart:
+  - id: uart_bus_1
+    tx_pin: D6      # GPIO6 → RX PZEM's (adres 1-5)
+    rx_pin: D7      # GPIO7 met 1kΩ weerstand! ← TX PZEM's
+    baud_rate: 9600
+    data_bits: 8
+    stop_bits: 1
+    parity: NONE
+
+
+# Modbus configuratie voor elke bus
+#modbus:
+#  id: modbus1
+#  uart_id: uart_bus_1
+
+
+
+
+sensor:
+  - platform: sdm_meter
+    address: 2
+    update_interval: 3s
+    phase_a:
+      current:
+        name: "Current (Phase A)"
+        id: current_phase_a
+      voltage:
+        name: "Voltage (Phase A)"
+        id: voltage_phase_a
+      active_power:
+        name: "Power (Phase A)"
+        id: power_phase_a
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: kW
+        filters:
+          - lambda: |-
+              return -x / 1000;
+      power_factor:
+        name: "Power Factor (Phase A)"
+        id: power_factor_phase_a
+      apparent_power:
+        name: "Apparent Power (Phase A)"
+        id: apparent_power_phase_a
+      reactive_power:
+        name: "Reactive Power (Phase A)"
+        id: reactive_power_phase_a
+      phase_angle:
+        name: "SDM630M Phase Angle (Phase A)"
+        id: phase_angle_phase_a
+    phase_b:
+      current:
+        name: "Current (Phase B)"
+        id: current_phase_b
+      voltage:
+        name: "Voltage (Phase B)"
+        id: voltage_phase_b
+      active_power:
+        name: "Power (Phase B)"
+        id: power_phase_b
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: kW
+        filters:
+          - lambda: |-
+              return -x / 1000;
+      power_factor:
+        name: "Power Factor (Phase B)"
+        id: power_factor_phase_b
+      apparent_power:
+        name: "Apparent Power (Phase B)"
+        id: apparent_power_phase_b
+      reactive_power:
+        name: "Reactive Power (Phase B)"
+        id: reactive_power_phase_b
+      phase_angle:
+        name: "Phase Angle (Phase B)"
+        id: phase_angle_phase_b
+    phase_c:
+      current:
+        name: "Current (Phase C)"
+        id: current_phase_c
+      voltage:
+        name: "Voltage (Phase C)"
+        id: voltage_phase_c
+      active_power:
+        name: "Power (Phase C)"
+        id: power_phase_c
+        state_class: measurement
+        device_class: power
+        unit_of_measurement: kW
+        filters:
+          - lambda: |-
+              return -x / 1000;
+      power_factor:
+        name: "Power Factor (Phase C)"
+        id: power_factor_phase_c
+      apparent_power:
+        name: "Apparent Power (Phase C)"
+        id: apparent_power_phase_c
+      reactive_power:
+        name: "Reactive Power (Phase C)"
+        id: reactive_power_phase_c
+      phase_angle:
+        name: "Phase Angle (Phase C)"
+        id: phase_angle_phase_c
+    frequency:
+      name: "Frequency SDM630M"
+      id: frequency
+    total_power:
+      name: "Total Power SDM630M kW"
+      id: total_power
+      state_class: measurement
+      device_class: power
+      unit_of_measurement: kW
+      filters:
+        - lambda: |-
+            return -x / 1000;
+    import_active_energy:
+      name: "Import Active Energy SDM630M"
+      id: import_active_energy
+    export_active_energy:
+      name: "Export Active Energy SDM630M"
+      id: export_active_energy
+    import_reactive_energy:
+      name: "Import Reactive Energy SDM630M"
+      id: import_reactive_energy
+    export_reactive_energy:
+      name: "Export Reactive Energy SDM630M"
+      id: export_reactive_energy
+
+
+mqtt:
+  broker: 10.222.15.50
+  topic_prefix: ${topic_prefix}
+
+
+script:
+  - id: publish_fast_bundle
+    then:
+      - mqtt.publish:
+          topic: ${topic_prefix}nofilter_bundle
+          retain: true
+          payload: !lambda |-
+            StaticJsonDocument<2048>doc;
+            
+            doc["total_power"] = id(total_power).state;
+            doc["power_l1"] = id(power_phase_a).state;
+            doc["power_l2"] = id(power_phase_b).state;
+            doc["power_l3"] = id(power_phase_c).state;
+            
+            doc["current_l1"] = id(current_phase_a).state;
+            doc["current_l2"] = id(current_phase_b).state;
+            doc["current_l3"] = id(current_phase_c).state;
+            
+            doc["voltage_l1"] = id(voltage_phase_a).state;
+            doc["voltage_l2"] = id(voltage_phase_b).state; 
+            doc["voltage_l3"] = id(voltage_phase_c).state;
+
+
+            std::string out;
+            serializeJson(doc, out);
+            return out;
+
+interval:
+  - interval: 3s
+    then:
+      - script.execute: publish_fast_bundle

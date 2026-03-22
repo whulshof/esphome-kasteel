@@ -1,0 +1,6 @@
+---
+<<: !include wifi_fabriek_dhcp.yaml # ssid-gnx
+manual_ip:
+  static_ip: 10.112.15.$static_ip
+  gateway: 10.112.14.138
+  subnet: 255.255.254.0

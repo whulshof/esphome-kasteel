@@ -1,0 +1,4 @@
+---
+# module shutdown
+platform: shutdown
+name: "${friendly_name} Stop"

@@ -1,0 +1,33 @@
+esphome:
+  name: wemo-d1-esp32
+  friendly_name: wemo d1 esp32
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  reboot_timeout: 60s
+  encryption:
+#    key: !secret api_encryption_key
+    key: "l7UyKF1SkFVaPFstE3b5gjRncGQdoRqXYevvzJPI2Ek="
+
+ota:
+  password: "9661ad3bf3368f2ea7126a18c64e56d1"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Wemo-D1-Esp32 Fallback Hotspot"
+    password: "kSjYnqiOm4IG"
+
+captive_portal:
+    

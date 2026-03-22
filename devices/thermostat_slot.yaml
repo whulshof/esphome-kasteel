@@ -1,0 +1,52 @@
+sensor:
+  - platform: atc_mithermometer
+    mac_address: ${blt_mac_address}
+    temperature:
+      name: "Temperature ${location}"
+      id: temp_${slot_id}
+    humidity:
+      name: "Humidity ${location}"
+      id: hum_${slot_id}
+    battery_level:
+      name: "Battery Level ${location}"
+      id: bat_${slot_id}
+      device_class: battery
+
+climate:
+  - platform: thermostat
+    name: "thermostaat ${location}"
+    id: thermostat_${slot_id}
+    sensor: temp_${slot_id}
+    on_boot_restore_from: memory
+    preset:
+      - name: Home
+        default_target_temperature_low: 20.0
+    heat_deadband: ${heat_deadband} °C
+    heat_overrun: ${heat_overrun} °C
+    min_heating_run_time: ${min_heating_run_time}
+    min_heating_off_time: ${min_heating_off_time}
+    min_idle_time: ${min_idle_time}
+
+    heat_action:
+      - script.execute:
+          id: set_zone
+          zone: ${zone}
+          state: true
+
+    idle_action:
+      - script.execute:
+          id: set_zone
+          zone: ${zone}
+          state: false
+
+script:
+  - id: sync_slot_${slot_id}
+    then:
+      - lambda: |-
+          ESP_LOGD("force_sync", "t1 mode=%d action=%d",
+                   (int) id(thermostat_${slot_id}).mode,
+                   (int) id(thermostat_${slot_id}).action);
+      - script.execute:
+          id: set_zone
+          zone: ${zone}
+          state: !lambda 'return id(thermostat_${slot_id}).action == climate::CLIMATE_ACTION_HEATING;'

@@ -1,0 +1,7 @@
+---
+<<: !include inventory.yaml
+<<: !include
+  file: inventory.yaml
+  vars:
+    id: id_${static_ip}
+

@@ -1,0 +1,3 @@
+---
+ssid: !secret wifi_ssid_IoT_Kasteel
+password: !secret wifi_password_IoT_Kasteel

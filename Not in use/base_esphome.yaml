@@ -1,0 +1,5 @@
+---
+esphome:
+    name: ${devicename}${static_ip}
+    name_add_mac_suffix: true
+    comment: "${friendly_name} (IP: ${ip}${static_ip})"

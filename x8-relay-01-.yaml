@@ -1,0 +1,21 @@
+substitutions:
+  devicename: "x8-relay-01-"
+  friendly_name: "sprinkler_zone_"
+  device_description: "octuple relay 01"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "137"
+  ip: "192.168.5."
+  ssid: "IoT_Outdoor"
+
+packages:
+  device_base: !include devices/esp12f_relay_x8_switch_outdoor.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+  ##use_address: 10.222.15.137

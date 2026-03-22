@@ -1,0 +1,21 @@
+substitutions:
+  static_ip: "125"
+  devicename: "x1-relay-01-"
+  friendly_name: "loods2_door"
+  device_description: "relay door loods2"
+  new_ota_password: "12345abcde"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  logger_level: "DEBUG"
+  ip: "192.168.5.${static_ip}"
+
+packages:
+  device_base: !include devices/esp12f_relay_x1_v2_1_outdoor.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+#  use_address: 10.222.15.141
+

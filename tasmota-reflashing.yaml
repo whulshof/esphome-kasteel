@@ -1,0 +1,23 @@
+substitutions:
+  devicename: "tasmota-reflashed-_"
+  friendly_name: "Tasmota reflashed 1"
+  device_description: "module to reflash tasmota device with minimum space needed"
+  static_ip: "xxx"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+
+esphome:
+  name: ${devicename}${static_ip}
+  comment: ${device_description}
+  platform: ESP8266
+  board: esp01_1m
+  name_add_mac_suffix: true
+
+ota:
+  password: !secret ota_password
+  id: my_ota
+
+wifi:
+#  use_address: 10.222.15.141
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip

@@ -1,0 +1,7 @@
+---
+
+esp32:
+    board: lolin_c3_mini
+    framework:
+        type: esp-idf
+    variant: esp32c3

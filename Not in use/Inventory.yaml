@@ -1,0 +1,35 @@
+substitutions:    # Global Setup
+  global_timeout: "60s"
+  global_logger: "DEBUG"
+  global_mac_suffix: "true"
+
+
+
+  id_125:  # "relay door loods2"
+    static_ip: "125"
+    devicename: "x1-relay-01-"
+    platform: "esp8266"
+    board: esp12e
+    friendly_name: "loods2_door"
+    device_description: "relay door loods2"
+    package_file: "esp12f_relay_x1_v2_1.yaml"
+    wifi_use_address: "10.222.15.125"
+    new_ota_password: "12345abcde"
+    wifi_config: "IoT_Outdoor_fixed"
+    ip: "192.168.5."
+
+  id_126:
+    static_ip: "126"
+    devicename: "yunshan-relay-02-"
+    friendly_name: "garage_door"
+    device_description: "overhead door garage"
+    logger_level: DEBUG
+    new_ota_passwd: "<new_ota_password>"
+    platform: "esp8266"
+    board: esp12e
+    package_file: yunshan-relay.yaml
+    wifi_use_address: "10.222.15.126"
+    new_ota_password: "12345abcde"
+    wifi_config: "IoT_Outdoor_fixed"
+    ip: "10.222.15."
+    name: "yunshan-relay-02-126"

@@ -1,0 +1,26 @@
+substitutions:
+  devicename: "bluetooth-gw-c3-"
+  friendly_name: "blt_gway_02"
+  device_description: "Bluetooth Gateway 2"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  reboot_timeout: 60s
+  static_ip: "149"
+  blt_mac_address_1: "A4:C1:38:9E:A1:A2"
+  bindkey_1: "05e04076be48f427f3d90e166d0fbd5e"
+  location1: "keuken"
+  blt_mac_address_2: "A4:C1:38:09:CD:24"
+  bindkey_2: "ac508436e4e2985d17b889311354f87c"
+  location2: "kantoor"
+  blt_mac_address_3: "A4:C1:38:4F:27:1D"
+  bindkey_3: "45540b9734e7dae0bebca133f7b0f965"
+  location3: "woonkamer"
+  ip: "10.222.15."
+  ssid: IoT_Kasteel
+
+packages:
+  device_base: !include devices/bluetooth_gateway_c3_kasteel.yaml
+
+
+
+    

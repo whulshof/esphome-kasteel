@@ -1,0 +1,19 @@
+substitutions:
+  devicename: "yunshan-relay-02-"
+  friendly_name: "garage_door"
+  static_ip: "126"
+  device_description: "overhead door garage"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  ip: "10.222.15.${static_ip}"
+
+
+packages:
+  device_base: !include devices/yunshan-relay_kasteel.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+

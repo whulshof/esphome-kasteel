@@ -1,0 +1,14 @@
+---
+
+
+# Enable the built-in web server (required)
+web_server:
+  port: 80
+  version: 3
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/andrewbackway/esphome-webserver-listcomponents
+#    components: webserver_listcomponents
+#
+#webserver_listcomponents:

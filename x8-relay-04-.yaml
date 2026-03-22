@@ -1,0 +1,31 @@
+substitutions:
+  devicename: "x8_relay_04_"
+  deviceid: "x8_relay_04" 
+  friendly_name: "heating_zone_"
+  first_zone: "9"
+  second_zone: "10"
+  third_zone: "11"
+  fourth_zone: "12"
+  fifth_zone: "13"
+  sixth_zone: "14"
+  seventh_zone: "15"
+  eighth_zone: "16"
+  device_description: "octuple relay 03"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  api_reboot_timeout: 0s
+  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "152"
+  ip: "10.222.15.${static_ip}"
+  ssid: "IoT_Kasteel"
+  mqtt_broker: "10.222.15.50"
+
+packages:
+  device_base: !include devices/esp12f_relay_x8_switch_with_current_meter_kasteel_http.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+  ##use_address: 10.222.15.138

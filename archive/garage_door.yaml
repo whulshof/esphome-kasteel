@@ -1,0 +1,21 @@
+substitutions:
+  static_ip: "126"
+  devicename: "yunshan-relay-02-"
+  friendly_name: "garage_door"
+  device_description: "overhead door garage"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  new_ota_password: "12345abcde"
+  ip: "10.222.15.${static_ip}"
+  ssid: IoT_Kasteel
+
+packages:
+  device_base: !include devices/yunshan-relay_kasteel.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+#  use_address: 10.222.15.141
+
+

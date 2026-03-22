@@ -1,0 +1,25 @@
+substitutions:
+  devicename: "sinotimer-kwh-meter-"
+  friendly_name: "energy-meter-04"
+  device_description: "sinotimer modbus kwh meter"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  static_ip: "158"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  ip: "10.222.15."
+  ssid: "IoT_Kasteel"
+
+packages:
+  device_base: !include devices/sinotimer_3phase_kwh_meter_d1_mini_kasteel.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+#  use_address: 192.168.5.20
+#  power_save_mode: none # none, light, high
+
+
+    

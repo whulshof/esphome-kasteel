@@ -1,0 +1,14 @@
+substitutions:
+  devicename: "p1-dsmr-reader-01-"
+  friendly_name: "p1_reader_v22_01"
+  device_description: "p1 reader V2.2 #1"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+  reboot_timeout: 60s
+  static_ip: "141"
+  ip: "10.222.15.${static_ip}"
+  ssid: IoT_Kasteel
+
+packages:
+  device_base: !include devices/p1-reader-v22-d1-mini_kasteel.yaml
+

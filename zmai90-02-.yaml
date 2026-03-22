@@ -1,0 +1,17 @@
+substitutions:
+  devicename: "zmai90-02-"
+  friendly_name: "zmai90-02"
+  device_description: "kWh meter warmtepomp loods2"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "135"
+  ip: "192.168.5.${static_ip}"
+
+packages:
+  device_base: !include devices/esp12e_zmai90_v2_outdoor.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml

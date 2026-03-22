@@ -1,0 +1,68 @@
+---
+<<: !include boards/esp32_c3.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+esphome:
+  name: "${devicename}"
+  name_add_mac_suffix: true
+  comment: "${device_description}--${ip}"
+
+#wifi:
+#  power_save_mode: light
+
+captive_portal:
+
+time:
+  - platform: homeassistant
+
+esp32_ble_tracker:
+
+switch:
+#  - platform: gpio
+#    name: "${friendly_name}-Onboard-LED"
+#    pin: 2
+#    inverted: True
+  - platform: restart
+    name: ${esphome_name}-restart
+    id: restart_switch
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name}_Uptime Sensor"
+
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    update_interval: 60s
+
+  - platform: xiaomi_lywsd03mmc
+    mac_address: $blt_mac_address_1
+    bindkey: "$bindkey_1"
+    temperature:
+      name: "${friendly_name} Temperature $location1"
+    humidity:
+      name: "${friendly_name} Humidity $location1"
+    battery_level:
+      name: "${friendly_name} Battery Level $location1"
+  - platform: xiaomi_lywsd03mmc
+    mac_address: $blt_mac_address_2
+    bindkey: "$bindkey_2"
+    temperature:
+      name: "${friendly_name} Temperature $location2"
+    humidity:
+      name: "${friendly_name} Humidity $location2"
+    battery_level:
+      name: "${friendly_name} Battery Level $location2"
+  - platform: xiaomi_lywsd03mmc
+    mac_address: $blt_mac_address_3
+    bindkey: "$bindkey_3"
+    temperature:
+      name: "${friendly_name} Temperature $location3"
+    humidity:
+      name: "${friendly_name} Humidity $location3"
+    battery_level:
+      name: "${friendly_name} Battery Level $location3"

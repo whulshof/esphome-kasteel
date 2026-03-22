@@ -1,0 +1,6 @@
+---
+<<: !include wifi_paleis_dhcp.yaml # ssid-gnx
+manual_ip:
+  static_ip: 10.111.14.$static_ip
+  gateway: 10.111.14.138
+  subnet: 255.255.255.0

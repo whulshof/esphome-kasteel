@@ -1,0 +1,63 @@
+substitutions:
+  devicename: "bluetooth-gateway-3b"
+  friendly_name: "blt_gway_03"
+  device_description: "Bluetooth Gateway 3b"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+  api_reboot_timeout: 0s
+  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "154"
+  blt_mac_address_1: "A4:C1:38:09:71:C5"
+  location1: "badkamer_v_min1"
+  zone_loc1: 9
+  blt_mac_address_2: "A4:C1:38:12:6A:F1"
+  location2: "garage"
+  zone_loc2: 10
+  blt_mac_address_3: "A4:C1:38:ED:2D:33"
+  location3: "workout_room"
+  zone_loc3: 11
+  blt_mac_address_4: "A4:C1:38:24:F4:C6"
+  location4: "master_bedroom"
+  zone_loc4: 12
+  blt_mac_address_5: "A4:C1:38:28:8E:D6"
+  location5: "hal_v_min_1"
+  zone_loc5: 13
+  blt_mac_address_6: "A4:C1:38:2C:72:4D"
+  location6: "wasruimte"
+  zone_loc6: 14
+  blt_mac_address_7: "A4:C1:38:EE:F0:EF"
+  location7: "v_min2_west"
+  zone_loc7: 15
+  blt_mac_address_8: "A4:C1:38:D2:55:62"
+  location8: "v_min2_oost"
+  zone_loc8: 16
+  zone_start: 9
+  zone_count: 8
+  ip: "10.222.15.${static_ip}"
+  ssid: IoT_Kasteel
+  prefix_switch: "heating_zone_"
+  mqtt_broker: 10.222.15.50
+  heat_deadband: 0.0
+  heat_overrun: 0.0
+  min_heating_run_time: 5s
+  min_heating_off_time: 5s
+  min_idle_time: 5s
+  x8: 2
+  x8_ip: 10.222.15.152
+  http_request_url: http://${x8_ip}/switch/${prefix_switch}
+
+packages:
+  device_base: !include devices/bluetooth_gateway_8_kasteel_esp32_http_moduled.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+  # use_address: 192.168.5.20
+
+
+
+
+
+    

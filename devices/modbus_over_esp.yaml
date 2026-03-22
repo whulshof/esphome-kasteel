@@ -1,0 +1,81 @@
+---
+
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/binary_sensors.yaml # connection status
+
+# 1. Ethernet configuratie voor de W5500 ...
+ethernet:
+  type: W5500
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+  cs_pin: GPIO5
+  reset_pin: GPIO13
+  interrupt_pin: GPIO4
+  use_address: 10.222.14.13
+
+# 2. Seriële poort voor de Modbus (Hardware UART2)
+uart:
+  id: modbus_bus
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 9600
+  stop_bits: 1
+
+# 3. De Modbus Controller
+modbus:
+  id: yunt_ems
+
+modbus_controller:
+  - id: battery
+    address: 1 # Dit is het adres op je DTS6619 meter (vaak 001)
+    modbus_id: yunt_ems
+    setup_priority: -10
+
+# 4. Sensoren voor de DTS6619 (Warmtepomp / Tesla)
+# sensor:
+  # - platform: modbus_controller
+  #   modbus_controller_id: dts_meter_wp
+  #   name: "WP Actueel Vermogen"
+  #   id: wp_power
+  #   address: 0x001C # Register voor Active Power (W)
+  #   unit_of_measurement: "W"
+  #   value_type: U_DWORD
+  #   accuracy_decimals: 0
+  #   filters:
+  #     - multiply: 0.1
+
+  # - platform: modbus_controller
+  #   modbus_controller_id: dts_meter_wp
+  #   name: "WP Totaal Verbruik"
+  #   id: wp_energy
+  #   address: 0x0000 # Register voor Total Energy (kWh)
+  #   unit_of_measurement: "kWh"
+  #   value_type: U_DWORD
+  #   accuracy_decimals: 2
+  #   filters:
+  #     - multiply: 0.01
+
+  # - platform: modbus_controller
+  #   modbus_controller_id: dts_meter_wp
+  #   name: "WP Spanning"
+  #   address: 0x000E
+  #   unit_of_measurement: "V"
+  #   value_type: U_WORD
+  #   filters:
+  #     - multiply: 0.1
+
+  # - platform: modbus_controller
+  #   modbus_controller_id: dts_meter_wp
+  #   name: "WP Stroom"
+  #   address: 0x0010
+  #   unit_of_measurement: "A"
+  #   value_type: U_DWORD
+  #   filters:
+  #     - multiply: 0.001
+
+# Handige status sensoren
+

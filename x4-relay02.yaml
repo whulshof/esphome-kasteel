@@ -1,0 +1,21 @@
+substitutions:
+  devicename: "x4-relay-02-"
+  friendly_name: "xxx02_"
+  device_description: "quadruple relay 01"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "130"
+
+packages:
+  device_base: !include devices/esp12f_relay_x4_switch.yaml
+
+esphome:
+  name_add_mac_suffix: true
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+wifi:
+#  use_address: 192.168.5.130
+  <<: !include devices/wifi/wifi_kasteel_fixed.yaml # manual-ip kasteel using $static_ip

@@ -1,0 +1,3 @@
+---
+ssid: !secret wifi_ssid_paleis
+password: !secret wifi_password_paleis

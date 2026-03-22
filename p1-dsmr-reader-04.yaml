@@ -1,0 +1,22 @@
+substitutions:
+  devicename: "p1-dsmr-reader-04-"
+  friendly_name: "p1_reader_v5_04"
+  device_description: "p1 reader V5 #4"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "148"
+  ip: "10.222.15."
+  ssid: IoT_Kasteel
+
+packages:
+  device_base: !include devices/p1-reader-v5-d1-mini_kasteel.yaml
+
+#wifi:
+  # use_address: 10.222.15.148
+
+
+dsmr:
+  request_pin: D5

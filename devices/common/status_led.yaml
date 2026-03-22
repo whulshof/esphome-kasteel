@@ -1,0 +1,4 @@
+---
+# led wifi status
+status_led:
+  pin: GPIO2

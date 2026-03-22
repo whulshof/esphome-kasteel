@@ -1,0 +1,20 @@
+substitutions:
+  devicename: "cloudfree_smart_plug_"
+  friendly_name: "CloudFree Smart Plug 2"
+  device_description: "CloudFree EU Plug (P1EU) Power Monitoring Plug with button and Blue led."
+  logger_level: DEBUG
+  reboot_timeout: 60s
+  static_ip: "144"
+  current_res: "0.00221" # Random value. Requires power monitoring calibration
+  voltage_div: "950" # Random value. Requires power monitoring calibration
+  ip: "10.222.15."
+  ssid: IoT_Kasteel
+
+packages:
+  device_base: !include devices/hlw8012-cloudfree_kasteel.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
+
+#wifi:
+#  use_address: 10.222.15.141

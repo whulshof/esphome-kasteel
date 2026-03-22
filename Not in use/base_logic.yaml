@@ -1,0 +1,23 @@
+---
+
+packages:
+  - !include
+    file: inventory.yaml
+    vars:
+      id: "id_${static_ip}"
+      file: devices/${package_file}
+
+esphome:
+#  name: poep
+  name: !include
+    file: inventory.yaml
+    vars:
+      id: "id_${static_ip}"
+      name: "name"
+  name_add_mac_suffix: $global_mac_suffix
+  comment: "${friendly_name} (IP: ${ip}${static_ip})"
+
+
+
+
+

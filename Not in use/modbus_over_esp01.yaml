@@ -1,0 +1,19 @@
+substitutions:
+  devicename: "modbus_over_esp01"
+  friendly_name: "mbesp01"
+  device_description: "esp32 met ethernet en 485-rtu chip"
+  static_ip: "13"
+  logger_level: DEBUG
+
+packages:
+  device_base: !include devices/modbus_over_esp.yaml
+
+esphome:
+  name: $devicename$static_ip
+  friendly_name: ${device_description}
+
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino

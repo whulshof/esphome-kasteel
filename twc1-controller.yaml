@@ -1,0 +1,26 @@
+substitutions:
+  devicename: twc-control-1        # ESPHome device name (used for hostname and entity IDs)
+  friendly_name: "Tesla Wall Connector Control 1"
+  static_ip: "155"
+  watchdog_fault_delay_ms: "8000"                  # Time before watchdog triggers fallback after a fault is detected
+  watchdog_recover_delay_ms: "30000"               # Time with healthy data before watchdog releases control
+  watchdog_freeze_timeout_ms: "20000"              # Time without sensor value changes before freeze is assumed
+  watchdog_api_timeout_ms: "15000"                 # Time without HA updates before API disconnect is assumed
+  watchdog_boot_grace_ms: "60000"
+  house_phase1_entity: sensor.p1_reader_v5_02_current_l1_2  # Phase 1 current sensor in Home Assistant (required for all setups)
+  house_phase2_entity: sensor.p1_reader_v5_02_current_l2_2   # Phase 2 current sensor (ignored if 1-phase, do not remove)
+  house_phase3_entity: sensor.p1_reader_v5_02_current_l3_2
+  tx_pin: D10                                # RS485 TX pin on your ESP32 (connect to RS485 DI)
+  rx_pin: D9
+#  sw_enable_5v_rs485_pin: D8
+#  sw_enable_rs485: D7
+#  sw_rs485_auto_dir: D3
+  ip: "10.222.15.${static_ip}"
+  api_reboot_timeout: 15min
+  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  logger_level: DEBUG
+
+
+packages:
+  device_base: !include devices/tesla_wall_connector_control_kasteel_http.yaml

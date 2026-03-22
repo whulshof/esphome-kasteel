@@ -1,0 +1,121 @@
+---
+<<: !include boards/d1_mini.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+#wifi:
+#  power_save_mode: light
+
+captive_portal:
+
+logger:
+  baud_rate: 0
+
+uart:
+  rx_pin: D7
+  baud_rate: 9600
+  data_bits: 7
+  parity: EVEN
+  stop_bits: 1
+  rx_buffer_size: 1500
+#  debug:
+#    direction: RX
+#    after:
+#      delimiter: "\r\n"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
+
+dsmr:
+  crc_check: false
+  max_telegram_length: 1500
+  request_interval: 30s
+  receive_timeout: 1s
+
+
+sensor:
+  - platform: dsmr
+    energy_delivered_tariff1:
+      name: ${friendly_name}_energy_delivered_tariff1
+      state_class: total_increasing
+#      filters:
+#        - median:
+#            window_size: 7
+#            send_every: 4
+#            send_first_at: 3
+#            quantile: .9
+    energy_delivered_tariff2:
+      name: ${friendly_name}_energy_delivered_tariff2
+      state_class: total_increasing
+#      filters:
+#        - median:
+#            window_size: 7
+#            send_every: 4
+#            send_first_at: 3
+#            quantile: .9
+    energy_returned_tariff1:
+      name: ${friendly_name}_energy_returned_tariff1
+      state_class: total_increasing
+#      filters:
+#        - median:
+#            window_size: 7
+#            send_every: 4
+#            send_first_at: 3
+#            quantile: .9
+    energy_returned_tariff2:
+      name: ${friendly_name}_energy_returned_tariff2
+      state_class: total_increasing
+#      filters:
+#        - median:
+#            window_size: 7
+#            send_every: 4
+#            send_first_at: 3
+#            quantile: .9
+    power_delivered:
+      name: ${friendly_name}_power_delivered
+    power_returned:
+      name: ${friendly_name}_power_returned
+    electricity_failures:
+      name: ${friendly_name}_electricity_failures
+    electricity_long_failures:
+      name: ${friendly_name}_electricity_long_failures
+    voltage_l1:
+      name: ${friendly_name}_voltage_l1
+    voltage_l2:
+      name: ${friendly_name}_voltage_l2
+    voltage_l3:
+      name: ${friendly_name}_voltage_l3
+    current_l1:
+      name: ${friendly_name}_current_l1
+    current_l2:
+      name: ${friendly_name}_current_l2
+    current_l3:
+      name: ${friendly_name}_current_l3
+    power_delivered_l1:
+      name: ${friendly_name}_power_delivered_l1
+    power_delivered_l2:
+      name: ${friendly_name}_power_delivered_l2
+    power_delivered_l3:
+      name: ${friendly_name}_power_delivered_l3
+    power_returned_l1:
+      name: ${friendly_name}_power_returned_l1
+    power_returned_l2:
+      name: ${friendly_name}_power_returned_l2
+    power_returned_l3:
+      name: ${friendly_name}_power_returned_l3
+    gas_delivered:
+      name: ${friendly_name}_gas_delivered
+
+text_sensor:
+  - platform: dsmr
+    identification:
+      name: "${friendly_name}_identification"
+    p1_version:
+      name: "${friendly_name}_p1_version"
+    gas_delivered_text:
+      name: "${friendly_name} gas delivered raw"
+    timestamp:
+      name: "${friendly_name}_timestamp"

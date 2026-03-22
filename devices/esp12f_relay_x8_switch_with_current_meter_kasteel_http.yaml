@@ -1,0 +1,294 @@
+---
+
+<<: !include boards/esp12e.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_no_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+esphome:
+  name: "${devicename}"
+  name_add_mac_suffix: true
+  comment: "${device_description}--${ip}"
+      
+switch:
+  - !include switches/restart.yaml
+#  - !include switches/shutdown.yaml
+  - platform: gpio
+    name: "${friendly_name}${first_zone}"
+    icon: "mdi:remote"
+    pin: GPIO16
+    id: ${friendly_name}${first_zone}
+  - platform: gpio
+    name: "${friendly_name}${second_zone}"
+    icon: "mdi:remote"
+    pin: GPIO14
+    id: ${friendly_name}${second_zone}
+  - platform: gpio
+    name: "${friendly_name}${third_zone}"
+    icon: "mdi:remote"
+    pin: GPIO12
+    id: ${friendly_name}${third_zone}
+  - platform: gpio
+    name: "${friendly_name}${fourth_zone}"
+    icon: "mdi:remote"
+    pin: GPIO13
+    id: ${friendly_name}${fourth_zone}
+  - platform: gpio
+    name: "${friendly_name}${fifth_zone}"
+    icon: "mdi:remote"
+    pin: GPIO15
+    id: ${friendly_name}${fifth_zone}
+  - platform: gpio
+    name: "${friendly_name}${sixth_zone}"
+    icon: "mdi:remote"
+    pin: GPIO0
+    id: ${friendly_name}${sixth_zone}
+  - platform: gpio
+    name: "${friendly_name}${seventh_zone}"
+    icon: "mdi:remote"
+    pin: GPIO4
+    id: ${friendly_name}${seventh_zone}
+  - platform: gpio
+    name: "${friendly_name}${eighth_zone}"
+    icon: "mdi:remote"
+    pin: GPIO5
+    id: ${friendly_name}${eighth_zone}
+
+i2c:
+  sda: 3
+  scl: 1
+  scan: true
+  id: bus_a
+
+sensor:
+  - platform: ina3221
+    address: 0x43
+    i2c_id: bus_a
+    channel_1:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${first_zone} Current"
+        id: ${deviceid}_1st
+      power:
+        name: "${friendly_name}${first_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${first_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${first_zone} Shunt Voltage"
+    channel_2:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${second_zone} Current"
+        id: ${deviceid}_2nd
+      power:
+        name: "${friendly_name}${second_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${second_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${second_zone} Shunt Voltage"# ...
+    channel_3:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${deviceid}_board Current"
+        id: ${deviceid}_board
+      power:
+        name: "${deviceid}_board Power"
+      bus_voltage:
+        name: "${deviceid}_board Bus Voltage"
+      shunt_voltage:
+        name: "${deviceid}_board Shunt Voltage"
+  - platform: ina3221
+    address: 0x41
+    i2c_id: bus_a
+    channel_1:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${third_zone} Current"
+        id: ${deviceid}_3rd
+      power:
+        name: "${friendly_name}${third_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${third_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${third_zone} Shunt Voltage"
+    channel_2:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${fourth_zone} Current"
+        id: ${deviceid}_4th
+      power:
+        name: "${friendly_name}${fourth_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${fourth_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${fourth_zone} Shunt Voltage"
+    channel_3:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${fifth_zone} Current"
+        id: ${deviceid}_5th
+      power:
+        name: "${friendly_name}${fifth_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${fifth_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${fifth_zone} Shunt Voltage"# ...
+  - platform: ina3221
+    address: 0x42
+    i2c_id: bus_a
+    channel_1:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${sixth_zone} Current"
+        id: ${deviceid}_6th
+      power:
+        name: "${friendly_name}${sixth_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${sixth_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${sixth_zone} Shunt Voltage"
+    channel_2:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${seventh_zone} Current"
+        id: ${deviceid}_7th
+      power:
+        name: "${friendly_name}${seventh_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${seventh_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${seventh_zone} Shunt Voltage"
+    channel_3:
+      shunt_resistance: 0.1 ohm
+      current:
+        name: "${friendly_name}${eighth_zone} Current"
+        id: ${deviceid}_8th
+      power:
+        name: "${friendly_name}${eighth_zone} Power"
+      bus_voltage:
+        name: "${friendly_name}${eighth_zone} Bus Voltage"
+      shunt_voltage:
+        name: "${friendly_name}${eighth_zone} Shunt Voltage"
+  - platform: template
+    name: "Total Current ${deviceid}"
+    accuracy_decimals: 3
+    unit_of_measurement: "A"
+    state_class: "measurement"
+    lambda: !lambda |-
+       { return 
+          id(${deviceid}_1st).state +
+          id(${deviceid}_2nd).state +
+          id(${deviceid}_3rd).state +
+          id(${deviceid}_4th).state +
+          id(${deviceid}_5th).state +
+          id(${deviceid}_6th).state +
+          id(${deviceid}_7th).state +
+          id(${deviceid}_8th).state +
+          id(${deviceid}_board).state;
+       }
+    update_interval: 30s
+
+mqtt:
+  broker: $mqtt_broker
+  discovery: false
+  reboot_timeout: 0s
+  on_message:
+
+    - topic: therm/zone/${first_zone}/demand
+      then:
+        - lambda: |-
+              ESP_LOGD("mqtt","rx zone %d payload=%s", ${first_zone}, x.c_str());
+        - script.execute:
+            id: set_zone
+            zone: ${first_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${second_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${second_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${third_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${third_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${fourth_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${fourth_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${fifth_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${fifth_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${sixth_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${sixth_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${seventh_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${seventh_zone}
+            state: !lambda 'return x == "1";'
+
+    - topic: therm/zone/${eighth_zone}/demand
+      then:
+        - script.execute:
+            id: set_zone
+            zone: ${eighth_zone}
+            state: !lambda 'return x == "1";'
+
+script:
+- id: set_zone
+  parameters:
+    zone: int
+    state: bool
+  then:
+    - lambda: |-
+
+        if (zone < ${first_zone} || zone > ${first_zone}+7)
+          return;
+
+        int local = zone - ${first_zone};
+
+        static esphome::switch_::Switch* sw[8] = {
+          id(${friendly_name}${first_zone}),
+          id(${friendly_name}${second_zone}),
+          id(${friendly_name}${third_zone}),
+          id(${friendly_name}${fourth_zone}),
+          id(${friendly_name}${fifth_zone}),
+          id(${friendly_name}${sixth_zone}),
+          id(${friendly_name}${seventh_zone}),
+          id(${friendly_name}${eighth_zone})
+        };
+
+        auto *s = sw[local];
+
+        bool cur = s->state;
+
+        ESP_LOGD("zone","zone=%d cur=%d new=%d", zone, cur, state);
+
+        if (cur == state)
+          return;
+
+        if (state)
+          s->turn_on();
+        else
+          s->turn_off();

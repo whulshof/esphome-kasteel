@@ -1,0 +1,30 @@
+esphome:
+  name: zb-gw03-v13
+
+esp32:
+  variant: esp32
+  framework:
+    type: arduino
+
+# Dit vertelt ESPHome waar de 'stream_server' code staat
+external_components:
+  - source: github://oxan/esphome-stream-server
+
+ethernet:
+  type: RTL8201
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 1
+
+uart:
+  id: zigbee_uart
+  rx_pin: GPIO5
+  tx_pin: GPIO16
+  baud_rate: 115200
+
+# Nu zal hij stream_server wel herkennen!
+stream_server:
+  port: 6638
+  uart_id: zigbee_uart
+

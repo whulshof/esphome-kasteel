@@ -1,0 +1,40 @@
+substitutions:    # Global Setup
+  static_ip: "201"
+  devicename: "pzem-concentrator-02"
+  friendly_name: "PZEM004T_Energy_Meter"
+  device_description: "Energy Meter"
+#  new_ota_password: "2b76b9fd0e83315a866c18dcea62677c"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  logger_level: DEBUG
+  ip: "10.222.15.${static_ip}"
+  ssid: "IoT_Kasteel"
+  modbus_address1: 3
+  groep1: 2
+  modbus_address2: 2
+#  modbus_address3: 3
+#  modbus_address4: 4
+#  modbus_address5: 5
+#  modbus_address6: 6
+#  modbus_address7: 7
+#  modbus_address8: 8
+#  modbus_address9: 9
+
+
+packages:
+  device_base: !include devices/pzem004T_concentrator_wemosd1esp32_kasteel.yaml
+
+
+
+#ota:
+# - platform: esphome
+#   id: my_ota
+##   password: !secret ota_password
+#   password: "9661ad3bf3368f2ea7126a18c64e56d1"
+
+#esphome:
+# <<: !include devices/esphome/on_boot_ota_pw.yaml
+
+#wifi:
+#  use_address: 10.222.14.13

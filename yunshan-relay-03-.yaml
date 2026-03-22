@@ -1,0 +1,17 @@
+substitutions:
+  devicename: "yunshan-relay-03-"
+  friendly_name: "yunshan-relay-03"
+  device_description: "yunshan-relay-03"
+  logger_level: DEBUG
+  new_ota_passwd: "<new_ota_password>"
+#  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "129"
+  ip: "192.168.5.${static_ip}"
+
+packages:
+  device_base: !include devices/yunshan-relay_outdoor.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml

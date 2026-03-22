@@ -1,0 +1,275 @@
+---
+
+<<: !include boards/esp12e.yaml
+<<: !include wifi/wifi_kasteel.yaml
+<<: !include common/common.yaml # api, ota, logger, status_led
+<<: !include common/web_server_auth.yaml
+<<: !include common/text_sensors.yaml
+<<: !include common/sensors.yaml # wifi_signal, uptime
+<<: !include common/binary_sensors.yaml # connection status
+
+esphome:
+  name: "${devicename}_${static_ip}"
+  name_add_mac_suffix: true
+  comment: "${device_description} ${ip}"
+
+#wifi:
+#  power_save_mode: light
+
+captive_portal:
+
+logger:
+  baud_rate: 0
+
+uart:
+  rx_pin: GPIO13
+  baud_rate: 115200
+  rx_buffer_size: 1700
+#  debug:
+#    direction: RX
+#    after:
+#      delimiter: "\r\n"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
+
+dsmr:
+#  crc_check: false
+  max_telegram_length: 1700
+#  gas_mbus_id: 1
+#  uart_id: 0
+#  request_pin: GPIO14
+  request_interval: 0ms
+  receive_timeout: 1s
+
+
+sensor:
+  - platform: dsmr
+    energy_delivered_tariff1:
+      name: ${friendly_name}_energy_delivered_tariff1
+      id: energy_delivered_tariff1
+      state_class: total_increasing
+      filters:
+        - heartbeat: 30s
+    energy_delivered_tariff2:
+      name: ${friendly_name}_energy_delivered_tariff2
+      id: energy_delivered_tariff2
+      state_class: total_increasing
+      filters:
+        - heartbeat: 30s
+    energy_returned_tariff1:
+      name: ${friendly_name}_energy_returned_tariff1
+      id: energy_returned_tariff1
+      state_class: total_increasing
+      filters:
+        - heartbeat: 30s
+    energy_returned_tariff2:
+      name: ${friendly_name}_energy_returned_tariff2
+      id: energy_returned_tariff2
+      state_class: total_increasing
+      filters:
+        - heartbeat: 30s
+    power_delivered:
+      name: ${friendly_name}_power_delivered
+      id: power_delivered
+    power_returned:
+      name: ${friendly_name}_power_returned
+      id: power_returned
+    electricity_failures:
+      name: ${friendly_name}_electricity_failures
+      filters:
+        - heartbeat: 300s
+    electricity_long_failures:
+      name: ${friendly_name}_electricity_long_failures
+      filters:
+        - heartbeat: 300s
+    voltage_l1:
+      name: ${friendly_name}_voltage_l1
+      id: voltage_l1
+      filters:
+        - heartbeat: 10s
+    voltage_l2:
+      name: ${friendly_name}_voltage_l2
+      id: voltage_l2
+      filters:
+        - heartbeat: 10s
+    voltage_l3:
+      name: ${friendly_name}_voltage_l3
+      id: voltage_l3
+      filters:
+        - heartbeat: 10s
+    current_l1:
+      name: ${friendly_name}_current_l1
+      id: current_l1
+    current_l2:
+      name: ${friendly_name}_current_l2
+      id: current_l2
+    current_l3:
+      name: ${friendly_name}_current_l3
+      id: current_l3
+    power_delivered_l1:
+      name: ${friendly_name}_power_delivered_l1
+      id: power_delivered_l1
+    power_delivered_l2:
+      name: ${friendly_name}_power_delivered_l2
+      id: power_delivered_l2
+    power_delivered_l3:
+      name: ${friendly_name}_power_delivered_l3
+      id: power_delivered_l3
+    power_returned_l1:
+      name: ${friendly_name}_power_returned_l1
+      id: power_returned_l1
+    power_returned_l2:
+      name: ${friendly_name}_power_returned_l2
+      id: power_returned_l2
+    power_returned_l3:
+      name: ${friendly_name}_power_returned_l3
+      id: power_returned_l3
+
+  - platform: combination
+    type: linear
+    name: ${friendly_name}_energy_delivered_tariff1_plus_tariff2
+    id: energy_delivered_tariff1_plus_tariff2
+    sources:
+      - source: energy_delivered_tariff1
+        coefficient: 1.0
+      - source: energy_delivered_tariff2
+        coefficient: 1.0
+    state_class: total_increasing
+
+  - platform: combination
+    type: linear
+    name: ${friendly_name}_energy_returned_tariff1_plus_tariff2
+    id: energy_returned_tariff1_plus_tariff2
+    sources:
+      - source: energy_returned_tariff1
+        coefficient: 1.0
+      - source: energy_returned_tariff2
+        coefficient: 1.0
+    state_class: total_increasing
+
+  - platform: combination
+    type: linear
+    name: ${friendly_name}_energy_delivered_returned_tariff1_plus_tariff2
+    id: energy_delivered_returned_tariff1_plus_tariff2
+    sources:
+      - source: energy_delivered_tariff1
+        coefficient: 1.0
+      - source: energy_delivered_tariff2
+        coefficient: 1.0
+      - source: energy_returned_tariff1
+        coefficient: -1.0
+      - source: energy_returned_tariff2
+        coefficient: -1.0
+
+  - platform: combination
+    name: power_delivered_returned
+    id: power_delivered_returned
+    type: linear
+    sources:
+      - source: power_delivered
+        coefficient: 1.0
+      - source: power_returned
+        coefficient: -1.0
+
+  - platform: combination
+    name: power_delivered_returned_5s
+    id: power_delivered_returned_5s
+    type: linear
+    sources:
+      - source: power_delivered
+        coefficient: 1.0
+      - source: power_returned
+        coefficient: -1.0
+    filters:
+      - exponential_moving_average:
+          send_every: 5
+
+  - platform: combination
+    name: power_net_l1
+    id: power_net_l1
+    type: linear
+    sources:
+      - source: power_delivered_l1
+        coefficient: 1.0
+      - source: power_returned_l1
+        coefficient: -1.0
+  - platform: combination
+    name: power_net_l2
+    id: power_net_l2
+    type: linear
+    sources:
+      - source: power_delivered_l2
+        coefficient: 1.0
+      - source: power_returned_l2
+        coefficient: -1.0
+  - platform: combination
+    name: power_net_l3
+    id: power_net_l3
+    type: linear
+    sources:
+      - source: power_delivered_l3
+        coefficient: 1.0
+      - source: power_returned_l3
+        coefficient: -1.0
+
+
+
+text_sensor:
+  - platform: dsmr
+    identification:
+      name: ${friendly_name}_identification
+#      filters:
+#        - heartbeat: 300s
+    p1_version:
+      name: ${friendly_name}_p1_version
+#      filters:
+#        - heartbeat: 300s
+    timestamp:
+      name: "${friendly_name}_timestamp"
+
+mqtt:
+  broker: 10.222.15.50
+  topic_prefix: ${topic_prefix}
+
+
+script:
+  - id: publish_fast_bundle
+    then:
+      - mqtt.publish:
+          topic: ${topic_prefix}nofilter_bundle
+          retain: true
+          payload: !lambda |-
+            StaticJsonDocument<2048>doc;
+
+            doc["power_delivered"] = id(power_delivered).state;
+            doc["power_returned"]  = id(power_returned).state;
+            doc["power_net"]       = id(power_delivered_returned).state;
+
+            doc["current_l1"] = id(current_l1).state;
+            doc["current_l2"] = id(current_l2).state;
+            doc["current_l3"] = id(current_l3).state;
+            
+            doc["voltage_l1"] = id(voltage_l1).state;
+            doc["voltage_l2"] = id(voltage_l2).state; 
+            doc["voltage_l3"] = id(voltage_l3).state;
+
+            doc["pd_l1"] = id(power_delivered_l1).state;
+            doc["pd_l2"] = id(power_delivered_l2).state;
+            doc["pd_l3"] = id(power_delivered_l3).state;
+
+            doc["pr_l1"] = id(power_returned_l1).state;
+            doc["pr_l2"] = id(power_returned_l2).state;
+            doc["pr_l3"] = id(power_returned_l3).state;
+            
+            doc["pn_l1"] = id(power_net_l1).state;
+            doc["pn_l2"] = id(power_net_l2).state;
+            doc["pn_l3"] = id(power_net_l3).state;
+
+            std::string out;
+            serializeJson(doc, out);
+            return out;
+            
+interval:
+  - interval: 1s
+    then:
+      - script.execute: publish_fast_bundle
