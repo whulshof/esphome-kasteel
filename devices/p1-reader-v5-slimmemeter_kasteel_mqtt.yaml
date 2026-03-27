@@ -212,8 +212,6 @@ sensor:
       - source: power_returned_l3
         coefficient: -1.0
 
-
-
 text_sensor:
   - platform: dsmr
     identification:
