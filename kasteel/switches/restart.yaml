@@ -1,4 +1,0 @@
----
-# module restart
-platform: restart
-name: "${friendly_name} Restart"

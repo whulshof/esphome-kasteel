@@ -1,3 +1,0 @@
----
-switch:
-  - !include switches/restart.yaml

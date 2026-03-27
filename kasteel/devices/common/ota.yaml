@@ -1,4 +1,0 @@
----
-ota:
-  password: !secret ota_password
-  id: my_ota
