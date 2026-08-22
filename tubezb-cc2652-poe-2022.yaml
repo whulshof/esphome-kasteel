@@ -156,7 +156,7 @@ script:
       - logger.log: "Internet confirmed. Triggering firmware checks."
       - if:
           condition:
-            lambda: 'return id(zb_variant).state.empty() || id(zb_variant).state == "unknown";'
+            lambda: 'return id(zb_variant).state.empty() || id(zb_variant).state == "p2";'
           then:
             - cc2652_flasher.detect_variant:
                 id: zigbee_flasher
