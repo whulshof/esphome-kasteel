@@ -1,8 +1,8 @@
 esphome:
-  name: tubeszb-cc2652p2-poe-2022
+  name: tubeszb-cc2652p2-poe-2021
   project:
-    name: tubezb.cc2652p2-poe-2022
-    version: "2026.06.24.1"
+    name: tubezb.cc2652p2-poe-2021
+    version: "2026.06.24.2"
   min_version: 2026.3.2
   on_boot:
     - priority: 600
@@ -50,10 +50,10 @@ ethernet:
       - script.execute: on_ethernet_connect
 
     # Optional manual IP
-  #manual_ip:
-  #  static_ip: STATIC_IP
-  #  gateway: GATEWAY
-  #  subnet: SUBNET
+  manual_ip:
+    static_ip: STATIC_IP
+    gateway: GATEWAY
+    subnet: SUBNET
 
 # Enable logging
 logger:
@@ -66,38 +66,21 @@ api:
 ota:
   - platform: esphome
   - platform: web_server
-  - platform: http_request
 
 http_request:
 
-update:
-  - platform: http_request
-    id: esphome_fw_updater
-    name: TubesZB Firmware Update
-    source: https://tube0013.github.io/TubesZB-ESPHome-Builder/ota_manifests/ota-tubeszb-cc2652p2-poe-2022.json
-    update_interval: never
 
 interval:
   - interval: 7d
     startup_delay: 7d
     then:
       - script.execute: check_connectivity
-      - delay: 5s
-      - if:
-          condition:
-            lambda: 'return id(has_internet);'
-          then:
-            - update.check: esphome_fw_updater
-            - delay: 1s
-            - cc2652_flasher.check_update: { id: zigbee_flasher }
-          else:
-            - logger.log: "Skipping update checks: No Internet."
 
 web_server:
   port: 80
   version: 3
   js_url: ""
-  js_include: www3TZB.js
+  js_include: ../www3TZB.js
   sorting_groups:
     - id: zigbee_info_group
       name: "Zigbee Information"
@@ -156,7 +139,7 @@ script:
       - logger.log: "Internet confirmed. Triggering firmware checks."
       - if:
           condition:
-            lambda: 'return id(zb_variant).state.empty() || id(zb_variant).state == "p2";'
+            lambda: 'return id(zb_variant).state.empty() || id(zb_variant).state == "unknown";'
           then:
             - cc2652_flasher.detect_variant:
                 id: zigbee_flasher
@@ -165,8 +148,6 @@ script:
                   lambda: 'return !id(zb_variant).state.empty() && id(zb_variant).state != "unknown";'
                 timeout: 10s
 
-      - update.check: esphome_fw_updater
-      - delay: 1s
       - cc2652_flasher.check_update: { id: zigbee_flasher }
 
   - id: fw_update_mode
@@ -184,7 +165,7 @@ script:
 
 switch:
   - platform: gpio
-    pin: 13
+    pin: 33
     id: zRST_gpio
     inverted: yes
     restore_mode: ALWAYS_OFF
@@ -194,7 +175,7 @@ switch:
       sorting_weight: 50
 
   - platform: gpio
-    pin: 4
+    pin: 32
     name: "Zigbee Module Bootloader Pin"
     id: zBSL
     inverted: yes
@@ -245,7 +226,7 @@ cc2652_flasher:
   url: "https://raw.githubusercontent.com/tube0013/tube_gateways/refs/heads/main/misc/manifest.json"
   bsl_switch: zBSL
   rst_switch: zRST_gpio
-  boot_baud_rate: 9600
+  boot_baud_rate: 500000
   restore_baud_rate: 115200
   erase_mode: bank
   debug: false
@@ -255,7 +236,6 @@ cc2652_flasher:
   ieee_text: zb_ieee
   latest_fw_version_text: zb_latest_fw
   variant_text: zb_variant
-  variant: p2
   check_on_boot: false
   check_interval_days: 0
   detect_on_boot: false
