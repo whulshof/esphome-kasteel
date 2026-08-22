@@ -1,7 +1,7 @@
 esphome:
-  name: tubeszb-cc2652p2-poe-2022
+  name: tubeszb-cc2652p2-poe-2021
   project: 
-    name: tubezb.cc2652p2-poe-2022
+    name: tubezb.cc2652p2-poe-2021
     version: "2026.03.28.1"
   min_version: 2026.3.2
   on_boot:
@@ -10,12 +10,7 @@ esphome:
         - switch.turn_on: zRST_gpio
         - delay: 15ms
         - switch.turn_off: zRST_gpio
-        - cc2652_flasher.detect_variant:
-            id: zigbee_flasher
-    - priority: -10
-      then:
-        - delay: 20s
-        - component.update: fw_updater
+
 
 esp32:
   board: esp-wrover-kit
@@ -74,12 +69,6 @@ ota:
 
 http_request:
   
-update:
-  - platform: http_request
-    id: fw_updater
-    name: TubesZB Firmware Update
-    source: https://tube0013.github.io/TubesZB-ESPHome-Builder/ota_manifests/ota-tubeszb-cc2652p2-poe-2022.json
-    update_interval: 12h
     
     
 
