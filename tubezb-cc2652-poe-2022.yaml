@@ -245,7 +245,7 @@ cc2652_flasher:
   url: "https://raw.githubusercontent.com/tube0013/tube_gateways/refs/heads/main/misc/manifest.json"
   bsl_switch: zBSL
   rst_switch: zRST_gpio
-  boot_baud_rate: 500000
+  boot_baud_rate: 115200
   restore_baud_rate: 115200
   erase_mode: bank
   debug: false
