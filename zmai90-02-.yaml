@@ -4,7 +4,7 @@ substitutions:
   device_description: "kWh meter warmtepomp loods2"
   logger_level: DEBUG
   new_ota_passwd: "12345abcde"
-#  api_reboot_timeout: 0s
+  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   static_ip: "135"
