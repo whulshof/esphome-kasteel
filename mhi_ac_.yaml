@@ -13,7 +13,7 @@ substitutions:
 
 
 packages:
-  device_base: !include devices/mhi_ac_ctrl_outdoor.yaml
+  device_base: !include devices/new_mhi_ac_outdoor.yaml
 
 #esphome:
 #  <<: !include esphome/on_boot_ota_pw.yaml
