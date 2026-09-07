@@ -4,7 +4,7 @@ substitutions:
   friendly_name: "loods2_door"
   device_description: "relay door loods2"
   new_ota_password: "12345abcde"
-#  api_reboot_timeout: 0s
+  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   logger_level: "DEBUG"
