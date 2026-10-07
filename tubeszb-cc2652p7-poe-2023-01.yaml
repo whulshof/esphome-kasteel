@@ -1,0 +1,25 @@
+esphome:
+  name: tubeszb-cc2652p7-poe-2023-01
+  friendly_name: tubeszb-cc2652p7-poe-2023-01
+
+# Replace this with your actual platform if you aren't using ESP32.
+esp32:
+  board: esp32dev
+
+logger:
+
+api:
+  encryption:
+    key: "ZG4KPkd962llOcKgipVhvBtwq0WGpF88JA+xJTymJWk="
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: tubeszb-cc2652p Fallback Hotspot
+    password: "0nhHtgp6AcVB"
+
+captive_portal:
