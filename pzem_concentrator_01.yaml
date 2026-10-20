@@ -1,6 +1,6 @@
 substitutions:    # Global Setup
-  static_ip: "200"
-  devicename: "pzem-concentrator-01"
+  static_ip: ""
+  devicename: "pzem-concentrator-02"
   friendly_name: "PZEM004T_Energy_Meter"
   device_description: "Energy Meter"
   new_ota_password: "12345abcde"
