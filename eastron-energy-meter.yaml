@@ -11,6 +11,7 @@ substitutions:    # Global Setup
   ssid: "IoT_Kasteel"
   modbus_address: 2
   topic_prefix: Eastron/${devicename}_${static_ip}/
+  logger_level: DEBUG
 
 packages:
   device_base: !include devices/eastron_energy_meter_esp32c6_kasteel_mqtt.yaml
