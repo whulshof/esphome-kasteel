@@ -4,23 +4,29 @@ substitutions:    # Global Setup
   friendly_name: "PZEM004T_Energy_Meter"
   device_description: "Energy Meter"
 #  new_ota_password: "2b76b9fd0e83315a866c18dcea62677c"
-#  api_reboot_timeout: 0s
+  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   logger_level: DEBUG
   ip: "10.222.15.${static_ip}"
-  ssid: "IoT_Kasteel"
-  modbus_address1: 3
-  groep1: 2
+  interval: 10s
+  modbus_address1: 1
   modbus_address2: 2
-#  modbus_address3: 3
-#  modbus_address4: 4
-#  modbus_address5: 5
-#  modbus_address6: 6
-#  modbus_address7: 7
-#  modbus_address8: 8
-#  modbus_address9: 9
-
+  modbus_address3: 3
+  modbus_address4: 4
+  modbus_address5: 5
+  modbus_address6: 6
+  modbus_address7: 7
+  modbus_address8: 8
+  modbus_address9: 9
+  modbus_address10: 10
+  modbus_address11: 11
+  modbus_address12: 12
+  modbus_address13: 13
+  modbus_address14: 14
+  modbus_address15: 15
+  modbus_address16: 16
+  modbus_address17: 17
 
 packages:
   device_base: !include devices/pzem004T_concentrator_wemosd1esp32_kasteel.yaml
