@@ -7,7 +7,7 @@ substitutions:
   api_reboot_timeout: 0s
   mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
-  static_ip: "155"
+  static_ip: ""
   blt_mac_address_1: "A4:C1:38:24:F4:C6"
   location1: "masterbr"
   zone_loc1: 9
