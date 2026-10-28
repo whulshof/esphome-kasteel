@@ -1,0 +1,17 @@
+substitutions:
+  devicename: "zmai90-03-"
+  friendly_name: "zmai90-03-"
+  device_description: "kWh meter zmai90-03-"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
+  static_ip: "134"
+  ip: "10.222.15.${static_ip}"
+
+packages:
+  device_base: !include devices/_claude_test_zmai90.yaml
+
+#esphome:
+#  <<: !include esphome/on_boot_ota_pw.yaml
