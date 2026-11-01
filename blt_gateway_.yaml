@@ -1,6 +1,6 @@
 substitutions:
   devicename: "bluetooth-gateway-1"
-  board_type: nodemcu32s
+  board_type: "nodemcu32s
   friendly_name: "blt_gway_01"
   device_description: "Bluetooth Gateway 1"
   logger_level: DEBUG
