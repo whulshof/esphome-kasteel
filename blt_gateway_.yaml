@@ -1,5 +1,6 @@
 substitutions:
   devicename: "bluetooth-gateway-1"
+  board_type: nodemcu32s
   friendly_name: "blt_gway_01"
   device_description: "Bluetooth Gateway 1"
   logger_level: DEBUG
@@ -32,6 +33,7 @@ substitutions:
   min_heating_run_time: 5s
   min_heating_off_time: 5s
   min_idle_time: 5s
+  number_of_slots: 4
 
 packages:
   device_base: !include devices/bluetooth_gateway_http_moduled.yaml
