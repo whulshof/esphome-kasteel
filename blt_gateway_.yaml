@@ -1,6 +1,7 @@
 substitutions:
   devicename: "bluetooth-gateway-1"
-  board_type: "nodemcu32s
+  board_type: "nodemcu32s"
+  web_server_auth: "auth"
   friendly_name: "blt_gway_01"
   device_description: "Bluetooth Gateway 1"
   logger_level: DEBUG
@@ -36,7 +37,7 @@ substitutions:
   number_of_slots: 4
 
 packages:
-  device_base: !include devices/bluetooth_gateway_http_moduled.yaml
+  device_base: !include devices/bluetooth_gateway.yaml
 
 
 
