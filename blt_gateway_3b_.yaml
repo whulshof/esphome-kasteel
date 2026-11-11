@@ -48,7 +48,7 @@ substitutions:
   http_request_url: http://${x8_ip}/switch/${prefix_switch}
 
 packages:
-  device_base: !include devices/bluetooth_gateway_8_esp32_http_moduled.yaml
+  device_base: !include devices/bluetooth_gateway.yaml
 
 #esphome:
 #  <<: !include esphome/on_boot_ota_pw.yaml
