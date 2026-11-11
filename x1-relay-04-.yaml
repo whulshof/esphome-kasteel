@@ -12,6 +12,7 @@ substitutions:
   board_type: "esp12e"
   network: "Kasteel"
   wireguard: "true"
+  wg_address: 10.11.0.11
 
 
 packages:
