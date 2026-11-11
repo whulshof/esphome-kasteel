@@ -12,5 +12,3 @@ substitutions:
 packages:
   device_base: !include devices/esp12f_relay_x1_v2_1.yaml
 
-
-
