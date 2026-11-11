@@ -36,6 +36,15 @@ substitutions:
   min_idle_time: 5s
   number_of_slots: 4
 
+sensor:
+
+# omdat de BLE thermometer te ver weg is, gebruiken we een zigbee temp sensor. Via HA
+  - platform: homeassistant
+    id: temp_8
+    entity_id: sensor.z4_temp_meter_temperature
+    name: "Temperature ${location8}"
+#    update_interval: 30s
+
 packages:
   device_base: !include devices/bluetooth_gateway.yaml
 
