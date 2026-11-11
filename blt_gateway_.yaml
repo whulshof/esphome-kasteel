@@ -1,11 +1,8 @@
 substitutions:
   devicename: "bluetooth-gateway-1"
-  board_type: "nodemcu32s"
-  web_server_auth: "auth"
   friendly_name: "blt_gway_01"
   device_description: "Bluetooth Gateway 1"
   logger_level: DEBUG
-  network: "Kasteel"
   new_ota_passwd: "<new_ota_password>"
   api_reboot_timeout: 0s
   mqtt_reboot_timeout: 0s
@@ -34,7 +31,10 @@ substitutions:
   min_heating_run_time: 5s
   min_heating_off_time: 5s
   min_idle_time: 5s
-  number_of_slots: 4
+
+  board_type: "nodemcu32s"
+  web_server_auth: "auth"
+  network: "Kasteel"
 
 sensor:
 # omdat de BLE thermometer te ver weg is, gebruiken we een zigbee temp sensor. Via HA
@@ -47,7 +47,9 @@ sensor:
 packages:
   device_base: !include devices/bluetooth_gateway.yaml
 
-
+climate:
+  - id: !extend thermostat_8
+    sensor: temp_x
 
 
 
