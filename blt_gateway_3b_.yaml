@@ -46,15 +46,25 @@ substitutions:
   x8: 2
   x8_ip: 10.222.15.152
   http_request_url: http://${x8_ip}/switch/${prefix_switch}
+  board_type: "wemos_d1_mini32"
+  web_server_auth: "auth"
+  network: "Kasteel"
+
+
+sensor:
+# omdat de BLE thermometer te ver weg is, gebruiken we een zigbee temp sensor. Via HA
+  - platform: homeassistant
+    id: temp_x
+    entity_id: sensor.z4_temp_meter_temperature
+    name: "Temperature ${location8}"
+    update_interval: 30s
 
 packages:
   device_base: !include devices/bluetooth_gateway.yaml
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
-
-#wifi:
-  # use_address: 192.168.5.20
+climate:
+  - id: !extend thermostat_8
+    sensor: temp_x
 
 
 
