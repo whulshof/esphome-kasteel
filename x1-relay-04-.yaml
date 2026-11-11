@@ -9,6 +9,7 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "133"
   web_server_auth: "auth"
+  board_type: "esp12e"
 
 packages:
   device_base: !include devices/esp12f_relay_x1_v2_1.yaml
