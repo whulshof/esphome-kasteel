@@ -13,7 +13,7 @@ substitutions:
   network: "Kasteel"
   wireguard: "true"
   wg_address: 10.11.0.11
-  connect_via: "wg"
+  # connect_via: "wg"
 
 
 packages:
