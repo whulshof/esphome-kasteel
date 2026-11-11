@@ -36,20 +36,11 @@ substitutions:
   web_server_auth: "auth"
   network: "Kasteel"
 
-sensor:
-# omdat de BLE thermometer te ver weg is, gebruiken we een zigbee temp sensor. Via HA
-  - platform: homeassistant
-    id: temp_x
-    entity_id: sensor.z4_temp_meter_temperature
-    name: "Temperature ${location8}"
-#    update_interval: 30s
+
 
 packages:
   device_base: !include devices/bluetooth_gateway.yaml
 
-climate:
-  - id: !extend thermostat_8
-    sensor: temp_x
 
 
 
