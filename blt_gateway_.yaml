@@ -31,7 +31,7 @@ substitutions:
   min_heating_run_time: 5s
   min_heating_off_time: 5s
   min_idle_time: 5s
-
+  wireguard: "false"
   board_type: "nodemcu32s"
   web_server_auth: "auth"
   network: "Kasteel"
