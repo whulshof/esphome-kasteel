@@ -39,6 +39,7 @@ substitutions:
 
 
 packages:
+  
   device_base: !include devices/bluetooth_gateway.yaml
 
 
