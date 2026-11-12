@@ -9,13 +9,13 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "124"
   ip: "192.168.5.${static_ip}"
-  ssid: IoT_Outdoor
+  wireguard: "false"
+  mqtt: "false"
+  board_type: "esp12e"
+  web_server_auth: "auth"
+  network: "Outdoor"
+  toggle: "true"
 
 packages:
-  device_base: !include devices/yunshan-relay_outdoor.yaml
+  device_base: !include devices/yunshan-relay.yaml
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
-
-#wifi:
-  # use_address: 192.168.5.20
