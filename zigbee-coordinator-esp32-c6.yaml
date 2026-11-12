@@ -11,6 +11,7 @@ substitutions:
   web_server_auth: "auth"
   board_type: "esp32-poe"
   network: "Kasteel"
+  mqtt: "false"
   wireguard: "true"
   wg_address: 10.11.0.12
   connect_via: "static_ip"
