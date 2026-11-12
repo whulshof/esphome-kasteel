@@ -49,6 +49,7 @@ substitutions:
   board_type: "wemos_d1_mini32"
   web_server_auth: "auth"
   network: "Kasteel"
+  wireguard: "false"
 
 
 sensor:
