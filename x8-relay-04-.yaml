@@ -18,10 +18,14 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "152"
   ip: "10.222.15.${static_ip}"
-  ssid: "IoT_Kasteel"
-  mqtt_broker: "10.222.15.50"
+  mqtt: "true"
+  mqtt_discovery: "false"
+  web_server_auth: "no_auth"
+  board_type: "esp12e"
+  network: "Kasteel"
+  wireguard: "false"
 
 packages:
-  device_base: !include devices/esp12f_relay_x8_switch_with_current_meter_kasteel_http.yaml
+  device_base: !include devices/relay_x8_switch_with_current_meter_http.yaml
 
 
