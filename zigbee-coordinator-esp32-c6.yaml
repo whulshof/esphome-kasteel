@@ -9,7 +9,7 @@ substitutions:
 #  wifi_reboot_timeout: 60s
   static_ip: "61"
   web_server_auth: "auth"
-  board_type: "esp12e"
+  board_type: "esp32-poe"
   network: "Kasteel"
   wireguard: "true"
   wg_address: 10.11.0.12
@@ -18,30 +18,6 @@ substitutions:
 
 
 packages:
-  device_base: !include devices/relay_x1_v2_1.yaml
+  device_base: !include devices/zigbee_coordinator_esp32c6.yaml
 
-  esphome:
-  name: zigbee-coordinator-esp32-c6
-  friendly_name: zigbee coordinator esp32-c6
 
-# Replace this with your actual platform if you aren't using ESP32.
-esp32:
-  board: esp32dev
-
-logger:
-
-api:
-  encryption:
-    key: "1b87EfQr2vrQwSC0wjoAtpZO3bA2y6ihEVlpz3KxUfQ="
-
-ota:
-  - platform: esphome
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  ap:
-    ssid: zigbee coordina Fallback Hotspot
-    password: "iD9aEpb7dhJg"
-
-captive_portal:
