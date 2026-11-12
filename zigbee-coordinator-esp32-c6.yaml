@@ -1,4 +1,26 @@
-esphome:
+substitutions:
+  devicename: "zigbee-coordinator-esp32-c6"
+  friendly_name: "zigbee coordinator esp32-c6"
+  device_description: "zigbee coordinator esp32-c6"
+  logger_level: DEBUG
+  new_ota_passwd: "12345abcde"
+  api_reboot_timeout: 0s
+#  mqtt_reboot_timeout: 0s
+#  wifi_reboot_timeout: 60s
+  static_ip: "61"
+  web_server_auth: "auth"
+  board_type: "esp12e"
+  network: "Kasteel"
+  wireguard: "true"
+  wg_address: 10.11.0.12
+  connect_via: "static_ip"
+
+
+
+packages:
+  device_base: !include devices/relay_x1_v2_1.yaml
+
+  esphome:
   name: zigbee-coordinator-esp32-c6
   friendly_name: zigbee coordinator esp32-c6
 
