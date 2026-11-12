@@ -17,8 +17,4 @@ packages:
   device_base: !include devices/eastron_energy_meter_esp32c6_kasteel_mqtt.yaml
 
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
 
-#wifi:
-  # use_address: 192.168.5.20
