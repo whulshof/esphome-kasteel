@@ -10,13 +10,14 @@ substitutions:    # Global Setup
   ip: "10.222.15.${static_ip}"
   ssid: "IoT_Kasteel"
   modbus_address: 2
+  wireguard: "false"
+  mqtt: "false"
+  mqtt_discovery: "false"
+  board_type: "esp32c6"
+  web_server_auth: "auth"
+  network: "Kasteel"
 
 packages:
-  device_base: !include devices/pzem004T_concentrator_esp32c6_kasteel.yaml
+  device_base: !include devices/pzem004T_concentrator.yaml
 
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
-
-#wifi:
-  # use_address: 192.168.5.20
