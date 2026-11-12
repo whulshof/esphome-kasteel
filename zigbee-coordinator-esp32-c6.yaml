@@ -14,7 +14,9 @@ substitutions:
   mqtt: "false"
   wireguard: "true"
   wg_address: 10.11.0.12
-  wg_allowed_ips: 10.222.15.22, 10.222.15.73
+  wg_allowed_ips:
+    - 10.222.15.22/32
+    - 10.222.15.73/32
   connect_via: "static_ip"
   wg_priv_key: !secret private_key_zigbee
   wg_public_key: !secret public_key_lnlocal
