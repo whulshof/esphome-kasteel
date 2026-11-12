@@ -4,18 +4,20 @@ substitutions:
   device_description: "octuple relay 01"
   logger_level: DEBUG
   new_ota_passwd: "<new_ota_password>"
-#  api_reboot_timeout: 0s
+  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   static_ip: "137"
-  ip: "192.168.5."
-  ssid: "IoT_Outdoor"
+  ip: "192.168.5.${static_ip}"
+  web_server_auth: "auth"
+  board_type: "esp12e"
+  network: "Outdoor"
+  wireguard: "false"
+#  wg_address: 10.11.0.11
+  mqtt: "false"
+#  connect_via: "static_ip"
+
 
 packages:
-  device_base: !include devices/esp12f_relay_x8_switch_outdoor.yaml
+  device_base: !include devices/relay_x8_switch.yaml
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
-
-#wifi:
-  ##use_address: 10.222.15.137
