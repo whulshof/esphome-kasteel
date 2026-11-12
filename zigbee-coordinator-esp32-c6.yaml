@@ -1,5 +1,5 @@
 substitutions:
-  devicename: "zigbee-coordinator-esp32-c6"
+  devicename: "zigbee-coord-esp32c6"
   friendly_name: "zigbee coordinator esp32-c6"
   device_description: "zigbee coordinator esp32-c6"
   logger_level: DEBUG
@@ -10,7 +10,7 @@ substitutions:
   static_ip: "61"
   web_server_auth: "auth"
   board_type: "esp32-poe"
-  network: "Kasteel"
+  # network: "Kasteel"
   mqtt: "false"
   wireguard: "true"
   wg_address: 10.11.0.12
