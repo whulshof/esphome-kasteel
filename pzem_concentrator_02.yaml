@@ -27,20 +27,15 @@ substitutions:    # Global Setup
   modbus_address15: 15
   modbus_address16: 16
   modbus_address17: 17
+  wireguard: "false"
+  mqtt: "false"
+  mqtt_discovery: "false"
+  board_type: "wemos_d1_mini32"
+  web_server_auth: "auth"
+  network: "Kasteel"
 
 packages:
-  device_base: !include devices/pzem004T_concentrator_wemosd1esp32_kasteel.yaml
+  device_base: !include devices/pzem004T_concentrator.yaml
 
 
 
-#ota:
-# - platform: esphome
-#   id: my_ota
-##   password: !secret ota_password
-#   password: "9661ad3bf3368f2ea7126a18c64e56d1"
-
-#esphome:
-# <<: !include devices/esphome/on_boot_ota_pw.yaml
-
-#wifi:
-#  use_address: 10.222.14.13
