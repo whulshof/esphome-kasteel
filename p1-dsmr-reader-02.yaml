@@ -9,9 +9,15 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "141"
   ip: "10.222.15.${static_ip}"
-  ssid: IoT_Kasteel
   topic_prefix: p1/${devicename}_${static_ip}/
+  wireguard: "false"
+  mqtt: "true"
+  mqtt_discovery: "false"
+  board_type: "esp12e"
+  web_server_auth: "auth"
+  network: "Kasteel"
+
 
 packages:
-  device_base: !include devices/p1-reader-v5-slimmemeter_kasteel_mqtt.yaml
+  device_base: !include devices/p1-reader-v5-slimmemeter.yaml
 
