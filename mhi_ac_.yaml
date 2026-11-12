@@ -17,7 +17,7 @@ substitutions:
 
 
 packages:
-  device_base: !include devices/new_mhi_ac.yaml
+  device_base: !include devices/mhi_ac.yaml
 
 
 
