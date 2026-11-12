@@ -9,9 +9,14 @@ substitutions:
   wifi_reboot_timeout: 60s
   logger_level: "DEBUG"
   ip: "192.168.5.${static_ip}"
+  wireguard: "false"
+  mqtt: "false"
+  board_type: "esp12e"
+  web_server_auth: "auth"
+  network: "Outdoor"
 
 packages:
-  device_base: !include devices/esp12f_relay_x1_v2_1_outdoor.yaml
+  device_base: !include devices/relay_x1_v2_1.yaml
 
 #esphome:
 #  <<: !include esphome/on_boot_ota_pw.yaml
