@@ -58,7 +58,7 @@ sensor:
     id: temp_x
     entity_id: sensor.z4_temp_meter_temperature
     name: "Temperature ${location8}"
-    update_interval: 30s
+
 
 packages:
   sync_base: !include special_packages/force_sync.yaml
