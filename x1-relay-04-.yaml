@@ -10,12 +10,11 @@ substitutions:
   static_ip: "133"
   web_server_auth: "auth"
   board_type: "esp12e"
-  network: "TOSC"
+  network: "Kasteel"
   wireguard: "true"
   wg_address: 10.11.0.11
-  mqtt: "false"
   connect_via: "static_ip"
-  toggle: "false"
+
 
 
 packages:
