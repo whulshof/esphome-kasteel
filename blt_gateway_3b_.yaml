@@ -35,7 +35,6 @@ substitutions:
   zone_start: 9
   zone_count: 8
   ip: "10.222.15.${static_ip}"
-  ssid: IoT_Kasteel
   prefix_switch: "heating_zone_"
   mqtt_broker: 10.222.15.50
   heat_deadband: 0.0
