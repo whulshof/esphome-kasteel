@@ -13,5 +13,4 @@ substitutions:
 packages:
   device_base: !include devices/esp12e_zmai90_v3_kasteel.yaml
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
+
