@@ -9,9 +9,13 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "135"
   ip: "192.168.5.${static_ip}"
+  wireguard: "false"
+  mqtt: "false"
+  board_type: "esp12e"
+  web_server_auth: "auth"
+  network: "Outdoor"
 
 packages:
-  device_base: !include devices/esp12e_zmai90_v2_outdoor.yaml
+  device_base: !include devices/zmai90_v2.yaml
 
-#esphome:
-#  <<: !include esphome/on_boot_ota_pw.yaml
+
