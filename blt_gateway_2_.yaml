@@ -39,6 +39,7 @@ substitutions:
   wireguard: "false"
 
 packages:
+  sync_base: !include special_packages/force_sync.yaml
   device_base: !include devices/bluetooth_gateway.yaml
 
 
