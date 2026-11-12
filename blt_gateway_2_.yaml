@@ -36,6 +36,7 @@ substitutions:
   board_type: "nodemcu32s"
   web_server_auth: "auth"
   network: "Kasteel"
+  wireguard: "false"
 
 packages:
   device_base: !include devices/bluetooth_gateway.yaml
