@@ -10,7 +10,7 @@ substitutions:
   static_ip: "xx"
 
 packages:
-  device_base: !include devices/esp12f_relay_x1_v2_1.yaml
+  device_base: !include devices/relay_x1_v2_1.yaml
 
 esphome:
   name_add_mac_suffix: true
