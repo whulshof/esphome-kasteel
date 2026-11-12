@@ -61,6 +61,7 @@ sensor:
     update_interval: 30s
 
 packages:
+  sync_base: !include special_packages/force_sync.yaml
   device_base: !include devices/bluetooth_gateway.yaml
 
 climate:
