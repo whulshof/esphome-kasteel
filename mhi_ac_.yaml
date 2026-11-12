@@ -9,11 +9,15 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "151"
   ip: "192.168.5.${static_ip}"
-  ssid: IoT_Outdoor
+  wireguard: "false"
+  mqtt: "false"
+  board_type: "d1_mini"
+  web_server_auth: "auth"
+  network: "Outdoor"
 
 
 packages:
-  device_base: !include devices/new_mhi_ac_outdoor.yaml
+  device_base: !include devices/new_mhi_ac.yaml
 
 
 
