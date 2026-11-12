@@ -8,13 +8,17 @@ substitutions:    # Global Setup
   mqtt_reboot_timeout: 10min
   wifi_reboot_timeout: 60s
   ip: "10.222.15.${static_ip}"
-  ssid: "IoT_Kasteel"
   modbus_address: 2
   topic_prefix: Eastron/${devicename}_${static_ip}/
   logger_level: DEBUG
+  board_type: "esp32c6"
+  web_server_auth: "auth"
+  network: "Kasteel"
+  wireguard: "false"
+  mqtt: "true"
 
 packages:
-  device_base: !include devices/eastron_energy_meter_esp32c6_kasteel_mqtt.yaml
+  device_base: !include devices/eastron_energy_meter.yaml
 
 
 
