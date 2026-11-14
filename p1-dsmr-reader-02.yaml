@@ -5,7 +5,7 @@ substitutions:
   logger_level: DEBUG
   new_ota_passwd: "12345abcde"
   api_reboot_timeout: 0s
-#  mqtt_reboot_timeout: 0s
+  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   static_ip: "141"
   ip: "10.222.15.${static_ip}"
