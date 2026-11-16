@@ -9,8 +9,6 @@ substitutions:
   wifi_reboot_timeout: 60s
   static_ip: "141"
   ip: "10.222.15.${static_ip}"
-#  use_address: ${ip}
-  use_address: 10.222.14.37
   topic_prefix: p1/${devicename}_${static_ip}/
   wireguard: "false"
   mqtt: "true"
