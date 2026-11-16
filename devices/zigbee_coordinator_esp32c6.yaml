@@ -1,0 +1,38 @@
+packages:
+  common_includes: !include common/package_include.yaml
+
+external_components:
+  - source: github://tube0013/esphome-components
+    components: [stream_server]
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk:
+    pin: GPIO17
+    mode: CLK_OUT
+  phy_addr: 0
+  power_pin:
+    number: GPIO12
+    ignore_strapping_warning: true
+  manual_ip:
+    static_ip: 10.222.15.61
+    gateway: 10.222.14.138
+    subnet: 255.255.254.0
+    dns1: 10.222.14.138
+
+# Seriële aansluiting op UEXT
+uart:
+  id: zigbee_uart
+  tx_pin: GPIO4
+  rx_pin: GPIO36
+  baud_rate: 115200
+  rx_buffer_size: 1024
+
+
+
+stream_server:
+  uart_id: zigbee_uart
+  port: 6638
+  buffer_size: 1024

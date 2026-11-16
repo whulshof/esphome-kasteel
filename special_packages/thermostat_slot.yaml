@@ -50,3 +50,7 @@ script:
           id: set_zone
           zone: ${zone}
           state: !lambda 'return id(thermostat_${slot_id}).action == climate::CLIMATE_ACTION_HEATING;'
+
+  - id: !extend force_sync_all
+    then:
+      - script.execute: sync_slot_${slot_id}

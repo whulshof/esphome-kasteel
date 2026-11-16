@@ -1,0 +1,36 @@
+sensor:
+  - platform: pzemac
+    modbus_id: modbus1
+    address: ${adres}
+
+    current:
+      name: "Groep ${adres} Stroom"
+      id: groep_${adres}_stroom
+      accuracy_decimals: 3
+
+    voltage:
+      name: "Groep ${adres} Spanning"
+      id: groep_${adres}_spanning
+      accuracy_decimals: 1
+
+    power:
+      name: "Groep ${adres} Vermogen"
+      id: groep_${adres}_vermogen
+      accuracy_decimals: 1
+
+    energy:
+      name: "Groep ${adres} Energie"
+      id: groep_${adres}_energie
+      accuracy_decimals: 1
+
+    frequency:
+      name: "Groep ${adres} Frequentie"
+      id: groep_${adres}_frequentie
+      accuracy_decimals: 1
+
+    power_factor:
+      name: "Groep ${adres} Powerfactor"
+      id: groep_${adres}_powerfactor
+      accuracy_decimals: 2
+
+    update_interval: ${interval}

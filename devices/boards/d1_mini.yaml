@@ -3,3 +3,6 @@
 esp8266:
   board: d1_mini
 
+# On-board LED (was in common/status_led.yaml)
+status_led:
+  pin: GPIO2

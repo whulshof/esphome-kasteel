@@ -1,25 +1,7 @@
 ---
 
-<<: !include boards/esp12e.yaml
-<<: !include wifi/wifi_kasteel.yaml
-<<: !include common/common.yaml # api, ota, logger, status_led
-<<: !include common/web_server_auth.yaml
-<<: !include common/text_sensors.yaml
-<<: !include common/sensors.yaml # wifi_signal, uptime
-<<: !include common/binary_sensors.yaml # connection status
-
-esphome:
-  name: "${devicename}_${static_ip}"
-  name_add_mac_suffix: true
-  comment: "${device_description} ${ip}"
-
-#wifi:
-#  power_save_mode: light
-
-captive_portal:
-
-logger:
-  baud_rate: 0
+packages:
+  common_includes: !include common/package_include.yaml
 
 uart:
   rx_pin: GPIO13
@@ -183,6 +165,9 @@ sensor:
     filters:
       - exponential_moving_average:
           send_every: 5
+    unit_of_measurement: kW
+    device_class: power
+    state_class: measurement
 
   - platform: combination
     name: power_net_l1
@@ -193,6 +178,7 @@ sensor:
         coefficient: 1.0
       - source: power_returned_l1
         coefficient: -1.0
+
   - platform: combination
     name: power_net_l2
     id: power_net_l2
@@ -202,6 +188,7 @@ sensor:
         coefficient: 1.0
       - source: power_returned_l2
         coefficient: -1.0
+
   - platform: combination
     name: power_net_l3
     id: power_net_l3
@@ -224,11 +211,6 @@ text_sensor:
 #        - heartbeat: 300s
     timestamp:
       name: "${friendly_name}_timestamp"
-
-mqtt:
-  broker: 10.222.15.50
-  topic_prefix: ${topic_prefix}
-
 
 script:
   - id: publish_fast_bundle

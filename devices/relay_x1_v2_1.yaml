@@ -1,0 +1,12 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+
+switch:
+  - platform: gpio
+    name: "${friendly_name} Relay"
+    icon: "mdi:remote"
+    pin: GPIO5
+    id: relay1
+    on_turn_on:
+      then: '${[{"delay": "400ms"}, {"switch.turn_off": "relay1"}] if toggle == "true" else []}'

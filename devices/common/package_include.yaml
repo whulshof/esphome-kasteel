@@ -1,0 +1,32 @@
+---
+# Defaults; a device file overrides them in its own substitutions.
+substitutions:
+  logger_level: INFO
+  wireguard: "false"
+  mqtt: "false"
+  mqtt_discovery: "false"
+
+packages:
+  board: !include ../boards/${board_type}.yaml
+  wifi: !include
+    file: ../wifi/wifi.yaml
+    condition: '${network is defined and network != ""}'
+  common: !include common.yaml # api, ota, logger
+  web: !include web_server_${web_server_auth}.yaml
+  text_sensors: !include text_sensors.yaml
+  sensors: !include sensors.yaml # wifi_signal, uptime
+  binary_sensors: !include binary_sensors.yaml # connection status
+  wireguard_config: !include
+    file: wireguard.yaml
+    condition: '${wireguard == "true"}'
+  mqtt: !include
+    file: mqtt.yaml
+    condition: '${mqtt == "true"}'
+
+esphome:
+  name: "${devicename}"
+  name_add_mac_suffix: true
+  comment: "${device_description} ${static_ip}"
+
+
+

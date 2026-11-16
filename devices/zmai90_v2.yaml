@@ -1,27 +1,12 @@
 ---
+packages:
+  common_includes: !include common/package_include.yaml
 
-<<: !include boards/esp12e.yaml
-<<: !include wifi/wifi_outdoor.yaml
-<<: !include common/common.yaml # api, ota, logger, status_led
-<<: !include common/web_server_auth.yaml
-<<: !include common/text_sensors.yaml
-<<: !include common/sensors.yaml # wifi_signal, uptime
-<<: !include common/binary_sensors.yaml # connection status
-
-esphome:
-  name: "${devicename}"
-  name_add_mac_suffix: true
-  comment: "${device_description}--${ip}"
-
-
-
-captive_portal:
 
 external_components:
   - source: github://dentra/esphome-components
+    components: [energy_monitoring, energy_statistics]  # alleen deze: de repo levert ook een eigen 'json' die ESPHome 2026.10 breekt
 
-logger:
-  baud_rate: 0
 
 # Example configuration entry
 time:
@@ -44,8 +29,6 @@ tuya:
   time_id: g_time
 
 switch:
-#  - !include switches/restart.yaml
-#  - !include switches/shutdown.yaml
 # Uncomment next 5 lines to expose main switch to HA
   - platform: "tuya"
     id: sw_power

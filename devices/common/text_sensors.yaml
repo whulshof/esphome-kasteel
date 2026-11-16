@@ -3,12 +3,3 @@
 text_sensor:
   - platform: version
     name: "ESPHome Version"
-  - platform: wifi_info
-    ip_address:
-      name: "IP Address"
-    ssid:
-      name: "SSID"
-    bssid:
-      name: "BSSID"
-    mac_address:
-      name: "Mac Wifi Address"

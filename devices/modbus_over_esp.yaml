@@ -1,10 +1,6 @@
 ---
-
-<<: !include wifi/wifi_kasteel.yaml
-<<: !include common/common.yaml # api, ota, logger, status_led
-<<: !include common/web_server_auth.yaml
-<<: !include common/text_sensors.yaml
-<<: !include common/binary_sensors.yaml # connection status
+packages:
+  common_includes: !include common/package_include.yaml
 
 # 1. Ethernet configuratie voor de W5500 ...
 ethernet:

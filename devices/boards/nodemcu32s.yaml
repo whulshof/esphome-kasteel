@@ -4,3 +4,7 @@ esp32:
     board: nodemcu-32s
     framework:
         type: arduino
+
+# On-board LED (was in common/status_led.yaml)
+status_led:
+  pin: GPIO2

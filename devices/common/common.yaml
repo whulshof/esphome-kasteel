@@ -1,7 +1,9 @@
 ---
 
-<<: !include api.yaml
-<<: !include ota.yaml
-<<: !include logger.yaml
-<<: !include status_led.yaml
+packages:
+  api: !include api.yaml
+  ota: !include ota.yaml
+  logger: !include logger.yaml
+  # status_led: per board in ../boards/<board_type>.yaml
+  switches: !include switches.yaml
 

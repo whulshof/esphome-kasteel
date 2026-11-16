@@ -1,0 +1,640 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+  groep_01: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "1" } }
+  groep_02: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "2" } }
+  groep_03: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "3" } }
+  groep_04: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "4" } }
+  groep_05: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "5" } }
+  groep_06: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "6" } }
+  groep_07: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "7" } }
+  groep_08: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "8" } }
+  groep_09: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "9" } }
+  groep_10: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "10" } }
+  groep_11: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "11" } }
+  groep_12: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "12" } }
+  groep_13: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "13" } }
+  groep_14: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "14" } }
+  groep_15: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "15" } }
+  groep_16: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "16" } }
+  groep_17: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "17" } }
+
+# Drie UART bussen voor 15 PZEM's
+uart:
+  - id: uart_bus_1
+    tx_pin:
+      number: GPIO17
+      inverted: false
+    rx_pin:
+      number: GPIO16
+      inverted: false
+    baud_rate: 9600
+    data_bits: 8
+    stop_bits: 1
+    parity: NONE
+#    rx_buffer_size: 512
+
+modbus:
+  id: modbus1
+  uart_id: uart_bus_1
+  send_wait_time: 200ms
+
+
+# Sensors
+#sensor:
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address1}
+#    current:
+#      name: "Groep ${modbus_address1} Stroom"
+#      id: groep_${modbus_address1}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address1} Spanning"
+#      id: groep_${modbus_address1}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address1} Vermogen"
+#      id: groep_${modbus_address1}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address1} Energie"
+#      id: groep_${modbus_address1}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address1} Frequentie"
+#      id: groep_${modbus_address1}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address1} Powerfactor"
+#      id: groep_${modbus_address1}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address2}
+#    current:
+#      name: "Groep ${modbus_address2} Stroom"
+#      id: groep_${modbus_address2}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address2} Spanning"
+#      id: groep_${modbus_address2}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address2} Vermogen"
+#      id: groep_${modbus_address2}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address2} Energie"
+#      id: groep_${modbus_address2}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address2} Frequentie"
+#      id: groep_${modbus_address2}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address2} Powerfactor"
+#      id: groep_${modbus_address2}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address3}
+#    current:
+#      name: "Groep ${modbus_address3} Stroom"
+#      id: groep_${modbus_address3}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address3} Spanning"
+#      id: groep_${modbus_address3}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address3} Vermogen"
+#      id: groep_${modbus_address3}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address3} Energie"
+#      id: groep_${modbus_address3}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address3} Frequentie"
+#      id: groep_${modbus_address3}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address3} Powerfactor"
+#      id: groep_${modbus_address3}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address4}
+#    current:
+#      name: "Groep ${modbus_address4} Stroom"
+#      id: groep_${modbus_address4}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address4} Spanning"
+#      id: groep_${modbus_address4}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address4} Vermogen"
+#      id: groep_${modbus_address4}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address4} Energie"
+#      id: groep_${modbus_address4}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address4} Frequentie"
+#      id: groep_${modbus_address4}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address4} Powerfactor"
+#      id: groep_${modbus_address4}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address5}
+#    current:
+#      name: "Groep ${modbus_address5} Stroom"
+#      id: groep_${modbus_address5}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address5} Spanning"
+#      id: groep_${modbus_address5}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address5} Vermogen"
+#      id: groep_${modbus_address5}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address5} Energie"
+#      id: groep_${modbus_address5}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address5} Frequentie"
+#      id: groep_${modbus_address5}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address5} Powerfactor"
+#      id: groep_${modbus_address5}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address6}
+#    current:
+#      name: "Groep ${modbus_address6} Stroom"
+#      id: groep_${modbus_address6}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address6} Spanning"
+#      id: groep_${modbus_address6}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address6} Vermogen"
+#      id: groep_${modbus_address6}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address6} Energie"
+#      id: groep_${modbus_address6}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address6} Frequentie"
+#      id: groep_${modbus_address6}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address6} Powerfactor"
+#      id: groep_${modbus_address6}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address7}
+#    current:
+#      name: "Groep ${modbus_address7} Stroom"
+#      id: groep_${modbus_address7}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address7} Spanning"
+#      id: groep_${modbus_address7}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address7} Vermogen"
+#      id: groep_${modbus_address7}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address7} Energie"
+#      id: groep_${modbus_address7}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address7} Frequentie"
+#      id: groep_${modbus_address7}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address7} Powerfactor"
+#      id: groep_${modbus_address7}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+##
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address8}
+#    current:
+#      name: "Groep ${modbus_address8} Stroom"
+#      id: groep_${modbus_address8}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address8} Spanning"
+#      id: groep_${modbus_address8}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address8} Vermogen"
+#      id: groep_${modbus_address8}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address8} Energie"
+#      id: groep_${modbus_address8}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address8} Frequentie"
+#      id: groep_${modbus_address8}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address8} Powerfactor"
+#      id: groep_${modbus_address8}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address9}
+#    current:
+#      name: "Groep ${modbus_address9} Stroom"
+#      id: groep_${modbus_address9}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address9} Spanning"
+#      id: groep_${modbus_address9}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address9} Vermogen"
+#      id: groep_${modbus_address9}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address9} Energie"
+#      id: groep_${modbus_address9}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address9} Frequentie"
+#      id: groep_${modbus_address9}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address9} Powerfactor"
+#      id: groep_${modbus_address9}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address10}
+#    current:
+#      name: "Groep ${modbus_address10} Stroom"
+#      id: groep_${modbus_address10}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address10} Spanning"
+#      id: groep_${modbus_address10}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address10} Vermogen"
+#      id: groep_${modbus_address10}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address10} Energie"
+#      id: groep_${modbus_address10}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address10} Frequentie"
+#      id: groep_${modbus_address10}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address10} Powerfactor"
+#      id: groep_${modbus_address10}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address11}
+#    current:
+#      name: "Groep ${modbus_address11} Stroom"
+#      id: groep_${modbus_address11}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address11} Spanning"
+#      id: groep_${modbus_address11}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address11} Vermogen"
+#      id: groep_${modbus_address11}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address11} Energie"
+#      id: groep_${modbus_address11}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address11} Frequentie"
+#      id: groep_${modbus_address11}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address11} Powerfactor"
+#      id: groep_${modbus_address11}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address12}
+#    current:
+#      name: "Groep ${modbus_address12} Stroom"
+#      id: groep_${modbus_address12}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address12} Spanning"
+#      id: groep_${modbus_address12}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address12} Vermogen"
+#      id: groep_${modbus_address12}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address12} Energie"
+#      id: groep_${modbus_address12}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address12} Frequentie"
+#      id: groep_${modbus_address12}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address12} Powerfactor"
+#      id: groep_${modbus_address12}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address13}
+#    current:
+#      name: "Groep ${modbus_address13} Stroom"
+#      id: groep_${modbus_address13}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address13} Spanning"
+#      id: groep_${modbus_address13}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address13} Vermogen"
+#      id: groep_${modbus_address13}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address13} Energie"
+#      id: groep_${modbus_address13}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address13} Frequentie"
+#      id: groep_${modbus_address13}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address13} Powerfactor"
+#      id: groep_${modbus_address13}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address14}
+#    current:
+#      name: "Groep ${modbus_address14} Stroom"
+#      id: groep_${modbus_address14}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address14} Spanning"
+#      id: groep_${modbus_address14}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address14} Vermogen"
+#      id: groep_${modbus_address14}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address14} Energie"
+#      id: groep_${modbus_address14}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address14} Frequentie"
+#      id: groep_${modbus_address14}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address14} Powerfactor"
+#      id: groep_${modbus_address14}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address15}
+#    current:
+#      name: "Groep ${modbus_address15} Stroom"
+#      id: groep_${modbus_address15}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address15} Spanning"
+#      id: groep_${modbus_address15}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address15} Vermogen"
+#      id: groep_${modbus_address15}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address15} Energie"
+#      id: groep_${modbus_address15}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address15} Frequentie"
+#      id: groep_${modbus_address15}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address15} Powerfactor"
+#      id: groep_${modbus_address15}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address16}
+#    current:
+#      name: "Groep ${modbus_address16} Stroom"
+#      id: groep_${modbus_address16}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address16} Spanning"
+#      id: groep_${modbus_address16}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address16} Vermogen"
+#      id: groep_${modbus_address16}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address16} Energie"
+#      id: groep_${modbus_address16}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address16} Frequentie"
+#      id: groep_${modbus_address16}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address16} Powerfactor"
+#      id: groep_${modbus_address16}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+#
+#  - platform: pzemac
+#    modbus_id: modbus1
+#    address: ${modbus_address17}
+#    current:
+#      name: "Groep ${modbus_address17} Stroom"
+#      id: groep_${modbus_address17}_stroom
+#      unit_of_measurement: A
+#      accuracy_decimals: 3
+#    voltage:
+#      name: "Groep ${modbus_address17} Spanning"
+#      id: groep_${modbus_address17}_spanning
+#      unit_of_measurement: V
+#      accuracy_decimals: 1
+#    power:
+#      name: "Groep ${modbus_address17} Vermogen"
+#      id: groep_${modbus_address17}_vermogen
+#      unit_of_measurement: W
+#      accuracy_decimals: 1
+#    energy:
+#      name: "Groep ${modbus_address17} Energie"
+#      id: groep_${modbus_address17}_energie
+#      unit_of_measurement: Wh
+#      accuracy_decimals: 1
+#    frequency:
+#      name: "Groep ${modbus_address17} Frequentie"
+#      id: groep_${modbus_address17}_frequentie
+#      unit_of_measurement: Hz
+#      accuracy_decimals: 1
+#    power_factor:
+#      name: "Groep ${modbus_address17} Powerfactor"
+#      id: groep_${modbus_address17}_powerfactor
+#      unit_of_measurement: "%"
+#      accuracy_decimals: 2
+#    update_interval: ${interval}
+
+

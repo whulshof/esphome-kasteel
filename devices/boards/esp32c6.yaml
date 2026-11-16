@@ -1,16 +1,17 @@
 ---
 
-# Logger via USB voor debugging
-#logger:
-#  hardware_uart: USB_SERIAL_JTAG
-#  level: INFO
-
 esp32:
   board: seeed_xiao_esp32c6
   variant: esp32c6
+  flash_size: 4MB
   framework:
     type: esp-idf
-#    version: 5.3.1
-#    sdkconfig_options:
-#      CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y
 
+# Seeed XIAO ESP32-C6: user LED on GPIO15, lit when low.
+# (GPIO2 = D2, e.g. the W5500 interrupt.) GPIO15 is a strapping pin, but on
+# the XIAO it only drives this LED, so the warning is not needed.
+status_led:
+  pin:
+    number: GPIO15
+    inverted: true
+    ignore_strapping_warning: true

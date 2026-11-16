@@ -1,0 +1,3 @@
+script:
+  - id: force_sync_all
+    then: []

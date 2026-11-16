@@ -1,0 +1,149 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+
+  t1: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 1}
+    vars:
+      slot_id: "1"
+      location: "${location1}"
+      zone: "${zone_loc1}"
+      blt_mac_address: "${blt_mac_address_1}"
+
+  t2: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 2}
+    vars:
+      slot_id: "2"
+      location: "${location2}"
+      zone: "${zone_loc2}"
+      blt_mac_address: "${blt_mac_address_2}"
+
+  t3: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 3}
+    vars:
+      slot_id: "3"
+      location: "${location3}"
+      zone: "${zone_loc3}"
+      blt_mac_address: "${blt_mac_address_3}"
+
+  t4: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 4}
+    vars:
+      slot_id: "4"
+      location: "${location4}"
+      zone: "${zone_loc4}"
+      blt_mac_address: "${blt_mac_address_4}"
+
+  t5: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 5}
+    vars:
+      slot_id: "5"
+      location: "${location5}"
+      zone: "${zone_loc5}"
+      blt_mac_address: "${blt_mac_address_5}"
+
+  t6: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 6}
+    vars:
+      slot_id: "6"
+      location: "${location6}"
+      zone: "${zone_loc6}"
+      blt_mac_address: "${blt_mac_address_6}"
+
+  t7: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 7}
+    vars:
+      slot_id: "7"
+      location: "${location7}"
+      zone: "${zone_loc7}"
+      blt_mac_address: "${blt_mac_address_7}"
+
+  t8: !include
+    file: ../special_packages/thermostat_slot.yaml
+    condition: ${zone_count >= 8}
+    vars:
+      slot_id: "8"
+      location: "${location8}"
+      zone: "${zone_loc8}"
+      blt_mac_address: "${blt_mac_address_8}"
+
+esphome:
+#  name: "${devicename}"
+#  name_add_mac_suffix: true
+#  comment: "${device_description}--${ip}"
+  on_boot:
+    priority: 200
+    then:
+      - delay: 5s
+      - script.execute: force_sync_all
+
+time:
+  - platform: sntp
+    id: my_time
+    timezone: "Europe/Amsterdam"   # pas aan naar jouw tijdzone
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 3
+        then:
+          - switch.turn_on: restart_switch
+
+mqtt:
+  broker: ${mqtt_broker}
+  discovery: false
+  reboot_timeout: ${mqtt_reboot_timeout}
+  on_connect:
+    then:
+      - script.execute: force_sync_all
+
+http_request:
+  timeout: 2s
+
+esp32_ble_tracker:
+  scan_parameters:
+    active: false
+
+button:
+  - platform: template
+    name: "force_sync_all"
+    on_press:
+      then:
+        - script.execute: force_sync_all
+
+script:
+  - id: set_zone
+    parameters:
+      zone: int
+      state: bool
+    then:
+      - lambda: |-
+          ESP_LOGD("set_zone","zone=%d state=%d", zone, state);
+
+      - if:
+          condition: mqtt.connected
+          then:
+            - mqtt.publish:
+                topic: !lambda |-
+                  return std::string("therm/zone/") + to_string(zone) + "/demand";
+                payload: !lambda |-
+                  return state ? "1" : "0";
+                retain: true
+          else:
+            - http_request.post:
+                url: !lambda |-
+                  return std::string("${http_request_url}")
+                       + to_string(zone)
+                       + (state ? "/turn_on" : "/turn_off");
+
+
+interval:
+  - interval: 5min
+    then:
+      - script.execute: force_sync_all

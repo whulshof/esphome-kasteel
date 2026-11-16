@@ -1,9 +1,5 @@
 ---
 
-#external_components:
-#  - source: github://domgrimm/esphome-webserver-listcomponents
-#    components: ["webserver_listcomponents"]
-
 web_server:
   port: 80
   version: 3
@@ -11,4 +7,3 @@ web_server:
     username: !secret web_username # disabled if absent or empty
     password: !secret web_password # disabled if absent or empty
 
-#webserver_listcomponents:

@@ -5,3 +5,5 @@ esp32:
     framework:
         type: esp-idf
     variant: esp32c3
+
+# Lolin C3 mini: only an RGB LED (GPIO7), so no status_led.

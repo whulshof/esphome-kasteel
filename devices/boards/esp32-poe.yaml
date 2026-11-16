@@ -1,0 +1,7 @@
+---
+esp32:
+  board: esp32-poe
+  framework:
+    type: esp-idf
+
+# Olimex ESP32-POE: no user LED, so no status_led.

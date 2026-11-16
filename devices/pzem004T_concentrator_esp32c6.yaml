@@ -1,0 +1,40 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+  groep_01: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "1" } }
+  groep_02: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "2" } }
+  groep_03: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "3" } }
+  groep_04: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "4" } }
+  groep_05: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "5" } }
+  groep_06: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "6" } }
+  groep_07: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "7" } }
+  groep_08: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "8" } }
+  groep_09: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "9" } }
+  groep_10: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "10" } }
+  groep_11: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "11" } }
+  groep_12: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "12" } }
+  groep_13: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "13" } }
+  groep_14: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "14" } }
+  groep_15: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "15" } }
+  groep_16: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "16" } }
+  groep_17: !include { file: ../special_packages/pzem_sensor_groep.yaml, vars: { adres: "17" } }
+
+
+# Drie UART bussen voor 15 PZEM's
+uart:
+  - id: uart_bus_1
+    tx_pin: D6      # GPIO6 → RX PZEM's (adres 1-5)
+    rx_pin: D7      # GPIO7 met 1kΩ weerstand! ← TX PZEM's
+    baud_rate: 9600
+    data_bits: 8
+    stop_bits: 1
+    parity: NONE
+    rx_buffer_size: 512
+
+
+# Modbus configuratie voor elke bus
+modbus:
+  id: modbus1
+  uart_id: uart_bus_1
+  send_wait_time: 200ms
+

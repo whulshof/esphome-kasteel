@@ -1,0 +1,21 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${friendly_name} Optocoupler"
+
+switch:
+  - platform: gpio
+    name: "${friendly_name} Relay"
+    icon: "mdi:remote"
+    pin: GPIO4
+    id: relay1
+    on_turn_on:
+      then: '${[{"delay": "400ms"}, {"switch.turn_off": "relay1"}] if toggle == "true" else []}'

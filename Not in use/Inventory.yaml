@@ -12,7 +12,7 @@ substitutions:    # Global Setup
     board: esp12e
     friendly_name: "loods2_door"
     device_description: "relay door loods2"
-    package_file: "esp12f_relay_x1_v2_1.yaml"
+    package_file: "relay_x1_v2_1.yaml"
     wifi_use_address: "10.222.15.125"
     new_ota_password: "12345abcde"
     wifi_config: "IoT_Outdoor_fixed"

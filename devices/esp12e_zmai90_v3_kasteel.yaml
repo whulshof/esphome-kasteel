@@ -1,12 +1,12 @@
 ---
-
-<<: !include boards/esp12e.yaml
-<<: !include wifi/wifi_kasteel.yaml
-<<: !include common/common.yaml # api, ota, logger, status_led
-<<: !include common/web_server_auth.yaml
-<<: !include common/text_sensors.yaml
-<<: !include common/sensors.yaml # wifi_signal, uptime
-<<: !include common/binary_sensors.yaml # connection status
+packages:
+  board: !include boards/esp12e.yaml
+  wifi: !include wifi/wifi_kasteel.yaml
+  common: !include common/common.yaml # api, ota, logger, status_led
+  web: !include common/web_server_auth.yaml
+  text_sensors: !include common/text_sensors.yaml
+  sensors: !include common/sensors.yaml # wifi_signal, uptime
+  binary_sensors: !include common/binary_sensors.yaml # connection status
 
 esphome:
   name: "${devicename}"
@@ -35,6 +35,7 @@ external_components:
 #  - source: github://dentra/esphome@tuya-raw-fix-standalone
 #    components: ["tuya"]
   - source: github://dentra/esphome-components
+    components: [energy_monitoring, energy_statistics]  # alleen deze: de repo levert ook een eigen 'json' die ESPHome 2026.10 breekt
 
 # Example configuration entry
 time:
