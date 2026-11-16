@@ -12,7 +12,6 @@ substitutions:
   wireguard: "false"
   mqtt: "false"
   board_type: "esp12e"
-  web_server_auth: "auth"
   network: "Outdoor"
   toggle: "true"
 
