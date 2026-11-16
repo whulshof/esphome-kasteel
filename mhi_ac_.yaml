@@ -12,7 +12,6 @@ substitutions:
   wireguard: "false"
   mqtt: "false"
   board_type: "d1_mini"
-  web_server_auth: "auth"
   network: "Outdoor"
 
 
