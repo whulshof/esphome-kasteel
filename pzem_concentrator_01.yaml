@@ -30,7 +30,6 @@ substitutions:    # Global Setup
   mqtt: "false"
   mqtt_discovery: "false"
   board_type: "esp32c6"
-  web_server_auth: "auth"
   network: "Kasteel"
 
 packages:
