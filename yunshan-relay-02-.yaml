@@ -13,7 +13,6 @@ substitutions:
   wireguard: "false"
   board_type: "esp12e"
   network: "Kasteel"
-  web_server_auth: "auth"
   toggle: "true"
 
 packages:
