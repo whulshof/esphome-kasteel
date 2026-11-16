@@ -2,15 +2,13 @@ substitutions:
   devicename: "p1-dsmr-reader-02-"
   friendly_name: "p1_reader_v5_02"
   device_description: "p1 reader V5 #2"
-  logger_level: DEBUG
-  new_ota_passwd: "12345abcde"
+  logger_level: INFO
   api_reboot_timeout: 0s
   mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   static_ip: "141"
   ip: "10.222.15.${static_ip}"
   topic_prefix: p1/${devicename}_${static_ip}/
-  wireguard: "false"
   mqtt: "true"
   mqtt_discovery: "false"
   board_type: "esp12e"
