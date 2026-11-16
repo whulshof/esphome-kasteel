@@ -12,7 +12,7 @@ packages:
     file: ../wifi/wifi.yaml
     condition: '${network is defined and network != ""}'
   common: !include common.yaml # api, ota, logger
-  web: !include web_server_${web_server_auth}.yaml
+  web: !include web_server_auth.yaml   # without login: 'web_server: auth: !remove' in the device
   text_sensors: !include text_sensors.yaml
   sensors: !include sensors.yaml # wifi_signal, uptime
   binary_sensors: !include binary_sensors.yaml # connection status
