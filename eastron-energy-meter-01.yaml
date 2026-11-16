@@ -12,7 +12,6 @@ substitutions:    # Global Setup
   topic_prefix: Eastron/${devicename}_${static_ip}/
   logger_level: DEBUG
   board_type: "esp32c6"
-  web_server_auth: "auth"
   network: "Kasteel"
   wireguard: "false"
   mqtt: "true"
