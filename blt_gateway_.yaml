@@ -2,10 +2,8 @@ substitutions:
   devicename: "bluetooth-gateway-1"
   friendly_name: "blt_gway_01"
   device_description: "Bluetooth Gateway 1"
-  logger_level: DEBUG
-  new_ota_passwd: "<new_ota_password>"
+  logger_level: INFO
   api_reboot_timeout: 0s
-  mqtt_reboot_timeout: 0s
   wifi_reboot_timeout: 60s
   static_ip: "147"
   prefix_switch: "heating_zone_"
@@ -23,7 +21,6 @@ substitutions:
   zone_loc4: 4
   zone_start: 1
   zone_count: 4
-  mqtt_broker: 10.222.15.50
   x8_ip: 10.222.15.138
   http_request_url: http://${x8_ip}/switch/${prefix_switch}
   heat_deadband: 0.0
@@ -33,6 +30,8 @@ substitutions:
   min_idle_time: 5s
   board_type: "nodemcu32s"
   network: "Kasteel"
+  mqtt: "true"
+  mqtt_reboot_timeout: 0s
 
 
 
