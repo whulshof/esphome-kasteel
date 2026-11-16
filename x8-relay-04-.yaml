@@ -20,7 +20,6 @@ substitutions:
   ip: "10.222.15.${static_ip}"
   mqtt: "true"
   mqtt_discovery: "false"
-  web_server_auth: "no_auth"
   board_type: "esp12e"
   network: "Kasteel"
   wireguard: "false"
@@ -28,4 +27,6 @@ substitutions:
 packages:
   device_base: !include devices/relay_x8_switch_with_current_meter_http.yaml
 
-
+# Receives http_requests from the BLE gateways: no login on the web server.
+web_server:
+  auth: !remove
