@@ -1,0 +1,93 @@
+# Seeed XIAO ESP32-C6 as Zigbee coordinator (ZBOSS NCP over TCP, port 6638).
+# Firmware: tostmann/esp-coordinator as ESPHome component, from PR #21
+# (branch whulshof/esp-coordinator:esphome).
+# Zigbee2MQTT: serial: { port: "tcp://<ip>:6638", adapter: zboss }
+#
+# Plain config, not yet in the package format of this repo.
+
+esphome:
+  name: zigbee-coordinator-xiao-c6
+  friendly_name: Zigbee coordinator XIAO C6
+
+esp32:
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/whulshof/esp-coordinator
+      ref: esphome
+      path: esphome/components
+    components: [zboss_ncp]
+    refresh: 0s   # always the latest commit of the PR
+
+logger:
+  level: INFO     # USB-Serial/JTAG; the NCP itself only talks TCP
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+  # Without Home Assistant connected ESPHome would otherwise reboot every 15 minutes.
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid_IoT_Kasteel
+  password: !secret wifi_password_IoT_Kasteel
+  power_save_mode: none   # zboss_ncp forces this anyway
+  reboot_timeout: 0s
+  # No 'ap:' / captive_portal: an access point cannot share the radio with Zigbee.
+
+# Web page with all sensors and the antenna select.
+web_server:
+  port: 80
+  version: 3
+  auth:
+    username: !secret web_username
+    password: !secret web_password
+
+zboss_ncp:
+  port: 6638
+  allowed_ips:
+    - 10.222.14.0/23          # only the LAN may open the NCP port
+  antenna:                    # on-board / external (U.FL), saved
+    name: Antenna
+  channel:
+    name: Zigbee channel
+  pan_id:
+    name: Zigbee PAN ID
+  extended_pan_id:
+    name: Zigbee extended PAN ID
+  firmware_version:
+    name: NCP firmware
+  host_connected:
+    name: Zigbee host connected
+  network_lost:
+    name: Zigbee network lost
+  safe_mode:
+    name: NCP safe mode
+
+sensor:
+  - platform: wifi_signal
+    name: WiFi signal
+    update_interval: 60s
+  - platform: uptime
+    name: Uptime
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: IP address
+  - platform: version
+    name: ESPHome version
+
+binary_sensor:
+  - platform: status
+    name: Status
