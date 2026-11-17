@@ -220,11 +220,16 @@ mdns:
 
 cc2652_flasher:
   id: zigbee_flasher
+  variant: p7     # the 2023 PoE has a CC2652P7; SYS_VERSION alone cannot tell P2 from P7
   uart_id: uart_bus
   url: "https://raw.githubusercontent.com/tube0013/tube_gateways/refs/heads/main/misc/manifest.json"
   bsl_switch: zBSL
   rst_switch: zRST_gpio
   boot_baud_rate: 500000
+  # 2026-11-17: the built-in flash (button) failed after BANK_ERASE (no ACK on
+  # the first SEND_DATA, at 500000 and 115200 baud). Working way: button
+  # "Trigger Zigbee Module Bootloader", then from a PC:
+  #   cc2538-bsl -p socket://<ip>:6638 -evw CC1352P7_coordinator_<version>.hex
   restore_baud_rate: 115200
   erase_mode: bank
   debug: false

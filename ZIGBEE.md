@@ -5,14 +5,17 @@ network key (all `GENERATE`d once by Zigbee2MQTT) and its own channel. Channels
 15, 20 and 25 stay clear of WiFi channels 1, 6 and 11, whichever of those UniFi
 picks. Zigbee2MQTT runs on 10.222.15.22 (MQTT base topic `zigbee2mqttN`).
 
-## Target
+## Networks (2026-11-17)
 
-| z2m | Coordinator | IP | Place | Channel | Z2M image |
-| --- | --- | --- | --- | --- | --- |
-| z2m1 | first TubesZB 2023-02, then `wifi-01` (the C6 that is now .63) | 192.168.5.112, then 192.168.5.28 | loods 3 | 20 | tostmann (required with `wifi-01`) |
-| z2m3 | `eth-01` (XIAO ESP32-C6 + W5500) | 10.222.15.29 | loods 2 | 15 | standard (tostmann possible) |
-| z2m4 | TubesZB 2023-01 | 10.222.15.62 | house | 25 | standard |
-| z2m2 | – | – | – | – | stops |
+| z2m | Coordinator | IP | Place | Channel | PAN id | Extended PAN id | Z2M image |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| z2m1 | `wifi-01` (XIAO ESP32-C6, the former .63) | 192.168.5.28 (Outdoor) | loods 3 | 20 | 0x4DD9 | 54:6a:15:6c:81:56:33:41 | tostmann (required with WiFi) |
+| z2m3 | `eth-01` (XIAO ESP32-C6 + W5500) | 10.222.15.29 | loods 2 | 15 | 0xE2F6 | a9:ef:15:62:4e:54:26:5a | standard (tostmann possible) |
+| z2m4 | TubesZB 2023-01 | 10.222.15.62 | house | 25 | 0x845C | 81:2c:ca:3d:99:c2:f3:b0 | standard |
+| z2m2 | – | – | – | – | – | – | stopped |
+
+All three have their own generated network key. The TubesZB 2023-02 in loods 3
+(192.168.5.112) is off duty: see below.
 
 ESPHome configs: `zigbee-coordinator-wifi-01.yaml`, `zigbee-coordinator-eth-01.yaml`
 (package `devices/zigbee_coordinator_zboss*.yaml`, component from
@@ -24,12 +27,13 @@ esp-coordinator PR #21), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
 | # | What | Status |
 | --- | --- | --- |
 | 1 | Flash `eth-01`, z2m3 to `tcp://10.222.15.29:6638` | done (2026-11-17) |
-| 2 | z2m1 forms the new network on the TubesZB (below), then pair the loods 3 devices: routers first, then battery devices | open |
-| 3 | z2m4: new network on channel 25 (no devices attached) | open |
-| 4 | Loods 3 to `wifi-01`: stop z2m2, flash .63 with `wifi-01`, C6 into loods 3, TubesZB off; z2m1 to `wifi-01` (below), image to tostmann's; re-pair devices that do not come back | later |
-| 5 | z2m2's devices (e.g. the ZBMINI) re-paired to the z2m of their place | with step 4 |
-| 6 | Flash both TubesZB with the standard config; new API key in the kernel | when convenient |
+| 2 | z2m4: new network on channel 25 (no devices attached) | done (2026-11-17) |
+| 3 | z2m1: the TubesZB in loods 3 could not form a new network (below), so `wifi-01` right away: .63 flashed with `wifi-01`, into loods 3; z2m1 on `tcp://192.168.5.28:6638`, tostmann's image, new network on channel 20 | done (2026-11-17) |
+| 4 | Pair the loods 3 devices to z2m1: routers first, then battery devices | open |
+| 5 | z2m2's devices (e.g. the ZBMINI) re-paired to the z2m of their place; `zbtemploods2` to z2m3 | open |
+| 6 | Flash the house TubesZB (2023-01) with the standard config; new API key in the kernel (the loods 3 one already runs it) | when convenient |
 | 7 | Remove the DHCP reservation for 58:e6:c5:0f:49:6f (eth-01 has a fixed IP now) | open |
+| 8 | TubesZB loods 3: find out why it cannot form a network (below) | open |
 
 Open question: the 2022 tube (`tubezb-cc2652-poe-2022-202603281.yaml`, 192.168.5.61):
 the old one in loods 2? Then to `Not in use`.
@@ -38,52 +42,67 @@ the old one in loods 2? Then to `Not in use`.
 
 New network (once): set the three values to `GENERATE`, rename
 `coordinator_backup.json`, restart. Zigbee2MQTT then writes the real values into
-`configuration.yaml`; keep them. Keep the `devices:` block: re-paired devices get
-their old names back (by IEEE address). One `advanced:` block only (a second one,
+`configuration.yaml`; keep them. A value that is missing (not `GENERATE`) gets
+the public default (PAN 0x1A62, extended `dd:dd:…`, the well-known key): that
+happened to z2m1's `ext_pan_id` once. One `advanced:` block only (a second one,
 or a duplicate key, makes the file invalid and Zigbee2MQTT refuses to start).
+
+Lessons from 2026-11-17:
+- "Configuration is not consistent with adapter state/backup": the adapter
+  still has the old network and `coordinator_backup.json` protects it. Rename
+  the backup (inside the container: `/app/data`) and restart.
+- `database.db` keeps every device ever paired; Zigbee2MQTT puts them back into
+  `devices:` (named by IEEE address) even with an empty `devices: {}`. Rename
+  it for a really clean start.
+- `adapter:` must match the coordinator: `zstack` for the TubesZB, `zboss` for
+  the ESP32-C6. A wrong one only shows at the next restart.
 
 `transmit_power: 20` (tostmann's advice: uses the ESP32-C6's amplifier; the
 CC2652P7 also goes up to 20 dBm). 20 dBm is the EU limit for 2.4 GHz (EIRP);
 with an external antenna with gain it is slightly above that.
 
-z2m1, step 2 (TubesZB):
-
-```yaml
-serial:
-  port: tcp://192.168.5.112:6638
-  adapter: zstack
-advanced:
-  log_level: info
-  channel: 20
-  pan_id: GENERATE
-  ext_pan_id: GENERATE
-  network_key: GENERATE
-  transmit_power: 20
-```
-
-z2m1, step 4 (`wifi-01`): only `serial` changes, `advanced` stays as written
-by step 2, so `wifi-01` gets the same network. The WiFi build needs tostmann's
-image (`ghcr.io/tostmann/zigbee2mqtt-esp32:latest`, longer TCP timeouts).
+z2m1 (`wifi-01`), image `ghcr.io/tostmann/zigbee2mqtt-esp32:latest` (required
+for the WiFi build: longer TCP timeouts):
 
 ```yaml
 serial:
   port: tcp://192.168.5.28:6638
   adapter: zboss
-```
-
-z2m3 (`eth-01`, already done): port `tcp://10.222.15.29:6638`, `adapter: zboss`,
-channel 15, own keys.
-
-z2m4, step 3:
-
-```yaml
 advanced:
-  channel: 25
-  pan_id: GENERATE
-  ext_pan_id: GENERATE
-  network_key: GENERATE
+  channel: 20
+  # pan_id, ext_pan_id, network_key: generated, keep them
   transmit_power: 20
 ```
+
+z2m3 (`eth-01`): `tcp://10.222.15.29:6638`, `adapter: zboss`, channel 15.
+
+z2m4 (TubesZB house): `tcp://10.222.15.62:6638`, `adapter: zstack`, channel 25,
+`transmit_power: 20`.
+
+## TubesZB loods 3 (192.168.5.112): cannot form a network
+
+On 2026-11-17 every attempt to form a new network failed after 100 s with
+"network commissioning timed out - most likely network with the same panId or
+extendedPanId already exists nearby" (ZDO stateChangeInd). Same result with
+generated, random and default PAN ids, on channel 15 and 20, with the original
+ESPHome firmware and after the standard config, and on a freshly flashed,
+erased CC2652P7. Its existing network had run fine for months; forming starts
+with a scan, which it apparently no longer manages. The house TubesZB (same
+model, same firmware) formed its network on channel 25 at the first try.
+
+Not tried yet: power off (PoE unplugged, 30 s; module resets keep the CC2652
+powered), Z-Stack debug log (`log_level: debug`, look at the stateChangeInd
+states), and the swap test (z2m1 on the house TubesZB with z2m4 stopped).
+
+Flashing its CC2652: the built-in "Flash CC2652" button erases the chip and then
+fails (no ACK on the first SEND_DATA, at 500000 and 115200 baud). What works:
+button "Trigger Zigbee Module Bootloader", then from a PC with cc2538-bsl
+(github.com/JelmerT/cc2538-bsl):
+
+    cc2538-bsl -p socket://192.168.5.112:6638 -evw CC1352P7_coordinator_20250321.hex
+
+(the P7 firmware from tube0013/tube_gateways `misc/`; it has a CC2652P7, not a
+P2), then "Zigbee Module Reset". Stop the z2m that uses it first.
 
 ## Switching coordinators
 
@@ -101,4 +120,7 @@ Between the TubesZB (Z-Stack) and an ESP coordinator (ZBOSS) that does not work.
   host) may open port 6638.
 - `eth-01`: fixed IP from `devices/network` (connection_type ethernet).
 - `wifi-01`: network Outdoor, fixed 192.168.5.28; no access point (it cannot
-  share the radio with Zigbee), power save and roaming scans off.
+  share the radio with Zigbee), power save and roaming scans off. In loods 3:
+  WiFi -35 dBm on the external antenna.
+- The TubesZB run `stream_server` without `allowed_ips`; API key, OTA password
+  and web login come with the standard config.
