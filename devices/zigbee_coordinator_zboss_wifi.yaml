@@ -1,6 +1,10 @@
 ---
-# Only with connection_type wifi (see zigbee_coordinator_zboss.yaml):
-# an access point cannot share the radio with Zigbee.
+# Only with connection_type wifi (see zigbee_coordinator_zboss.yaml).
+# An access point cannot share the radio with Zigbee. Power save and the
+# 5-minute roaming scans are turned off by zboss_ncp anyway; stated here so
+# the validated config shows what runs.
 wifi:
   ap: !remove
+  power_save_mode: none
+  post_connect_roaming: false
 captive_portal: !remove
