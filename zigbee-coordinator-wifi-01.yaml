@@ -18,7 +18,7 @@ substitutions:
   # --- WiFi (leave 'network' out for an Ethernet device) ---
                     # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
   static_ip: "28"                     # last part of the fixed IP
-  network: "Kasteel"
+  network: "Outdoor"
 
   # --- optional, defaults above ---
   # logger_level: DEBUG
