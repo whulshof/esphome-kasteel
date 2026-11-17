@@ -8,18 +8,18 @@
 
 substitutions:
   # --- always ---
-  devicename: "zigbee-coord-eth-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
-  friendly_name: "zigbee_coord_eth_01"
-  device_description: "Zigbee Coordinator Ethernet 01"
+  devicename: "zigbee-coord-wifi-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
+  friendly_name: "zigbee_coord_wifi_01"
+  device_description: "Zigbee Coordinator Wifi 01"
   board_type: "esp32c6"                 # a file in devices/boards/: esp12e, d1_mini, esp01_1m,
                                        # nodemcu32s, wemos_d1_mini32, esp32_c3, esp32c6, esp32-poe
   api_reboot_timeout: 0s               # 0s: keep running without Home Assistant
 
   # --- WiFi (leave 'network' out for an Ethernet device) ---
                     # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
-  static_ip: ""                     # last part of the fixed IP
+  static_ip: "28"                     # last part of the fixed IP
+  network: "Kasteel"
   wifi_reboot_timeout: 60s
-  # use_address: 10.222.15.123         # only if the device is reached at another address
 
   # --- optional, defaults above ---
   # logger_level: DEBUG
