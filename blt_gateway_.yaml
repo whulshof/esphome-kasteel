@@ -4,7 +4,6 @@ substitutions:
   device_description: "Bluetooth Gateway 1"
   logger_level: INFO
   api_reboot_timeout: 0s
-  wifi_reboot_timeout: 60s
   static_ip: "147"
   prefix_switch: "heating_zone_"
   zone_loc1: 1
