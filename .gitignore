@@ -6,3 +6,8 @@
 **/src/
 **/platformio.ini
 **/secrets.yaml
+
+# Build and download leftovers
+__pycache__/
+*.pyc
+*.ota.bin
