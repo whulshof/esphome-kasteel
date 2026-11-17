@@ -6,6 +6,7 @@ substitutions:
   new_ota_passwd: "12345abcde"
 #  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
   static_ip: "148"
   ip: "10.222.15."
   ssid: IoT_Kasteel
