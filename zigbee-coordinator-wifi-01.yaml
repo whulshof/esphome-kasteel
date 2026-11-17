@@ -19,7 +19,6 @@ substitutions:
                     # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
   static_ip: "28"                     # last part of the fixed IP
   network: "Kasteel"
-  wifi_reboot_timeout: 60s
 
   # --- optional, defaults above ---
   # logger_level: DEBUG
