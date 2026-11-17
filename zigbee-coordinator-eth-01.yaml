@@ -18,7 +18,6 @@ substitutions:
   # --- WiFi (leave 'network' out for an Ethernet device) ---
   network: "Kasteel"                   # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
   static_ip: "29"                     # last part of the fixed IP
-  wifi_reboot_timeout: 60s
   # use_address: 10.222.15.123         # only if the device is reached at another address
 
   # --- optional, defaults above ---
