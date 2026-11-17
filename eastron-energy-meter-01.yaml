@@ -6,7 +6,6 @@ substitutions:    # Global Setup
   new_ota_password: "12345abcde"
   api_reboot_timeout: 15min
   mqtt_reboot_timeout: 10min
-  wifi_reboot_timeout: 60s
   ip: "10.222.15.${static_ip}"
   modbus_address: 2
   topic_prefix: Eastron/${devicename}_${static_ip}/
