@@ -1,0 +1,26 @@
+---
+# IP networks, for WiFi and Ethernet alike: <prefix>.<static_ip>, gateway,
+# subnet; DNS = the gateway. ssid/password only matter for WiFi.
+substitutions:
+  networks:
+    Kasteel:
+      prefix: "10.222.15"
+      gateway: "10.222.14.138"
+      subnet: "255.255.254.0"
+      ssid: !secret wifi_ssid_IoT_Kasteel
+      password: !secret wifi_password_IoT_Kasteel
+    Outdoor:
+      prefix: "192.168.5"
+      gateway: "192.168.5.1"
+      subnet: "255.255.255.0"
+      ssid: !secret wifi_ssid_IoT_Outdoor
+      password: !secret wifi_password_IoT_Outdoor
+    TOSC:
+      prefix: "10.222.34"
+      gateway: "10.222.34.1"
+      subnet: "255.255.255.0"
+      ssid: !secret wifi_ssid_TOSC
+      password: !secret wifi_password_TOSC
+  # Default: the device's fixed IP. Override it in the device file when the
+  # device is reached at another address.
+  use_address: '${networks[network]["prefix"]}.${static_ip}'

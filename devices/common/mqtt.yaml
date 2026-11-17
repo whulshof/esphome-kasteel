@@ -1,6 +1,6 @@
 ---
 mqtt:
-  broker: 10.222.15.50
+  broker: ${mqtt_broker}
   topic_prefix: ${topic_prefix}
   discovery: ${mqtt_discovery}
   reboot_timeout: ${mqtt_reboot_timeout}

@@ -1,32 +1,56 @@
 ---
 # Defaults; a device file overrides them in its own substitutions.
 substitutions:
+  connection_type: wifi        # wifi | ethernet | serial (no network: USB or UART only)
   logger_level: INFO
   wireguard: "false"
   mqtt: "false"
   mqtt_discovery: "false"
+  mqtt_broker: 10.222.15.50
+  mqtt_reboot_timeout: 0s
+  topic_prefix: ${devicename}
 
 packages:
   board: !include ../boards/${board_type}.yaml
+
+  # Network: 'network' picks the IP network (devices/network/networks.yaml),
+  # 'connection_type' how the device gets onto it. Without 'network', or with
+  # connection_type serial, there is no network at all.
+  networks: !include ../network/networks.yaml
   wifi: !include
     file: ../wifi/wifi.yaml
-    condition: '${network is defined and network != ""}'
-  common: !include common.yaml # api, ota, logger
-  web: !include web_server_auth.yaml   # without login: 'web_server: auth: !remove' in the device
-  text_sensors: !include text_sensors.yaml
-  sensors: !include sensors.yaml # wifi_signal, uptime
-  binary_sensors: !include binary_sensors.yaml # connection status
+    condition: '${connection_type == "wifi" and network is defined and network != ""}'
+  ethernet_ip: !include
+    file: ../network/ethernet_ip.yaml
+    condition: '${connection_type == "ethernet" and network is defined and network != ""}'
+
+  logger: !include logger.yaml
+  switches: !include switches.yaml
+
+  # Network services: not with connection_type serial.
+  api: !include
+    file: api.yaml
+    condition: '${connection_type != "serial"}'
+  ota: !include
+    file: ota.yaml
+    condition: '${connection_type != "serial"}'
+  web: !include                # without login: 'web_server: auth: !remove' in the device
+    file: web_server_auth.yaml
+    condition: '${connection_type != "serial"}'
   wireguard_config: !include
     file: wireguard.yaml
-    condition: '${wireguard == "true"}'
+    condition: '${wireguard == "true" and connection_type != "serial"}'
   mqtt: !include
     file: mqtt.yaml
-    condition: '${mqtt == "true"}'
+    condition: '${mqtt == "true" and connection_type != "serial"}'
+
+  text_sensors: !include text_sensors.yaml
+  sensors: !include sensors.yaml # uptime
+  binary_sensors: !include       # connection status (needs a network)
+    file: binary_sensors.yaml
+    condition: '${connection_type != "serial"}'
 
 esphome:
   name: "${devicename}"
   name_add_mac_suffix: true
   comment: "${device_description} ${static_ip}"
-
-
-

@@ -1,0 +1,18 @@
+---
+# Fixed IP for an Ethernet device (connection_type: ethernet). The hardware
+# (type, pins) comes from the device file or its device package; ESPHome
+# merges both 'ethernet:' blocks.
+ethernet:
+  use_address: ${use_address}
+  manual_ip:
+    static_ip: '${networks[network]["prefix"]}.${static_ip}'
+    gateway: '${networks[network]["gateway"]}'
+    subnet: '${networks[network]["subnet"]}'
+    dns1: '${networks[network]["gateway"]}'
+
+text_sensor:
+  - platform: ethernet_info
+    ip_address:
+      name: "IP Address"
+    mac_address:
+      name: "Mac Ethernet Address"

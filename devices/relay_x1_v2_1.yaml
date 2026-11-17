@@ -1,4 +1,8 @@
 ---
+# Default; the device file overrides it.
+substitutions:
+  toggle: "false"   # "true": the relay switches off again after 400 ms (door opener)
+
 packages:
   common_includes: !include common/package_include.yaml
 
