@@ -1,0 +1,12 @@
+# ESP32-C6 coordinator on the UEXT of the Olimex ESP32-PoE
+# (zigbee-coordinator-esp32-c6.yaml, 10.222.15.61): NCP over UART, no network.
+# Zigbee2MQTT: serial: { port: "tcp://10.222.15.61:6638", adapter: zboss }
+
+substitutions:
+  devicename: "zb-coord-uart-01-"
+  friendly_name: "zigbee_coord_uart_01"
+  device_description: "Zigbee Coordinator UART 01 (Olimex)"
+  board_type: "esp32c6"
+
+packages:
+  device_base: !include devices/zigbee_coordinator_zboss_uart.yaml
