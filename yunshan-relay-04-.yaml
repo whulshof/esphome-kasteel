@@ -6,7 +6,6 @@ substitutions:
   new_ota_passwd: "<new_ota_password>"
 #  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
-  wifi_reboot_timeout: 60s
   static_ip: "132"
 
 packages:
