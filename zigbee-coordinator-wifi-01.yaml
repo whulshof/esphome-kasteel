@@ -8,7 +8,7 @@
 
 substitutions:
   # --- always ---
-  devicename: "zigbee-coord-wifi-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
+  devicename: "zb-coord-wifi-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
   friendly_name: "zigbee_coord_wifi_01"
   device_description: "Zigbee Coordinator Wifi 01"
   board_type: "esp32c6"                 # a file in devices/boards/: esp12e, d1_mini, esp01_1m,
@@ -39,7 +39,7 @@ substitutions:
   # --- device specific (whatever the device package below uses) ---
 
 packages:
-  device_base: !include devices/<device_package>.yaml
+  device_base: !include devices/zigbee_coordinator_zboss.yaml
 
 # Exceptions to the common packages, for example:
 # web_server:
