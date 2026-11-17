@@ -5,6 +5,7 @@ substitutions:
   static_ip: "xxx"
 #  api_reboot_timeout: 0s
 #  mqtt_reboot_timeout: 0s
+  wifi_reboot_timeout: 60s
 
 esphome:
   name: ${devicename}${static_ip}
