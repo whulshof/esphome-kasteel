@@ -8,16 +8,16 @@
 
 substitutions:
   # --- always ---
-  devicename: "my-device-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
-  friendly_name: "my_device_01"
-  device_description: "My device #1"
-  board_type: "esp12e"                 # a file in devices/boards/: esp12e, d1_mini, esp01_1m,
+  devicename: "zb-coord-eth-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
+  friendly_name: "zigbee_coord_eth_01"
+  device_description: "Zigbee Coordinator Ethernet 01"
+  board_type: "esp32c6"                 # a file in devices/boards/: esp12e, d1_mini, esp01_1m,
                                        # nodemcu32s, wemos_d1_mini32, esp32_c3, esp32c6, esp32-poe
   api_reboot_timeout: 0s               # 0s: keep running without Home Assistant
 
   # --- WiFi (leave 'network' out for an Ethernet device) ---
   network: "Kasteel"                   # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
-  static_ip: "123"                     # last part of the fixed IP
+  static_ip: "57"                     # last part of the fixed IP
   wifi_reboot_timeout: 60s
   # use_address: 10.222.15.123         # only if the device is reached at another address
 
@@ -39,7 +39,7 @@ substitutions:
   # --- device specific (whatever the device package below uses) ---
 
 packages:
-  device_base: !include devices/<device_package>.yaml
+  device_base: !include devices/zigbee_coordinator_zboss_eth.yaml
 
 # Exceptions to the common packages, for example:
 # web_server:
