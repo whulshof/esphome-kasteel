@@ -6,7 +6,6 @@ substitutions:
   api_reboot_timeout: 0s
   network: "Outdoor"
   static_ip: "131"
-  wifi_reboot_timeout: 60s
   logger_level: DEBUG
 
 packages:
