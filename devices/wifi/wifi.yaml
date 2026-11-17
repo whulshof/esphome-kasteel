@@ -1,4 +1,8 @@
 ---
+# Default; a device file overrides it.
+substitutions:
+  wifi_reboot_timeout: 60s
+
 wifi:
   reboot_timeout: ${wifi_reboot_timeout}
   ap:

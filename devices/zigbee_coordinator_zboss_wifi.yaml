@@ -1,0 +1,6 @@
+---
+# Only with connection_type wifi (see zigbee_coordinator_zboss.yaml):
+# an access point cannot share the radio with Zigbee.
+wifi:
+  ap: !remove
+captive_portal: !remove

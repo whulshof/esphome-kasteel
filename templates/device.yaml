@@ -2,9 +2,11 @@
 # device files) as <devicename>.yaml and fill it in. It lives in templates/
 # so the ESPHome Device Builder does not list it as a device.
 #
-# Defaults (devices/common/package_include.yaml, devices/wifi/wifi.yaml):
-#   logger_level INFO, wireguard "false", mqtt "false", mqtt_discovery "false",
-#   use_address = <network prefix>.<static_ip>, web server with login.
+# Defaults (devices/common/package_include.yaml, devices/network/networks.yaml):
+#   connection_type wifi, logger_level INFO, wireguard "false", mqtt "false",
+#   mqtt_discovery "false", mqtt_broker 10.222.15.50, mqtt_reboot_timeout 0s,
+#   topic_prefix = devicename, wifi_reboot_timeout 60s, use_address = <network prefix>.<static_ip>,
+#   web server with login.
 
 substitutions:
   # --- always ---
@@ -15,18 +17,18 @@ substitutions:
                                        # nodemcu32s, wemos_d1_mini32, esp32_c3, esp32c6, esp32-poe
   api_reboot_timeout: 0s               # 0s: keep running without Home Assistant
 
-  # --- WiFi (leave 'network' out for an Ethernet device) ---
-  network: "Kasteel"                   # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
-  static_ip: "123"                     # last part of the fixed IP
-  wifi_reboot_timeout: 60s
+  # --- network ---
+  # connection_type: ethernet          # wifi (default) | ethernet | serial (no network: USB/UART)
+  network: "Kasteel"                   # Kasteel, Outdoor or TOSC (devices/network/networks.yaml)
+  static_ip: "123"                     # last part of the fixed IP (WiFi and Ethernet)
+  # wifi_reboot_timeout: 60s           # WiFi only; 60s is the default
   # use_address: 10.222.15.123         # only if the device is reached at another address
 
   # --- optional, defaults above ---
   # logger_level: DEBUG
 
   # mqtt: "true"
-  # mqtt_discovery: "false"
-  # mqtt_reboot_timeout: 0s
+  # mqtt_discovery: "true"
   # topic_prefix: my/${devicename}_${static_ip}/
 
   # wireguard: "true"
@@ -45,3 +47,9 @@ packages:
 # web_server:
 #   auth: !remove          # no login (e.g. receives http_requests)
 # status_led: !remove      # the board's LED pin is used for something else
+#
+# Ethernet: the hardware goes here or in the device package, e.g. a W5500:
+# ethernet:
+#   type: W5500
+#   clk_pin: GPIO19
+#   ...

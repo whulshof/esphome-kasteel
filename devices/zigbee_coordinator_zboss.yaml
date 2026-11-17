@@ -1,0 +1,61 @@
+---
+# ESP32-C6 as a Zigbee coordinator: tostmann/esp-coordinator's ZBOSS NCP as an
+# ESPHome component (PR #21, branch whulshof/esp-coordinator:esphome).
+# Zigbee2MQTT:  serial: { port: "tcp://<ip>:6638", adapter: zboss }
+# ZHA:          socket://<ip>:6638, radio type ZBOSS (zigpy-zboss)
+#
+# WiFi by default; zigbee_coordinator_zboss_eth.yaml adds a W5500.
+# The component turns WiFi power save and roaming scans off and refuses
+# 'wifi: ap:': with WiFi, zigbee_coordinator_zboss_wifi.yaml removes the AP
+# and captive_portal from wifi.yaml.
+
+substitutions:
+  connection_type: wifi   # default; the _eth package sets ethernet
+
+packages:
+  common_includes: !include common/package_include.yaml
+  no_access_point: !include
+    file: zigbee_coordinator_zboss_wifi.yaml
+    condition: '${connection_type == "wifi"}'
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/whulshof/esp-coordinator
+      ref: esphome
+      path: esphome/components
+    components: [zboss_ncp]
+    refresh: 0s          # always the latest commit of the PR
+
+# The service the wifi-coex firmware announces (ZHA discovery).
+mdns:
+  services:
+    - service: _zigbee-coordinator
+      protocol: _tcp
+      port: 6638
+      txt:
+        radio_type: zboss
+        version: "1"
+
+zboss_ncp:
+  port: 6638
+  # Only the Zigbee2MQTT/ZHA host may open the NCP port (the protocol itself
+  # has no authentication).
+  allowed_ips:
+    - 10.222.15.22/32
+  antenna:                 # Seeed XIAO ESP32-C6: on-board / external (U.FL), saved
+    name: Antenna
+  channel:
+    name: Zigbee channel
+  pan_id:
+    name: Zigbee PAN ID
+  extended_pan_id:
+    name: Zigbee extended PAN ID
+  firmware_version:
+    name: NCP firmware
+  host_connected:
+    name: Zigbee host connected
+  network_lost:
+    name: Zigbee network lost
+  safe_mode:
+    name: NCP safe mode
