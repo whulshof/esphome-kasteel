@@ -1,0 +1,25 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+
+switch:
+  - platform: gpio
+    name: "${friendly_name}zone_5"
+    icon: "mdi:remote"
+    pin: GPIO16
+    id: ${friendly_name}zone_5
+  - platform: gpio
+    name: "${friendly_name}zone_6"
+    icon: "mdi:remote"
+    pin: GPIO14
+    id: ${friendly_name}zone_6
+  - platform: gpio
+    name: "${friendly_name}zone_7"
+    icon: "mdi:remote"
+    pin: GPIO12
+    id: ${friendly_name}zone_7
+  - platform: gpio
+    name: "${friendly_name}zone_8"
+    icon: "mdi:remote"
+    pin: GPIO13
+    id: ${friendly_name}zone_8

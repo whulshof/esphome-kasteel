@@ -1,0 +1,95 @@
+---
+packages:
+  common_includes: !include common/package_include.yaml
+
+switch:
+  - platform: "tuya"
+    name: "Power"
+    switch_datapoint: 16
+    icon: "mdi:power"
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+  #parity: EVEN
+
+external_components:
+#  - source: github://dentra/esphome@tuya-raw-fix-standalone
+#    components: ["tuya"]
+  - source: github://dentra/esphome-components
+    components: [energy_monitoring, energy_statistics]  # alleen deze: de repo levert ook een eigen 'json' die ESPHome 2026.10 breekt
+
+# Example configuration entry
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+# Register the Tuya MCU connection
+tuya:
+  on_datapoint_update:
+    - sensor_datapoint: 6
+      datapoint_type: raw
+      then:
+        - lambda: |-
+            id(voltage).publish_state((x[0] << 8 | x[1]) * 0.1);
+            id(current).publish_state((x[3] << 8 | x[4]) * 0.001);
+            id(power).publish_state((x[6] << 8 | x[7]));
+
+sensor:
+  # total
+  - platform: "tuya"
+    id: total
+    name: "$friendly_name Energy Total"
+    sensor_datapoint: 1
+    accuracy_decimals: 3
+    filters:
+      - multiply: 0.01
+    unit_of_measurement: "kWh"
+    icon: "mdi:sigma"
+    device_class: "energy"
+    state_class: total_increasing
+  # voltage
+  - platform: template
+    id: voltage
+    name: "$friendly_name Voltage"
+    unit_of_measurement: "V"
+    icon: "mdi:sine-wave"
+    device_class: "voltage"
+    state_class: measurement
+  # current
+  - platform: template
+    id: current
+    name: "$friendly_name Current"
+    unit_of_measurement: "A"
+    icon: "mdi:current-ac"
+    device_class: "current"
+    state_class: measurement
+  # active power
+  - platform: template
+    id: power
+    name: "$friendly_name Active Power"
+    unit_of_measurement: "W"
+    accuracy_decimals: 0
+    icon: "mdi:flash"
+    device_class: "power"
+    state_class: measurement
+  # energy_monitoring
+  - platform: "energy_monitoring"
+    power: power
+    voltage: voltage
+    current: current
+    apparent_power:
+      name: "$friendly_name Apparent Power"
+    reactive_power:
+      name: "$friendly_name Reactive Power"
+    power_factor:
+      name: "$friendly_name Power Factor"
+      
+  - platform: "energy_statistics"
+    id: stat
+    total: total
+    #save_to_flash_interval: 600s
+    energy_today:
+      id: today
+      name: "$friendly_name Energy Today"
