@@ -1,0 +1,33 @@
+---
+# ESP32-C6 as a Zigbee coordinator with the NCP on UART1 and no network
+# (connection_type serial): for example on the UEXT connector of an Olimex
+# ESP32-PoE that passes the UART on to TCP (stream_server,
+# zigbee-coordinator-esp32-c6.yaml).
+#   Zigbee2MQTT:  serial: { port: "tcp://<bridge ip>:6638", adapter: zboss }
+# Wiring: C6 TX (GPIO22, XIAO D4) to the bridge's RX, C6 RX (GPIO23, XIAO D5)
+# to its TX, GND to GND; 3.3 V logic, 115200 baud 8N1.
+# No network: no API, OTA or web page; update over USB (Device Builder:
+# Install > Plug into this computer, or esptool with the factory image).
+# The radio is Zigbee's alone (no WiFi coexistence).
+
+substitutions:
+  connection_type: serial
+  zboss_ref: esphome-followup   # NCP without a network: esp-coordinator PR #22
+  ncp_uart_tx: GPIO22
+  ncp_uart_rx: GPIO23
+
+packages:
+  zboss: !include zigbee_coordinator_zboss.yaml
+
+mdns: !remove              # no network
+
+logger:
+  baud_rate: 115200        # log over USB (USB-Serial/JTAG): the only log without a network
+
+zboss_ncp:
+  uart:
+    tx_pin: ${ncp_uart_tx}
+    rx_pin: ${ncp_uart_rx}
+    baud_rate: 115200
+  allowed_ips: !remove     # the TCP port stays closed without a network
+  antenna: !remove         # changing it needs the API or the web page

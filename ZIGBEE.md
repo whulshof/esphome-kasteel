@@ -22,6 +22,18 @@ ESPHome configs: `zigbee-coordinator-wifi-01.yaml`, `zigbee-coordinator-eth-01.y
 esp-coordinator PR #21), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
 (package `devices/tubeszb_cc2652p7_poe_2023.yaml`).
 
+Spare: `zigbee-coordinator-uart-01.yaml` (ESP32-C6, MAC 58:e6:c5:0f:4c:30, the
+former tostmann-firmware C6 of the Olimex), package
+`devices/zigbee_coordinator_zboss_uart.yaml`: the NCP on UART1 (GPIO22 TX,
+GPIO23 RX, 115200), `connection_type: serial`, no network. It sits on the
+UEXT of the Olimex ESP32-PoE (`zigbee-coordinator-esp32-c6.yaml`,
+10.222.15.61), which passes the UART on to TCP: Zigbee2MQTT
+`port: tcp://10.222.15.61:6638`, `adapter: zboss`. No OTA, API or web page;
+update over USB, log over USB. Needs the component from PR #22 (branch
+`esphome-followup`, substitution `zboss_ref`). Tested 2026-11-17 over a
+USB-serial adapter: Zigbee2MQTT formed and resumed a network over the UART;
+no network on it yet (Zigbee factory-new).
+
 ## Steps
 
 | # | What | Status |

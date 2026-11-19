@@ -10,7 +10,8 @@
 # and captive_portal from wifi.yaml.
 
 substitutions:
-  connection_type: wifi   # default; the _eth package sets ethernet
+  connection_type: wifi   # default; the _eth package sets ethernet, _uart serial
+  zboss_ref: esphome      # branch of whulshof/esp-coordinator (PR #21)
 
 packages:
   common_includes: !include common/package_include.yaml
@@ -22,7 +23,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/whulshof/esp-coordinator
-      ref: esphome
+      ref: ${zboss_ref}
       path: esphome/components
     components: [zboss_ncp]
     refresh: 0s          # always the latest commit of the PR
