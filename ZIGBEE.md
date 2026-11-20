@@ -24,15 +24,45 @@ esp-coordinator PR #21), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
 
 Spare: `zigbee-coordinator-uart-01.yaml` (ESP32-C6, MAC 58:e6:c5:0f:4c:30, the
 former tostmann-firmware C6 of the Olimex), package
-`devices/zigbee_coordinator_zboss_uart.yaml`: the NCP on UART1 (GPIO22 TX,
-GPIO23 RX, 115200), `connection_type: serial`, no network. It sits on the
-UEXT of the Olimex ESP32-PoE (`zigbee-coordinator-esp32-c6.yaml`,
-10.222.15.61), which passes the UART on to TCP: Zigbee2MQTT
-`port: tcp://10.222.15.61:6638`, `adapter: zboss`. No OTA, API or web page;
-update over USB, log over USB. Needs the component from PR #22 (branch
-`esphome-followup`, substitution `zboss_ref`). Tested 2026-11-17 over a
-USB-serial adapter: Zigbee2MQTT formed and resumed a network over the UART;
-no network on it yet (Zigbee factory-new).
+`devices/zigbee_coordinator_zboss_uart.yaml`: the NCP on UART1, on UART0's
+pins (GPIO16 TX = XIAO D6, GPIO17 RX = D7, 115200), `connection_type: serial`,
+no network. It sits on the UEXT of the Olimex ESP32-PoE
+(`zigbee-coordinator-esp32-c6.yaml`, 10.222.15.61), which passes the UART on
+to TCP: Zigbee2MQTT `port: tcp://10.222.15.61:6638`, `adapter: zboss`. No
+OTA, API or web page; log over USB. Needs the component from PR #22 (branch
+`esphome-followup`, substitution `zboss_ref`).
+
+Wiring: UEXT 3 (GPIO4, TX) to D7, UEXT 4 (GPIO36, RX) to D6, UEXT 5 (GPIO16)
+to D2 (download line), UEXT 1/2 to 3V3/GND.
+
+Update the C6 without USB, from the Olimex (component
+`external_components/my_components/c6_flasher`, Espressif's
+esp-serial-flasher; the method of the TubesZB flasher):
+
+1. Compile `zigbee-coordinator-uart-01.yaml` (Device Builder).
+2. `tools/publish_c6_firmware.sh`: puts the factory image on GitHub as asset
+   of release `uart-01` (public; it refuses an image with a secret in it).
+3. Olimex button "Update C6": downloads the image, pulls D2 low (the C6
+   reboots into the ROM loader), writes and verifies it, and resets the C6
+   with its watchdog. About 1.5 minutes; state in the sensor "C6 update".
+   The bridge pauses meanwhile, Zigbee2MQTT reconnects by itself. The Zigbee
+   network stays.
+
+A failed download leaves the C6 untouched; a failure while writing leaves it
+in download mode: press "Update C6" again. From a PC instead: button "C6
+download mode", stop Zigbee2MQTT, then
+`tools/flash_c6_over_uart.py socket://10.222.15.61:6638 firmware.factory.bin`.
+If the C6 does not answer in download mode: hold BOOT (B), tap RESET (R),
+release BOOT, update again.
+
+The reboot into download mode must be a system reset
+(`devices/include/c6_download_mode.h`): `esp_restart()` is a CPU reset on the
+C6, which keeps the NCP's pin routing, and then the ROM does not hear GPIO17.
+
+Tested 2026-11-20 on the Olimex: Zigbee2MQTT resumed a network through
+tcp://10.222.15.61:6638; "Update C6" fetched the release asset and wrote
+794320 bytes in 85 s, verified, after which Zigbee2MQTT resumed; the PC
+route (41 s) as well. Not tested: an interrupted download or write.
 
 ## Steps
 

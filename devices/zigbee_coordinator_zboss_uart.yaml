@@ -4,17 +4,28 @@
 # ESP32-PoE that passes the UART on to TCP (stream_server,
 # zigbee-coordinator-esp32-c6.yaml).
 #   Zigbee2MQTT:  serial: { port: "tcp://<bridge ip>:6638", adapter: zboss }
-# Wiring: C6 TX (GPIO22, XIAO D4) to the bridge's RX, C6 RX (GPIO23, XIAO D5)
-# to its TX, GND to GND; 3.3 V logic, 115200 baud 8N1.
-# No network: no API, OTA or web page; update over USB (Device Builder:
-# Install > Plug into this computer, or esptool with the factory image).
+# Wiring (3.3 V logic, 115200 baud 8N1):
+#   C6 TX  GPIO16 (XIAO D6)  ->  bridge RX   (Olimex UEXT 4, GPIO36)
+#   C6 RX  GPIO17 (XIAO D7)  <-  bridge TX   (Olimex UEXT 3, GPIO4)
+#   C6     GPIO2  (XIAO D2)  <-  download line (Olimex UEXT 5, GPIO16)
+#   GND to GND
+# GPIO16/17 are UART0's pins, where the ROM bootloader listens: the same two
+# wires carry the NCP and a firmware update. The download line held low for
+# 2 s reboots the C6 into the ROM's download mode (no EN or BOOT wire needed,
+# those are not on the XIAO's header); then, with Zigbee2MQTT stopped (the
+# bridge takes one client):
+#   tools/flash_c6_over_uart.py socket://<bridge ip>:6638 firmware.factory.bin
+# It writes the image and resets the C6 with its watchdog (esptool alone
+# cannot leave download mode over TCP). The Zigbee network stays. USB works too.
+# No network: no API, OTA or web page.
 # The radio is Zigbee's alone (no WiFi coexistence).
 
 substitutions:
   connection_type: serial
   zboss_ref: esphome-followup   # NCP without a network: esp-coordinator PR #22
-  ncp_uart_tx: GPIO22
-  ncp_uart_rx: GPIO23
+  ncp_uart_tx: GPIO16       # XIAO D6, UART0 TX: also the ROM's download port
+  ncp_uart_rx: GPIO17       # XIAO D7, UART0 RX
+  download_pin: GPIO2       # XIAO D2: held low 2 s = reboot into download mode
 
 packages:
   zboss: !include zigbee_coordinator_zboss.yaml
@@ -31,3 +42,28 @@ zboss_ncp:
     baud_rate: 115200
   allowed_ips: !remove     # the TCP port stays closed without a network
   antenna: !remove         # changing it needs the API or the web page
+
+# Reboot into the ROM's UART download mode on request of the bridge
+# (devices/include/c6_download_mode.h: LP_AON_FORCE_DOWNLOAD_BOOT plus a
+# system reset).
+esphome:
+  includes:
+    - devices/include/c6_download_mode.h
+
+binary_sensor:
+  - platform: gpio
+    id: download_request
+    internal: true
+    pin:
+      number: ${download_pin}
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    filters:
+      - delayed_on: 2s
+    on_press:
+      - logger.log:
+          level: WARN
+          format: "Download line low: rebooting into the ROM download mode"
+      - lambda: c6_reboot_into_download_mode();

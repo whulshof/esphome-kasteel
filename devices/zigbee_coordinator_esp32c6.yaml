@@ -4,6 +4,10 @@ packages:
 external_components:
   - source: github://tube0013/esphome-components
     components: [stream_server]
+  - source:
+      type: local
+      path: ../external_components/my_components
+    components: [c6_flasher]
 
 ethernet:
   type: LAN8720
@@ -22,7 +26,11 @@ ethernet:
     subnet: 255.255.254.0
     dns1: 10.222.14.138
 
-# Seriële aansluiting op UEXT
+# Seriële aansluiting op UEXT (C6: zigbee_coordinator_zboss_uart.yaml)
+#   UEXT 3  GPIO4   TX            -> C6 GPIO17 (XIAO D7)
+#   UEXT 4  GPIO36  RX            <- C6 GPIO16 (XIAO D6)
+#   UEXT 5  GPIO16  download line -> C6 GPIO2  (XIAO D2)
+#   UEXT 1/2 3.3 V / GND
 uart:
   id: zigbee_uart
   tx_pin: GPIO4
@@ -33,6 +41,43 @@ uart:
 
 
 stream_server:
+  id: zigbee_bridge
   uart_id: zigbee_uart
   port: 6638
-  buffer_size: 1024
+
+# Update the C6 from here, without USB (external_components/my_components/
+# c6_flasher, Espressif's esp-serial-flasher): "Update C6" downloads the
+# factory image from c6_firmware_url, pulls the download line low (open
+# drain; the C6 reboots into its ROM download mode), writes and verifies the
+# image over the UART and resets the C6 with its watchdog. The bridge on port
+# 6638 pauses meanwhile; Zigbee2MQTT reconnects by itself. About 1.5 minutes.
+# Publish a build with tools/publish_c6_firmware.sh.
+# "C6 download mode" only pulls the line, to flash from a PC through port
+# 6638 with tools/flash_c6_over_uart.py.
+c6_flasher:
+  id: c6_update
+  uart_id: zigbee_uart
+  stream_server_id: zigbee_bridge
+  url: ${c6_firmware_url}
+  download_pin:
+    number: GPIO16
+    mode:
+      output: true
+      open_drain: true
+    inverted: true
+  status:
+    name: "C6 update"
+
+button:
+  - platform: template
+    name: "Update C6"
+    icon: mdi:chip
+    entity_category: config
+    on_press:
+      - c6_flasher.update: c6_update
+  - platform: template
+    name: "C6 download mode"
+    icon: mdi:download
+    entity_category: config
+    on_press:
+      - c6_flasher.download_mode: c6_update
