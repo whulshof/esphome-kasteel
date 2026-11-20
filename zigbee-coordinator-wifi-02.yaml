@@ -38,7 +38,7 @@ substitutions:
   # --- device specific (whatever the device package below uses) ---
 
 packages:
-  device_base: !include devices/zigbee_coordinator_zboss_signal.yaml
+  device_base: !include devices/zigbee_coordinator_zboss.yaml
 
 # Exceptions to the common packages, for example:
 # web_server:
