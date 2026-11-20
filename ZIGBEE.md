@@ -27,7 +27,7 @@ former tostmann-firmware C6 of the Olimex), package
 `devices/zigbee_coordinator_zboss_uart.yaml`: the NCP on UART1, on UART0's
 pins (GPIO16 TX = XIAO D6, GPIO17 RX = D7, 115200), `connection_type: serial`,
 no network. It sits on the UEXT of the Olimex ESP32-PoE
-(`zigbee-coordinator-esp32-c6.yaml`, 10.222.15.61), which passes the UART on
+(`zigbee-coordinator-uart-host-01.yaml`, 10.222.15.61), which passes the UART on
 to TCP: Zigbee2MQTT `port: tcp://10.222.15.61:6638`, `adapter: zboss`. No
 OTA, API or web page; log over USB. Needs the component from PR #22 (branch
 `esphome-followup`, substitution `zboss_ref`).
