@@ -5,16 +5,21 @@ network key (all `GENERATE`d once by Zigbee2MQTT) and its own channel. Channels
 15, 20 and 25 stay clear of WiFi channels 1, 6 and 11, whichever of those UniFi
 picks. Zigbee2MQTT runs on 10.222.15.22 (MQTT base topic `zigbee2mqttN`).
 
-## Networks (2026-11-17)
+## Networks (2026-11-20)
 
 | z2m | Coordinator | IP | Place | Channel | PAN id | Extended PAN id | Z2M image |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | z2m1 | `wifi-01` (XIAO ESP32-C6, the former .63) | 192.168.5.28 (Outdoor) | loods 3 | 20 | 0x4DD9 | 54:6a:15:6c:81:56:33:41 | tostmann (required with WiFi) |
-| z2m3 | `eth-01` (XIAO ESP32-C6 + W5500) | 10.222.15.29 | loods 2 | 15 | 0xE2F6 | a9:ef:15:62:4e:54:26:5a | standard (tostmann possible) |
-| z2m4 | TubesZB 2023-01 | 10.222.15.62 | house | 25 | 0x845C | 81:2c:ca:3d:99:c2:f3:b0 | standard |
-| z2m2 | – | – | – | – | – | – | stopped |
+| z2m2 | `wifi-02` (XIAO ESP32-C6, MAC 58:e6:c5:0f:4b:20) | 10.222.15.37 | desk (testing) | 15 | ? | ? | tostmann (required with WiFi) |
+| z2m3 | `eth-01` (XIAO ESP32-C6 + W5500) | 10.222.15.29 | desk (testing; meant for loods 2) | 15 | 0xE2F6 | a9:ef:15:62:4e:54:26:5a | standard (tostmann possible) |
+| z2m4 | TubesZB 2023-01 | 10.222.15.62 | house, cellar | 25 | 0x845C | 81:2c:ca:3d:99:c2:f3:b0 | standard |
+| – | `uart-01` on the Olimex (`uart-host-01`) | 10.222.15.61 | desk (testing) | 20 | 0xE5A7 (test network) | – | no z2m yet |
 
-All three have their own generated network key. The TubesZB 2023-02 in loods 3
+z2m2 and z2m3 share channel 15 while both lie on the desk; one switch (moved
+from eth-01) is on wifi-02. Before a coordinator goes to its place, give its
+network a channel of its own there.
+
+Each z2m has its own generated network key. The TubesZB 2023-02 in loods 3
 (192.168.5.112) is off duty: see below.
 
 ESPHome configs: `zigbee-coordinator-wifi-01.yaml`, `zigbee-coordinator-eth-01.yaml`
