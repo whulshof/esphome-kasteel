@@ -17,15 +17,19 @@
 #   tools/flash_c6_over_uart.py socket://<bridge ip>:6638 firmware.factory.bin
 # It writes the image and resets the C6 with its watchdog (esptool alone
 # cannot leave download mode over TCP). The Zigbee network stays. USB works too.
-# No network: no API, OTA or web page.
+# No network: no API, OTA or web page. The sensors go out as a line of text
+# on a second UART instead (status_uart_tx, XIAO D4 -> Olimex UEXT 6), once a
+# minute, and the bridge turns them into its own sensors
+# (zigbee_coordinator_uart_host.yaml):
+#   ZB;rssi=-63;rssi_min=-64;lqi=87;frames=8;channel=15;pan=0x1A2B;lost=0;fw=1.5.0.81
 # The radio is Zigbee's alone (no WiFi coexistence).
 
 substitutions:
   connection_type: serial
-  zboss_ref: esphome-followup   # NCP without a network: esp-coordinator PR #22
   ncp_uart_tx: GPIO16       # XIAO D6, UART0 TX: also the ROM's download port
   ncp_uart_rx: GPIO17       # XIAO D7, UART0 RX
   download_pin: GPIO2       # XIAO D2: held low 2 s = reboot into download mode
+  status_uart_tx: GPIO22    # XIAO D4: the status line, 9600 baud
 
 packages:
   zboss: !include zigbee_coordinator_zboss.yaml
@@ -35,11 +39,27 @@ mdns: !remove              # no network
 logger:
   baud_rate: 115200        # log over USB (USB-Serial/JTAG): the only log without a network
 
+# The status line. The NCP has UART1 and the log goes over USB, so this is UART0
+# (on another pin than its default GPIO16, which the NCP uses).
+uart:
+  id: status_uart
+  tx_pin: ${status_uart_tx}
+  baud_rate: 9600
+
 zboss_ncp:
   uart:
     tx_pin: ${ncp_uart_tx}
     rx_pin: ${ncp_uart_rx}
     baud_rate: 115200
+  lqi:
+    # The last sensor of each one-minute signal window: send the line then.
+    on_raw_value:
+      - lambda: |-
+          char line[160];
+          snprintf(line, sizeof(line), "ZB;rssi=%.0f;rssi_min=%.0f;lqi=%.0f;frames=%.0f;channel=%.0f;pan=%s;lost=%d;fw=%s\n",
+                   id(zb_rssi).state, id(zb_rssi_min).state, x, id(zb_rx_frames).state, id(zb_channel).state,
+                   id(zb_pan_id).state.c_str(), id(zb_network_lost).state ? 1 : 0, id(zb_firmware).state.c_str());
+          id(status_uart).write_str(line);
   allowed_ips: !remove     # the TCP port stays closed without a network
   antenna: !remove         # changing it needs the API or the web page
 

@@ -30,13 +30,60 @@ ethernet:
 #   UEXT 3  GPIO4   TX            -> C6 GPIO17 (XIAO D7)
 #   UEXT 4  GPIO36  RX            <- C6 GPIO16 (XIAO D6)
 #   UEXT 5  GPIO16  download line -> C6 GPIO2  (XIAO D2)
+#   UEXT 6  GPIO13  status line   <- C6 GPIO22 (XIAO D4)
 #   UEXT 1/2 3.3 V / GND
 uart:
-  id: zigbee_uart
-  tx_pin: GPIO4
-  rx_pin: GPIO36
-  baud_rate: 115200
-  rx_buffer_size: 1024
+  - id: zigbee_uart
+    tx_pin: GPIO4
+    rx_pin: GPIO36
+    baud_rate: 115200
+    rx_buffer_size: 1024
+  # The C6's status line (see the sensors at the end of this file).
+  - id: c6_status_uart
+    rx_pin: GPIO13
+    baud_rate: 9600
+    debug:
+      direction: RX
+      dummy_receiver: true
+      after:
+        delimiter: "\n"
+      sequence:
+        - lambda: |-
+            std::string line(bytes.begin(), bytes.end());
+            if (line.rfind("ZB;", 0) != 0)
+              return;
+            size_t pos = 3;
+            while (pos < line.size()) {
+              size_t end = line.find(';', pos);
+              if (end == std::string::npos)
+                end = line.size();
+              std::string item = line.substr(pos, end - pos);
+              pos = end + 1;
+              size_t eq = item.find('=');
+              if (eq == std::string::npos)
+                continue;
+              std::string key = item.substr(0, eq);
+              std::string value = item.substr(eq + 1);
+              while (!value.empty() && (value.back() == '\n' || value.back() == '\r'))
+                value.pop_back();
+              if (key == "rssi") {
+                id(c6_zb_rssi).publish_state(strtof(value.c_str(), nullptr));
+              } else if (key == "rssi_min") {
+                id(c6_zb_rssi_min).publish_state(strtof(value.c_str(), nullptr));
+              } else if (key == "lqi") {
+                id(c6_zb_lqi).publish_state(strtof(value.c_str(), nullptr));
+              } else if (key == "frames") {
+                id(c6_zb_frames).publish_state(strtof(value.c_str(), nullptr));
+              } else if (key == "channel") {
+                id(c6_zb_channel).publish_state(strtof(value.c_str(), nullptr));
+              } else if (key == "pan") {
+                id(c6_zb_pan).publish_state(value);
+              } else if (key == "fw") {
+                id(c6_firmware).publish_state(value);
+              } else if (key == "lost") {
+                id(c6_zb_lost).publish_state(value == "1");
+              }
+            }
 
 
 
@@ -81,3 +128,76 @@ button:
     entity_category: config
     on_press:
       - c6_flasher.download_mode: c6_update
+
+# The C6's sensors: it has no network, so it sends them once a minute as a
+# line of text on a second UART (see zigbee_coordinator_zboss_uart.yaml):
+#   ZB;rssi=-63;rssi_min=-64;lqi=87;frames=8;channel=15;pan=0x1A2B;lost=0;fw=1.5.0.81
+# The signal values are unknown ("nan") in a minute without frames, and all
+# of them after 3 minutes without a line.
+
+sensor:
+  - platform: template
+    id: c6_zb_rssi
+    name: Zigbee RSSI
+    unit_of_measurement: dBm
+    device_class: signal_strength
+    state_class: measurement
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    filters:
+      - timeout: 3min
+  - platform: template
+    id: c6_zb_rssi_min
+    name: Zigbee RSSI weakest
+    unit_of_measurement: dBm
+    device_class: signal_strength
+    state_class: measurement
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    filters:
+      - timeout: 3min
+  - platform: template
+    id: c6_zb_lqi
+    name: Zigbee LQI
+    icon: mdi:signal
+    state_class: measurement
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    filters:
+      - timeout: 3min
+  - platform: template
+    id: c6_zb_frames
+    name: Zigbee frames received
+    icon: mdi:message-arrow-left
+    state_class: measurement
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    filters:
+      - timeout: 3min
+  - platform: template
+    id: c6_zb_channel
+    name: Zigbee channel
+    icon: mdi:zigbee
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    filters:
+      - timeout: 3min
+
+text_sensor:
+  - platform: template
+    id: c6_zb_pan
+    name: Zigbee PAN ID
+    icon: mdi:zigbee
+    entity_category: diagnostic
+  - platform: template
+    id: c6_firmware
+    name: C6 NCP firmware
+    icon: mdi:chip
+    entity_category: diagnostic
+
+binary_sensor:
+  - platform: template
+    id: c6_zb_lost
+    name: Zigbee network lost
+    device_class: problem
+    entity_category: diagnostic

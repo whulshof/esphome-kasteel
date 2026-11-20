@@ -11,7 +11,10 @@
 
 substitutions:
   connection_type: wifi   # default; the _eth package sets ethernet, _uart serial
-  zboss_ref: esphome      # branch of whulshof/esp-coordinator (PR #21)
+  # Branch of whulshof/esp-coordinator: PR #21 (merged upstream) plus PR #22
+  # (NCP over UART without a network, reboots through ESPHome) plus the signal
+  # sensors, which are in no PR yet.
+  zboss_ref: esphome-signal
 
 packages:
   common_includes: !include common/package_include.yaml
@@ -47,16 +50,36 @@ zboss_ncp:
   antenna:                 # Seeed XIAO ESP32-C6: on-board / external (U.FL), saved
     name: Antenna
   channel:
+    id: zb_channel
     name: Zigbee channel
+  # Signal of the Zigbee frames received in the last minute (the last hop
+  # into the coordinator, whoever sent it): shows the effect of an antenna or
+  # a place, as "WiFi Signal" does for WiFi. The mix of senders varies, so
+  # compare a few minutes. Unknown while nothing came in.
+  rssi:
+    id: zb_rssi
+    name: Zigbee RSSI
+  rssi_min:
+    id: zb_rssi_min
+    name: Zigbee RSSI weakest
+  lqi:
+    id: zb_lqi
+    name: Zigbee LQI
+  rx_frames:
+    id: zb_rx_frames
+    name: Zigbee frames received
   pan_id:
+    id: zb_pan_id
     name: Zigbee PAN ID
   extended_pan_id:
     name: Zigbee extended PAN ID
   firmware_version:
+    id: zb_firmware
     name: NCP firmware
   host_connected:
     name: Zigbee host connected
   network_lost:
+    id: zb_network_lost
     name: Zigbee network lost
   safe_mode:
     name: NCP safe mode

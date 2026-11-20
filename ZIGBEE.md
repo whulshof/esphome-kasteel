@@ -18,9 +18,16 @@ All three have their own generated network key. The TubesZB 2023-02 in loods 3
 (192.168.5.112) is off duty: see below.
 
 ESPHome configs: `zigbee-coordinator-wifi-01.yaml`, `zigbee-coordinator-eth-01.yaml`
-(package `devices/zigbee_coordinator_zboss*.yaml`, component from
-esp-coordinator PR #21), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
+(package `devices/zigbee_coordinator_zboss*.yaml`), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
 (package `devices/tubeszb_cc2652p7_poe_2023.yaml`).
+
+The component comes from the branch `esphome-signal` of
+whulshof/esp-coordinator (substitution `zboss_ref`): PR #21 (merged upstream
+2026-11-17), PR #22 (open) and the signal sensors (no PR yet). Those show
+the Zigbee frames received in the last minute: "Zigbee RSSI" (average, dBm),
+"Zigbee RSSI weakest", "Zigbee LQI" and "Zigbee frames received"; first seen
+on wifi-02 on 2026-11-20 (-63 dBm, LQI 87). An in-use coordinator gets them
+with its next build.
 
 Spare: `zigbee-coordinator-uart-01.yaml` (ESP32-C6, MAC 58:e6:c5:0f:4c:30, the
 former tostmann-firmware C6 of the Olimex), package
@@ -29,11 +36,14 @@ pins (GPIO16 TX = XIAO D6, GPIO17 RX = D7, 115200), `connection_type: serial`,
 no network. It sits on the UEXT of the Olimex ESP32-PoE
 (`zigbee-coordinator-uart-host-01.yaml`, 10.222.15.61), which passes the UART on
 to TCP: Zigbee2MQTT `port: tcp://10.222.15.61:6638`, `adapter: zboss`. No
-OTA, API or web page; log over USB. Needs the component from PR #22 (branch
-`esphome-followup`, substitution `zboss_ref`).
+OTA, API or web page; log over USB. Its sensors go once a minute as a line
+of text over a second UART (XIAO D4, 9600 baud) to the Olimex, which shows
+them as its own: Zigbee RSSI, RSSI weakest, LQI, frames received, channel,
+PAN ID, network lost and the C6's firmware version.
 
 Wiring: UEXT 3 (GPIO4, TX) to D7, UEXT 4 (GPIO36, RX) to D6, UEXT 5 (GPIO16)
-to D2 (download line), UEXT 1/2 to 3V3/GND.
+to D2 (download line), UEXT 6 (GPIO13) to D4 (status line), UEXT 1/2 to
+3V3/GND.
 
 Update the C6 without USB, from the Olimex (component
 `external_components/my_components/c6_flasher`, Espressif's
@@ -63,6 +73,8 @@ Tested 2026-11-20 on the Olimex: Zigbee2MQTT resumed a network through
 tcp://10.222.15.61:6638; "Update C6" fetched the release asset and wrote
 794320 bytes in 85 s, verified, after which Zigbee2MQTT resumed; the PC
 route (41 s) as well. Not tested: an interrupted download or write.
+The status line arrived on the Olimex (channel 20, PAN 0xE5A7 of the test
+network, 0 frames: no devices on it yet).
 
 ## Steps
 
