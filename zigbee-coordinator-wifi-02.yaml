@@ -1,0 +1,46 @@
+# Template for a new device. Copy it to the top level (next to the other
+# device files) as <devicename>.yaml and fill it in. It lives in templates/
+# so the ESPHome Device Builder does not list it as a device.
+#
+# Defaults (devices/common/package_include.yaml, devices/wifi/wifi.yaml):
+#   logger_level INFO, wireguard "false", mqtt "false", mqtt_discovery "false",
+#   use_address = <network prefix>.<static_ip>, web server with login.
+
+substitutions:
+  # --- always ---
+  devicename: "zb-coord-wifi-01-"          # becomes <devicename><mac suffix> (max 24 chars in total)
+  friendly_name: "zigbee_coord_wifi_01"
+  device_description: "Zigbee Coordinator Wifi 01"
+  board_type: "esp32c6"                 # a file in devices/boards/: esp12e, d1_mini, esp01_1m,
+                                       # nodemcu32s, wemos_d1_mini32, esp32_c3, esp32c6, esp32-poe
+  api_reboot_timeout: 0s               # 0s: keep running without Home Assistant
+
+  # --- WiFi (leave 'network' out for an Ethernet device) ---
+                    # Kasteel, Outdoor or TOSC (devices/wifi/wifi.yaml)
+  static_ip: "28"                     # last part of the fixed IP
+  network: "Outdoor"
+
+  # --- optional, defaults above ---
+  # logger_level: DEBUG
+
+  # mqtt: "true"
+  # mqtt_discovery: "false"
+  # mqtt_reboot_timeout: 0s
+  # topic_prefix: my/${devicename}_${static_ip}/
+
+  # wireguard: "true"
+  # wg_address: 10.11.0.13
+  # wg_priv_key: !secret private_key_my_device
+  # wg_public_key: !secret public_key_lnlocal
+  # wg_allowed_ips:
+  #   - 10.222.15.22/32
+
+  # --- device specific (whatever the device package below uses) ---
+
+packages:
+  device_base: !include devices/zigbee_coordinator_zboss.yaml
+
+# Exceptions to the common packages, for example:
+# web_server:
+#   auth: !remove          # no login (e.g. receives http_requests)
+# status_led: !remove      # the board's LED pin is used for something else
