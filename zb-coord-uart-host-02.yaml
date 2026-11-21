@@ -16,7 +16,7 @@ substitutions:
   connect_via: "192.168.5.112"
   wg_priv_key: !secret private_key_zigbee
   wg_public_key: !secret public_key_lnlocal
-  c6_firmware_url: "https://github.com/whulshof/esphome-kasteel/releases/download/uart-01/firmware.factory.bin"
+  c6_firmware_url: "https://github.com/whulshof/esphome-kasteel/releases/download/uart-02/firmware.factory.bin"
 
 packages:
   device_base: !include devices/zigbee_coordinator_uart_host.yaml
