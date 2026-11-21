@@ -3,9 +3,9 @@
 # Zigbee2MQTT: serial: { port: "tcp://10.222.15.61:6638", adapter: zboss }
 
 substitutions:
-  devicename: "zb-coord-uart-01-"
-  friendly_name: "zigbee_coord_uart_01"
-  device_description: "Zigbee Coordinator UART 01 (Olimex)"
+  devicename: "zb-coord-uart-02-"
+  friendly_name: "zigbee_coord_uart_02"
+  device_description: "Zigbee Coordinator UART 02 (Olimex)"
   board_type: "esp32c6"
 
 packages:
