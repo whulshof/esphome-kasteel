@@ -4,7 +4,7 @@ substitutions:
   device_description: "zigbee coordinator uart host 02"
   logger_level: DEBUG
   api_reboot_timeout: 0s
-  static_ip: "61"
+  static_ip: "51"
   board_type: "esp32-poe"
   network: "Kasteel"
   mqtt: "false"
