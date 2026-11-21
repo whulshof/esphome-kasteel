@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Flash an ESP32-C6 through a plain UART link (no EN/BOOT wires), e.g. the
-Olimex bridge of zigbee-coordinator-uart-01:
+Olimex bridge of zb-coord-uart-01:
 
   1. Put the C6 in download mode: button "C6 download mode" on the Olimex
      (download line low for 3 s; the firmware reboots into the ROM loader).

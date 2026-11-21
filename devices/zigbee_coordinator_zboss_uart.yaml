@@ -2,7 +2,7 @@
 # ESP32-C6 as a Zigbee coordinator with the NCP on UART1 and no network
 # (connection_type serial): for example on the UEXT connector of an Olimex
 # ESP32-PoE that passes the UART on to TCP (stream_server,
-# zigbee-coordinator-uart-host-01.yaml).
+# zb-coord-uart-host-01.yaml).
 #   Zigbee2MQTT:  serial: { port: "tcp://<bridge ip>:6638", adapter: zboss }
 # Wiring (3.3 V logic, 115200 baud 8N1):
 #   C6 TX  GPIO16 (XIAO D6)  ->  bridge RX   (Olimex UEXT 4, GPIO36)

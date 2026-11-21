@@ -1,3 +1,18 @@
+---
+# Olimex ESP32-PoE (LAN8720) as the UART host of a Zigbee coordinator without
+# a network (an ESP32-C6, zigbee_coordinator_zboss_uart.yaml, on the UEXT):
+# it passes the NCP's UART on to TCP port 6638 (stream_server), updates the
+# C6 ("Update C6", c6_flasher) and shows the C6's sensors (status line).
+#   Zigbee2MQTT:  serial: { port: "tcp://<ip>:6638", adapter: zboss }
+#
+# The device file sets, besides the usual devicename/friendly_name/...:
+#   network, static_ip    the fixed IP (devices/network, connection_type ethernet)
+#   c6_firmware_url       where "Update C6" fetches the C6's factory image
+#                         (tools/publish_c6_firmware.sh <C6 device file>)
+
+substitutions:
+  connection_type: ethernet
+
 packages:
   common_includes: !include common/package_include.yaml
 
@@ -20,13 +35,9 @@ ethernet:
   power_pin:
     number: GPIO12
     ignore_strapping_warning: true
-  manual_ip:
-    static_ip: 10.222.15.61
-    gateway: 10.222.14.138
-    subnet: 255.255.254.0
-    dns1: 10.222.14.138
+  # The IP comes from devices/network/ethernet_ip.yaml (network, static_ip).
 
-# Seriële aansluiting op UEXT (C6: zigbee_coordinator_zboss_uart.yaml)
+# UART on the UEXT connector (C6: zigbee_coordinator_zboss_uart.yaml)
 #   UEXT 3  GPIO4   TX            -> C6 GPIO17 (XIAO D7)
 #   UEXT 4  GPIO36  RX            <- C6 GPIO16 (XIAO D6)
 #   UEXT 5  GPIO16  download line -> C6 GPIO2  (XIAO D2)

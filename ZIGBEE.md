@@ -14,6 +14,7 @@ picks. Zigbee2MQTT runs on 10.222.15.22 (MQTT base topic `zigbee2mqttN`).
 | z2m3 | `eth-01` (XIAO ESP32-C6 + W5500) | 10.222.15.29 | desk (testing; meant for loods 2) | 15 | 0xE2F6 | a9:ef:15:62:4e:54:26:5a | standard (tostmann possible) |
 | z2m4 | TubesZB 2023-01 | 10.222.15.62 | house, cellar | 25 | 0x845C | 81:2c:ca:3d:99:c2:f3:b0 | standard |
 | – | `uart-01` on the Olimex (`uart-host-01`) | 10.222.15.61 | desk (testing) | 20 | 0xE5A7 (test network) | – | no z2m yet |
+| – | `uart-02` on the second Olimex (`uart-host-02`, the former TubesZB 2023 of loods 3) | 10.222.15.51 | desk (testing) | – | no network yet | – | no z2m yet |
 
 z2m2 and z2m3 share channel 15 while both lie on the desk; one switch (moved
 from eth-01) is on wifi-02. Before a coordinator goes to its place, give its
@@ -22,7 +23,17 @@ network a channel of its own there.
 Each z2m has its own generated network key. The TubesZB 2023-02 in loods 3
 (192.168.5.112) is off duty: see below.
 
-ESPHome configs: `zigbee-coordinator-wifi-01.yaml`, `zigbee-coordinator-eth-01.yaml`
+UART coordinators: a C6 without a network (`zb-coord-uart-NN.yaml`, package
+`devices/zigbee_coordinator_zboss_uart.yaml`) on the UEXT of an Olimex
+ESP32-PoE (`zb-coord-uart-host-NN.yaml`, package
+`devices/zigbee_coordinator_uart_host.yaml`). The host file sets `network`,
+`static_ip` and `c6_firmware_url` (release `uart-NN`, published with
+`tools/publish_c6_firmware.sh zb-coord-uart-NN.yaml`). A new C6 gets its first
+firmware over USB (it runs Seeed's demo out of the box); after that "Update C6"
+on its host. uart-host-02 has WireGuard off: it needs its own key and peer
+first (uart-host-01 uses `private_key_zigbee`).
+
+ESPHome configs: `zb-coord-wifi-01.yaml`, `zb-coord-eth-01.yaml`
 (package `devices/zigbee_coordinator_zboss*.yaml`), `tubeszb-cc2652p7-poe-2023-01/-02.yaml`
 (package `devices/tubeszb_cc2652p7_poe_2023.yaml`).
 
@@ -34,12 +45,12 @@ the Zigbee frames received in the last minute: "Zigbee RSSI" (average, dBm),
 on wifi-02 on 2026-11-20 (-63 dBm, LQI 87). An in-use coordinator gets them
 with its next build.
 
-Spare: `zigbee-coordinator-uart-01.yaml` (ESP32-C6, MAC 58:e6:c5:0f:4c:30, the
+Spare: `zb-coord-uart-01.yaml` (ESP32-C6, MAC 58:e6:c5:0f:4c:30, the
 former tostmann-firmware C6 of the Olimex), package
 `devices/zigbee_coordinator_zboss_uart.yaml`: the NCP on UART1, on UART0's
 pins (GPIO16 TX = XIAO D6, GPIO17 RX = D7, 115200), `connection_type: serial`,
 no network. It sits on the UEXT of the Olimex ESP32-PoE
-(`zigbee-coordinator-uart-host-01.yaml`, 10.222.15.61), which passes the UART on
+(`zb-coord-uart-host-01.yaml`, 10.222.15.61), which passes the UART on
 to TCP: Zigbee2MQTT `port: tcp://10.222.15.61:6638`, `adapter: zboss`. No
 OTA, API or web page; log over USB. Its sensors go once a minute as a line
 of text over a second UART (XIAO D4, 9600 baud) to the Olimex, which shows
@@ -54,7 +65,7 @@ Update the C6 without USB, from the Olimex (component
 `external_components/my_components/c6_flasher`, Espressif's
 esp-serial-flasher; the method of the TubesZB flasher):
 
-1. Compile `zigbee-coordinator-uart-01.yaml` (Device Builder).
+1. Compile `zb-coord-uart-01.yaml` (Device Builder).
 2. `tools/publish_c6_firmware.sh`: puts the factory image on GitHub as asset
    of release `uart-01` (public; it refuses an image with a secret in it).
 3. Olimex button "Update C6": downloads the image, pulls D2 low (the C6
