@@ -8,14 +8,14 @@ substitutions:
   board_type: "esp32-poe"
   network: "Kasteel"
   mqtt: "false"
-  wireguard: "true"
-  wg_address: 10.11.0.13
-  wg_allowed_ips:
-    - 10.222.15.22/32
-    - 10.222.15.73/32
-  connect_via: "192.168.5.112"
-  wg_priv_key: !secret private_key_zigbee
-  wg_public_key: !secret public_key_lnlocal
+  wireguard: "false"           # own key and peer on the server first (host-01 uses private_key_zigbee)
+#  wg_address: 10.11.0.13
+#  wg_allowed_ips:
+#    - 10.222.15.22/32
+#    - 10.222.15.73/32
+#  connect_via: "192.168.5.112"
+#  wg_priv_key: !secret private_key_zigbee
+#  wg_public_key: !secret public_key_lnlocal
   c6_firmware_url: "https://github.com/whulshof/esphome-kasteel/releases/download/uart-02/firmware.factory.bin"
 
 packages:
