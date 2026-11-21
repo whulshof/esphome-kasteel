@@ -3,13 +3,10 @@ substitutions:
   friendly_name: "zigbee coordinator esp32-c6"
   device_description: "zigbee coordinator esp32-c6"
   logger_level: DEBUG
-  new_ota_passwd: "12345abcde"
   api_reboot_timeout: 0s
-#  mqtt_reboot_timeout: 0s
-  wifi_reboot_timeout: 0s
   static_ip: "61"
   board_type: "esp32-poe"
-  # network: "Kasteel"
+  network: "Kasteel"
   mqtt: "false"
   wireguard: "true"
   wg_address: 10.11.0.12
