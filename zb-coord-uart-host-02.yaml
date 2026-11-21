@@ -13,7 +13,7 @@ substitutions:
   wg_allowed_ips:
     - 10.222.15.22/32
     - 10.222.15.73/32
-  connect_via: "static_ip"
+  connect_via: "192.168.5.112"
   wg_priv_key: !secret private_key_zigbee
   wg_public_key: !secret public_key_lnlocal
   c6_firmware_url: "https://github.com/whulshof/esphome-kasteel/releases/download/uart-01/firmware.factory.bin"
