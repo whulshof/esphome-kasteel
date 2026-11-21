@@ -1,18 +1,15 @@
 substitutions:
-  devicename: "zigbee-coord-esp32c6"
-  friendly_name: "zigbee coordinator esp32-c6"
-  device_description: "zigbee coordinator esp32-c6"
+  devicename: "zb-coord-uart-host-02"
+  friendly_name: "zigbee coordinator uart host 02"
+  device_description: "zigbee coordinator uart host 02"
   logger_level: DEBUG
-  new_ota_passwd: "12345abcde"
   api_reboot_timeout: 0s
-#  mqtt_reboot_timeout: 0s
-  wifi_reboot_timeout: 0s
   static_ip: "61"
   board_type: "esp32-poe"
-  # network: "Kasteel"
+  network: "Kasteel"
   mqtt: "false"
   wireguard: "true"
-  wg_address: 10.11.0.12
+  wg_address: 10.11.0.13
   wg_allowed_ips:
     - 10.222.15.22/32
     - 10.222.15.73/32
