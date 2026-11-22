@@ -76,6 +76,8 @@ zboss_ncp:
   firmware_version:
     id: zb_firmware
     name: NCP firmware
+  host:
+    name: Zigbee host
   host_connected:
     name: Zigbee host connected
   network_lost:
