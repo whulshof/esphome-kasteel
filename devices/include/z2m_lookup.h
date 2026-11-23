@@ -6,6 +6,7 @@
 // Package: devices/zigbee_z2m_lookup.yaml.
 #include <map>
 #include <string>
+#include <vector>
 #include "esphome/core/hal.h"
 #include "esphome/core/log.h"
 #include "esphome/components/mqtt/mqtt_client.h"
@@ -45,7 +46,7 @@ inline std::string z2m_for_bridge() {
 // '+/bridge/state' (small) finds the z2m's, and their bridge/info is read
 // one at a time: subscribe, take the retained message, unsubscribe.
 struct Z2mScan {
-  std::string port;          // e.g. "tcp://10.222.15.51:6638"
+  std::vector<std::string> ports;  // e.g. "tcp://10.222.15.51:6638"
   std::string busy;          // base_topic whose bridge/info is subscribed
   uint32_t busy_since{0};
   bool got{false};
@@ -60,9 +61,13 @@ inline Z2mScan &z2m_scan() {
 // bridge/state goes online again.
 static constexpr uint32_t Z2M_INFO_TIMEOUT_MS = 15000;
 
-// 'port' is what z2m has in serial.port for this coordinator. Call once (on_boot).
-inline void z2m_watch_bridge_info(const std::string &port) {
-  z2m_scan().port = port;
+// The addresses z2m may have in serial.port (tcp://<address>:6638) for this
+// coordinator: its LAN address and, with WireGuard, its tunnel address. Empty
+// ones are skipped. Call once (on_boot).
+inline void z2m_watch_bridge_info(std::initializer_list<const char *> addresses) {
+  for (const char *a : addresses)
+    if (a != nullptr && *a != '\0')
+      z2m_scan().ports.push_back(std::string("tcp://") + a + ":6638");
   esphome::mqtt::global_mqtt_client->subscribe(
       "+/bridge/state",
       [](const std::string &topic, const std::string &payload) {
@@ -105,7 +110,9 @@ inline void z2m_scan_step() {
         [base](const std::string &, const std::string &payload) {
           Z2mScan &scan = z2m_scan();
           // The port as a JSON string value, so .5 does not match .51.
-          bool ours = payload.find("\"" + scan.port + "\"") != std::string::npos;
+          bool ours = false;
+          for (const auto &port : scan.ports)
+            ours = ours || payload.find("\"" + port + "\"") != std::string::npos;
           Z2mSeen &s = z2m_seen()[base];
           if (ours != s.ours)
             ESP_LOGI("z2m", "%s %s this bridge", base.c_str(), ours ? "uses" : "no longer uses");
