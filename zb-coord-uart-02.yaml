@@ -7,6 +7,7 @@ substitutions:
   friendly_name: "zigbee_coord_uart_02"
   device_description: "Zigbee Coordinator UART 02 (Olimex)"
   board_type: "esp32c6"
+  external_antenna: "true"
 
 packages:
   device_base: !include devices/zigbee_coordinator_zboss_uart.yaml
