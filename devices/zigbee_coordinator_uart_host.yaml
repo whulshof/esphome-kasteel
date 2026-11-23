@@ -16,6 +16,10 @@ substitutions:
 packages:
   common_includes: !include common/package_include.yaml
 
+esphome:
+  includes:
+    - devices/include/stream_server_client.h
+
 external_components:
   - source: github://tube0013/esphome-components
     components: [stream_server]
@@ -195,6 +199,20 @@ sensor:
       - timeout: 3min
 
 text_sensor:
+  # Who is on port 6638 (here, not on the C6: the C6 only sees serial bytes).
+  - platform: template
+    id: zb_host
+    name: "Zigbee host"
+    icon: mdi:lan-connect
+    entity_category: diagnostic
+    update_interval: 5s
+    lambda: |-
+      std::string s = stream_server_client(id(zigbee_bridge));
+      if (s.empty())
+        s = "none";
+      if (id(zb_host).has_state() && id(zb_host).state == s)
+        return {};
+      return s;
   - platform: template
     id: c6_zb_pan
     name: Zigbee PAN ID
@@ -207,6 +225,10 @@ text_sensor:
     entity_category: diagnostic
 
 binary_sensor:
+  - platform: stream_server
+    stream_server: zigbee_bridge
+    connected:
+      name: "Zigbee host connected"
   - platform: template
     id: c6_zb_lost
     name: Zigbee network lost

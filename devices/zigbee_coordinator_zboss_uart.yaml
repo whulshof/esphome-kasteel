@@ -28,6 +28,9 @@ substitutions:
   connection_type: serial
   ncp_uart_tx: GPIO16       # XIAO D6, UART0 TX: also the ROM's download port
   ncp_uart_rx: GPIO17       # XIAO D7, UART0 RX
+  # XIAO ESP32-C6: "true" uses the U.FL connector. Fixed at build time (no
+  # network, so no select); only with an antenna on it: there is no fallback.
+  external_antenna: "false"
   download_pin: GPIO2       # XIAO D2: held low 2 s = reboot into download mode
   status_uart_tx: GPIO22    # XIAO D4: the status line, 9600 baud
 
@@ -61,7 +64,8 @@ zboss_ncp:
                    id(zb_pan_id).state.c_str(), id(zb_network_lost).state ? 1 : 0, id(zb_firmware).state.c_str());
           id(status_uart).write_str(line);
   allowed_ips: !remove     # the TCP port stays closed without a network
-  antenna: !remove         # changing it needs the API or the web page
+  antenna: !remove         # changing it needs the API or the web page,
+  external_antenna: ${external_antenna}   # so the substitution above
 
 # Reboot into the ROM's UART download mode on request of the bridge
 # (devices/include/c6_download_mode.h: LP_AON_FORCE_DOWNLOAD_BOOT plus a
