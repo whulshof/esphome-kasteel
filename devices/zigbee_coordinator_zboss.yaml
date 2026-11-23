@@ -21,6 +21,9 @@ packages:
   no_access_point: !include
     file: zigbee_coordinator_zboss_wifi.yaml
     condition: '${connection_type == "wifi"}'
+  z2m: !include                # "Zigbee host": which z2m (MQTT), needs a network
+    file: zigbee_coordinator_zboss_z2m.yaml
+    condition: '${connection_type != "serial"}'
 
 external_components:
   - source:
@@ -77,7 +80,8 @@ zboss_ncp:
     id: zb_firmware
     name: NCP firmware
   host:
-    name: Zigbee host
+    id: zb_host_ip          # the TCP peer; "Zigbee host" (zigbee_coordinator_zboss_z2m.yaml) names the z2m
+    internal: true
   host_connected:
     name: Zigbee host connected
   network_lost:

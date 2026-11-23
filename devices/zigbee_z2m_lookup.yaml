@@ -1,0 +1,44 @@
+---
+# Which Zigbee2MQTT uses this Zigbee coordinator (or UART host): listens on
+# MQTT for every z2m's <base_topic>/bridge/info and finds the one whose
+# serial.port is tcp://<this device>:6638 (devices/include/z2m_lookup.h).
+# z2m_for_bridge() then gives its base_topic, e.g. "zigbee2mqtt3".
+# Needs a network and every z2m on the broker mqtt_broker (one-level
+# base_topics). Included by the coordinator device-packages.
+#
+# Listen only: topic_prefix null publishes nothing (no states, log, birth or
+# will; the entities stay with the API). The broker traffic is the keepalive
+# and bridge/info (~28 KB per z2m) at boot and when a z2m (re)starts.
+
+substitutions:
+  # This device as Zigbee2MQTT's serial.port names it (tcp://<this>:6638).
+  z2m_bridge_address: '${networks[network]["prefix"]}.${static_ip}'
+
+esphome:
+  includes:
+    - devices/include/z2m_lookup.h
+  on_boot:
+    priority: -100
+    then:
+      - lambda: |-
+          z2m_watch_bridge_info("tcp://${z2m_bridge_address}:6638");
+
+mqtt:
+  broker: ${mqtt_broker}
+  topic_prefix: null       # publish nothing (see above)
+  discovery: false
+  reboot_timeout: 0s
+  max_payload_size: 65536   # bridge/info is ~28 KB (default 32 KB)
+
+# ESP-IDF's MQTT receive buffer (default 1 KB): bridge/info in ~7 chunks
+# instead of ~28, well within ESPHome's inbound queue of 31.
+esp32:
+  framework:
+    sdkconfig_options:
+      CONFIG_MQTT_BUFFER_SIZE: "4096"
+
+# Reads the z2m's bridge/info one at a time.
+interval:
+  - interval: 1s
+    then:
+      - lambda: z2m_scan_step();

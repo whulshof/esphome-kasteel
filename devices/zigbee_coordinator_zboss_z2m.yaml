@@ -1,0 +1,25 @@
+---
+# "Zigbee host" for a networked ZBOSS coordinator: the base_topic of the z2m
+# on port 6638 (devices/zigbee_z2m_lookup.yaml), else the TCP peer's IP
+# (with Docker the Docker host's), "none" without a client.
+
+packages:
+  z2m_lookup: !include zigbee_z2m_lookup.yaml
+
+text_sensor:
+  - platform: template
+    id: zb_host
+    name: "Zigbee host"
+    icon: mdi:lan-connect
+    entity_category: diagnostic
+    update_interval: 5s
+    lambda: |-
+      std::string s = id(zb_host_ip).has_state() ? id(zb_host_ip).state : "none";
+      if (s != "none") {
+        std::string z2m = z2m_for_bridge();
+        if (!z2m.empty())
+          s = z2m;
+      }
+      if (id(zb_host).has_state() && id(zb_host).state == s)
+        return {};
+      return s;

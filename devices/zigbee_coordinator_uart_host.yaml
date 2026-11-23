@@ -15,6 +15,7 @@ substitutions:
 
 packages:
   common_includes: !include common/package_include.yaml
+  z2m_lookup: !include zigbee_z2m_lookup.yaml   # "Zigbee host" names the z2m
 
 esphome:
   includes:
@@ -199,7 +200,9 @@ sensor:
       - timeout: 3min
 
 text_sensor:
-  # Who is on port 6638 (here, not on the C6: the C6 only sees serial bytes).
+  # Who is on port 6638 (here, not on the C6: the C6 only sees serial bytes):
+  # the base_topic of the z2m whose bridge/info names this bridge, else the
+  # peer's IP (with Docker: the Docker host's).
   - platform: template
     id: zb_host
     name: "Zigbee host"
@@ -210,6 +213,11 @@ text_sensor:
       std::string s = stream_server_client(id(zigbee_bridge));
       if (s.empty())
         s = "none";
+      else {
+        std::string z2m = z2m_for_bridge();
+        if (!z2m.empty())
+          s = z2m;
+      }
       if (id(zb_host).has_state() && id(zb_host).state == s)
         return {};
       return s;
