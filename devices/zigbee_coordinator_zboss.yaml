@@ -15,6 +15,11 @@ substitutions:
   # (NCP over UART without a network, reboots through ESPHome) plus the signal
   # sensors, which are in no PR yet.
   zboss_ref: esphome-signal
+  # No native API: nothing talks to a coordinator over it (z2m/ZHA use port
+  # 6638, OTA is separate), and Home Assistant's ESPHome discovery kept
+  # connecting to it, WiFi traffic on the radio Zigbee shares. Sensors, the
+  # antenna select, restart and the log are on the web page.
+  use_api: "false"
 
 packages:
   common_includes: !include common/package_include.yaml

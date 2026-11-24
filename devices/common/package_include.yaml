@@ -4,6 +4,7 @@ substitutions:
   connection_type: wifi        # wifi | ethernet | serial (no network: USB or UART only)
   logger_level: INFO
   wireguard: "false"
+  use_api: "true"              # "false": no native API (devices nothing talks to over it)
   mqtt: "false"
   mqtt_discovery: "false"
   mqtt_broker: 10.222.15.50
@@ -30,7 +31,7 @@ packages:
   # Network services: not with connection_type serial.
   api: !include
     file: api.yaml
-    condition: '${connection_type != "serial"}'
+    condition: '${use_api == "true" and connection_type != "serial"}'
   ota: !include
     file: ota.yaml
     condition: '${connection_type != "serial"}'
